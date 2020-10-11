@@ -1,17 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import {Mol} from './Mol' //or 'react-mol/three'
+//  ************************* UTILS *************************  //
+//  ************************* REACT-MOL ************************* //
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+//  ************************* EXAMPLE ************************* //
+// export const H: FC =(props)=> <Mol {...props} bond={1} />
+// export const C: FC =(props)=> <Mol {...props} bond={4} />
+// export const O: FC =(props)=> <Mol {...props} bond={2} />
+// export const OH:FC =(props)=> <Mol {...props}><O/><H/></Mol> // Bond by Mol        as -O-H
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+export {Mol}
+export {useMol} from './useMol'
+export {useMols} from './useMols'

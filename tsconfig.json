@@ -17,9 +17,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "watch": true
   },
   "include": [
-    "src"
+    "src",
+    "docs"
   ]
 }

@@ -1,39 +1,52 @@
 {
-  "name": "react-mol",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.67",
-    "@types/react": "^16.9.51",
-    "@types/react-dom": "^16.9.8",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
-    "typescript": "^3.7.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+    "name": "react-mol",
+    "homepage": "/",
+    "version": "0.0.1",
+    "module": "index.js",
+    "types": "index.d.ts",
+    "main": "index.cjs.js",
+    "author": "tsei",
+    "license": "MIT",
+    "private": false,
+    "sideEffects": false,
+    "description": "🪐🥝react chemical package for molecure🥝🪐",
+    "repository": "https://github.com/tseijp/use-page",
+    "bugs": "https://github.com/tseijp/use-page/issues",
+    "keywords": [
+        "react",
+        "typescript",
+        "pagination"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "scripts": {
+        "test": "react-app-rewired test",
+        "jest": "jest -c config-jest.js --watch --coverage --runInBand",
+        "eject": "react-app-rewired eject",
+        "start": "cross-env NODE_ENV=development BABEL_ENV=development react-app-rewired start",
+        "build": "cross-env NODE_ENV=production BABEL_ENV=production react-app-rewired build",
+        "compile": "cross-env NODE_ENV=production BABEL_ENV=production rollup -c config-rollup.js"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@rollup/plugin-babel": "^5.2.1",
+        "@rollup/plugin-commonjs": "^15.1.0",
+        "@rollup/plugin-node-resolve": "^9.0.0",
+        "cross-env": "^7.0.2",
+        "fs": "0.0.1-security",
+        "react-app-rewired": "^2.1.6",
+        "rollup": "^2.29.0"
+    }
 }
