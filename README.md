@@ -4,6 +4,7 @@
 - REFS
     - https://threejs.org/examples/#webgl_loader_pdb
     - https://threejs.org/examples/#css3d_molecules
+    - https://threejs.org/examples/?q=skinn#webgl_skinning_simple
 - TODO
     - useMols -> useMol -> Mol -> Example
 <!   ************************* ************************* -->
@@ -20,46 +21,113 @@
 - `useMols(length, {}, {}, {})`
 
 ## Simple example
-__methane__
-```
-import {C, H} from 'react-mol'
+
+
+<table>
+<tr><td>
+    <strong>Mol</strong>
+</td><td>
+    <strong>hierarchy</strong>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/Mol-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/useMol-black.svg"/></a><br/>
+</td><td>
+    <strong>merging</strong>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/Mols-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/useMols-black.svg"/></a><br/>
+</td><td>
+    results
+</td></tr>
+<tr><td><!--************************* Methyl alchol *************************-->
+<p align="center">
+    <strong>Methyl alcohol</strong>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/Methil-black.svg"/></a><br/>
+</p>
+</td><!--*************************--><td>
+
+```javascript
 <C>
-  <H/><H/><H/><H/>
+  <H/><H/><H/><OH/>
 </C>
 ```
 
-__benzene__
-```
-import {C, H} from 'react-mol'
-<Mol>
-    <C><H/></C>
-    <C><H/></C>
-    <C><H/></C>
-    <C><H/></C>
-    <C><H/></C>
-    <C><H/></C>
-</Mol>
+</td><!--*************************--><td>
+
+```javascript
+<M>
+  <OH/>
+  <Methil/>
+</M>
 ```
 
-__phenol__
-```
-import {Mol, C, H} from 'react-mol'
-<Mol>
-    <C><H/></C>
-    <C><H/></C>
-    <C><H/></C>
-    <C><H/></C>
-    <C><H/></C>
+</td></tr>
+
+<tr><td><!--************************* Phenol *************************-->
+<p align="center">
+    <strong>benzene</strong>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
+</p>
+</td><!--*************************--><td>
+
+```javascript
+<C>
+  <C>
     <C>
-        <O><H/></O>
+      <C>
+        <C>
+          <C/>
+          <OH/>
+        </C>
+        <H/><H/>
+      </C>
+      <H/><H/>
     </C>
-</Mol>
+    <H/><H/>
+  </C>
+  <H/><H/>
+</C>
 ```
-or
+
+</td><!--*************************--><td>
+
+```javascript
+<M>
+  <C><H/><H/></C>
+  <C><H/><H/></C>
+  <C><H/><H/></C>
+  <C><H/><H/></C>
+  <C><H/><H/></C>
+  <C><OH/>/C>
+</M>
 ```
-import {Mol, C, OH, Pheny} from 'react-mol'
-<Mol>
-    <Pheny/>
-    <C><OH/></C>
-</Mol>
+
+</td></tr>
+<tr><td><!--************************* XXX *************************-->
+<p align="center">
+    <strong>XXX</strong>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
+</p>
+</td><!--*************************--><td>
+
+```javascript
 ```
+
+</td><!--*************************--><td>
+
+```javascript
+```
+</tr></table><!--*************************  *************************-->

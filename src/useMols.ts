@@ -1,3 +1,4 @@
+// TODO
 export type MolValue<S extends object> = {
     bond: number
 }

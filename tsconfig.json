@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "watch": true,
     "target": "es5",
     "lib": [
       "dom",
@@ -17,8 +18,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "watch": true
+    "jsx": "react"
   },
   "include": [
     "src",
