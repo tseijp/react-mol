@@ -28,38 +28,41 @@
 
 
 <table>
-<tr><td>
+<tr><td><p align="center">
     <strong>Mol</strong>
-</td><td>
-    <strong>hierarchy</strong>
+</p></td><td><p align="center">
+    <strong>hierarchy</strong><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/Mol-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/useMol-black.svg"/></a><br/>
-</td><td>
-    <strong>merging</strong>
+</p></td><td><p align="center">
+    <strong>merging</strong><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/Mols-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/useMols-black.svg"/></a><br/>
-</td><td>
+</p></td><td><p align="center">
     results
-</td></tr>
+</p></td></tr>
 <tr><td><!--************************* Methyl alchol *************************-->
 <p align="center">
-    <strong>Methyl alcohol</strong>
+    <strong>Methyl alcohol</strong><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
         <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/Methil-black.svg"/></a><br/>
+        <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
 
 ```javascript
 <C>
-  <H/><H/><H/><OH/>
+  <H/>
+  <H/>
+  <H/>
+  <OH/>
 </C>
 ```
 
@@ -68,7 +71,7 @@
 ```javascript
 <M>
   <OH/>
-  <Methil/>
+  <CH3/>
 </M>
 ```
 
@@ -76,7 +79,7 @@
 
 <tr><td><!--************************* Phenol *************************-->
 <p align="center">
-    <strong>benzene</strong>
+    <strong>benzene</strong><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
@@ -107,19 +110,31 @@
 
 ```javascript
 <M>
-  <C><H/><H/></C>
-  <C><H/><H/></C>
-  <C><H/><H/></C>
-  <C><H/><H/></C>
-  <C><H/><H/></C>
-  <C><OH/>/C>
+  <C>
+    <H/><H/>
+  </C>
+  <C>
+    <H/><H/>
+  </C>
+  <C>
+    <H/><H/>
+  </C>
+  <C>
+    <H/><H/>
+  </C>
+  <C>
+    <H/><H/>
+  </C>
+  <C>
+    <OH/>
+  </C>
 </M>
 ```
 
 </td></tr>
 <tr><td><!--************************* XXX *************************-->
 <p align="center">
-    <strong>XXX</strong>
+    <strong>XXX</strong><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
