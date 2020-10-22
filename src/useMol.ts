@@ -1,32 +1,49 @@
-import React, {useRef} from 'react'
+import React, {Children, useMemo} from 'react'
 import {useAtom} from 'jotai'
-import {mol} from './Mol'
+import {atoms, rand} from './utils'
 import {MolProps, Vec3} from './types'
-function mergePos (
-    {current:{position:left =[0,0,0]}},
-    {current:{position:right={x:0,y:0,z:0}}}
-) {
-    return {position: [
-        left[0] + right.x,
-        left[1] + right.y,
-        left[2] + right.z,
-    ] as Vec3}
+
+function calcPos ({position=[0,0,0]}:MolProps, _:MolProps): Vec3 {
+    return [
+        position[0] + rand(2),
+        position[1] ,//+ rand(2),
+        position[2] //+ rand(2),
+    ]
 }
 
 export function useMol <S extends object> (
     props:MolProps,
-    ref: null|{current:any}
-) : [MolProps, null]
+) : MolProps
 
-export function useMol(props: MolProps, ref:any=null) {
-    const [, set] = useAtom(mol)
-    const state = useRef<MolProps>(props)
+export function useMol(props: MolProps) {
+    const [,set] = useAtom(atoms)
+    const state = useMemo<MolProps|null>(() => {
+        const children = Children.map(props.children, (child:any) =>
+            React.cloneElement(child, {
+                parentProps: props,
+                position: calcPos(props, child.props),
+                depth: (props.depth||0) + 1
+            })
+        )
+        return {...props, children}
+    }, [props])
     React.useEffect(() => {
-        console.log(state.current, ref.current)
-        set(p => [...p, mergePos(state, ref)])
-    }, [set, ref])
-    return [state.current, null]
+        if (state)
+            set(p => [...p, state])
+    }, [set, state])
+    return state
 }
+
+// function mergePos (
+//     {current:{position:left =[0,0,0]}},
+//     {current:{position:right={x:0,y:0,z:0}}}
+// ) {
+//     return {position: [
+//         left[0] + right.x,
+//         left[1] + right.y,
+//         left[2] + right.z,
+//     ] as Vec3}
+// }
 
 // if (bond) return null
 // const bonds = Children.map(children, child => {

@@ -21,10 +21,8 @@ const Root = () => (
 )
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <Root />,
+    document.getElementById('root')
 );
 
 unregister();

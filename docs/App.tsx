@@ -2,15 +2,14 @@ import React from 'react'
 import {Canvas} from 'react-three-fiber'
 import {OrbitControls} from 'drei'
 import * as THREE from 'three'
-import {Mol, MolProvider} from '../src'
+import {M, MolProvider} from '../src'
 
-const rand =(mul=10,add=-5)=> add+Math.random()*mul
-
+// const rand =(mul=10,add=-5)=> add+Math.random()*mul
 export function App () {
     return (
-        <div>
+        <>
             <Canvas
-                style={{position:"absolute", width:'100%', height: '100%'}}
+                style={{position:"absolute", width:'100%', height: '100%', top:0, left:0}}
                 gl={{ alpha: false, antialias: false, logarithmicDepthBuffer: true }}
                 camera={{ fov: 75, position: [0, 0, 10] }}
                 onCreated={({ gl }) => {
@@ -22,13 +21,26 @@ export function App () {
                 <pointLight position={[100, 100, 100]} intensity={2.2} />
                 <pointLight position={[-100, -100, -100]} intensity={5} color="red" />
                 <axesHelper />
+                <gridHelper />
+                <gridHelper rotation={[Math.PI/2, 0, 0]}/>
                 <MolProvider>
-                    {Array(1000).fill(0).map((_,i) =>
-                        <Mol key={i} position={[rand(), rand(), rand()]}/>
-                    )}
+                    <M color="red" scale={[.1,.1,.1]}>
+                        <M color="red" scale={[.1, .1, .1]}>
+                            <M color="green" scale={[.1, .1, .1]}>
+                                <M color="blue" scale={[.1, .1, .1]}>
+                                    <M color="red" scale={[.1, .1, .1]}>
+                                        <M color="green" scale={[.1, .1, .1]}>
+                                            <M color="blue" scale={[.1, .1, .1]}/>
+                                        </M>
+                                    </M>
+                                </M>
+                            </M>
+                        </M>
+                    </M>
                 </MolProvider>
+
                 <OrbitControls />
             </Canvas>
-        </div>
+        </>
     )
 }

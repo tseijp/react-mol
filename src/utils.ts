@@ -1,7 +1,48 @@
-export function getHands () {
-    return
+// const rand =(mul=1,add=0)=> add+Math.random()*mul
+// export function meanPosition
+import {atom} from 'jotai'
+import {MolProps,Vec3} from './types'
+import * as THREE from 'three'
+export function rand (mul=1,add=0) {return add+Math.random()*mul}
+export function meanVec3 (left=[0,0,0],right=[0,0,0], rate=[.5, .5]) {
+    return left.map((v,i) => v*rate[0] + right[i]*rate[1]) as Vec3
+}
+export function rotateVec3(left=[0,0,0], right:Vec3|null=null, rate=[1,1,1]) {
+    // const q = new THREE.Quaternion()
+    // const axis = new THREE.Vector3(...meanVec3(left, right||left, [1, -1]))
+    // const up   = new THREE.Vector3(0, 1, 0)
+    // const rad  = axis.angleTo(up)
+    // const dir  = new THREE.Vector3()
+    // dir.crossVectors(up, axis).normalize();
+    // q.setFromAxisAngle(dir, rad/Math.PI)
+    // console.log(q)
+    // return q.toArray().slice(1) as Vec3
+
+    const euler = new THREE.Euler( 0, 1, 1.57, 'XYZ' );
+    euler.setFromVector3( new THREE.Vector3(...meanVec3(left, right||left, [1, -1])) )
+    console.log([euler.x, euler.y, euler.z] )
+    return [euler.x, euler.y, euler.z] as Vec3
 }
 
+    // const q = new THREE.Quaternion()
+    // q.setFromUnitVectors( new THREE.Vector3(...right), new THREE.Vector3(...left) )
+    // return q.toArray().slice(1) as Vec3
+    // USING setFromAxisAngle
+    // const q = new THREE.Quaternion()
+    // const axis = new THREE.Vector3(...meanVec3(left, right, [1, -1]))
+    // const dir = new THREE.Vector3()
+    // const up = new THREE.Vector3(0, 1, 0)
+    // dir.crossVectors(up, axis).normalize();
+    // const rad = Math.acos( up.dot(axis) );
+    // q.setFromAxisAngle(dir, rad)
+    // return q.toArray().slice(1) as Vec3
+
+export const atoms = atom<MolProps[]>([])
+export const bones = atom((get) => get(atoms).map(a => {
+    const rotation = rotateVec3(a.position, a.parentProps?.position)
+    const position = meanVec3(a.position, a.parentProps?.position)
+    return {position, rotation}
+}))
 // ************************* 🍭 helpers 🍭 ************************* //
 // * This function is fork of react-spring
 // * Code : https://github.com/pmndrs/react-spring/blob/master/src/shared/helpers.ts

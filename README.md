@@ -4,7 +4,11 @@
 - REFS
     - https://threejs.org/examples/#webgl_loader_pdb
     - https://threejs.org/examples/#css3d_molecules
-    - https://threejs.org/examples/?q=skinn#webgl_skinning_simple
+    - https://threejs.org/examples/#webgl_skinning_simple
+    - instancing
+        - https://threejs.org/examples/#webgl_buffergeometry_lines
+        - https://threejs.org/examples/#webgl_instancing_raycast
+        - https://threejs.org/examples/#webgl_postprocessing_sao
 - TODO
     - useMols -> useMol -> Mol -> Example
 <!   ************************* ************************* -->
