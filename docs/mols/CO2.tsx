@@ -1,7 +1,7 @@
 import React from 'react'
 import {Canvas} from 'react-three-fiber'
 import {OrbitControls} from 'drei'
-import {M, MolProvider} from '../../src'
+import {C, O} from '../../src'
 
 // const rand =(mul=10,add=-5)=> add+Math.random()*mul
 export function CO2 () {
@@ -17,19 +17,10 @@ export function CO2 () {
                 <axesHelper />
                 <gridHelper />
                 <gridHelper rotation={[Math.PI/2, 0, 0]}/>
-                <MolProvider>
-                    <M color="red" scale={[.1, .1, .1]}>
-                        <M color="green" scale={[.1, .1, .1]}>
-                            <M color="blue" scale={[.1, .1, .1]}>
-                                <M color="red" scale={[.1, .1, .1]}>
-                                    <M color="green" scale={[.1, .1, .1]}>
-                                        <M color="blue" scale={[.1, .1, .1]}/>
-                                    </M>
-                                </M>
-                            </M>
-                        </M>
-                    </M>
-                </MolProvider>
+                <C>
+                    <O/>
+                    <O/>
+                </C>
                 <OrbitControls />
             </Canvas>
         </>

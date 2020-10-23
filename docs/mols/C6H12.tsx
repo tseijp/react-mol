@@ -1,10 +1,9 @@
 import React from 'react'
 import {Canvas} from 'react-three-fiber'
 import {OrbitControls} from 'drei'
-import {H, O} from '../../src'
-
+import {M} from '../../src'
 // const rand =(mul=10,add=-5)=> add+Math.random()*mul
-export function H2O () {
+export function C6H12 () {
     return (
         <>
             <Canvas
@@ -17,10 +16,6 @@ export function H2O () {
                 <axesHelper />
                 <gridHelper />
                 <gridHelper rotation={[Math.PI/2, 0, 0]}/>
-                <O>
-                    <H/>
-                    <H/>
-                </O>
                 <OrbitControls />
             </Canvas>
         </>

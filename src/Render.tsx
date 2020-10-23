@@ -18,6 +18,7 @@ export function Render ({children, ...props}:any) {
     const _a = useMemo(() => new THREE.Object3D(), [])
     const _b = useMemo(() => new THREE.Object3D(), [])
     const _c = useMemo(() => new THREE.Color()   , [])
+    console.log(a)
     useFrame(() => {
         a.forEach(({position=[0,0,0], scale=[1,1,1], color}, i) => {
             _a.position.set(...position)

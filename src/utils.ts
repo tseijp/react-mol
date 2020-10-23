@@ -6,16 +6,16 @@ import * as THREE from 'three'
 
 export function rand (mul=1,add=0) {return add+Math.random()*mul}
 
-export function meanVec3 (child=[0,0,0],parent=[0,0,0], rate=[.5, .5]) {
+export function addVec3 (child=[0,0,0],parent=[0,0,0], rate=[.5, .5]) {
     return child.map((v,i) => v*rate[0] + parent[i]*rate[1]) as Vec3
 }
 export function scaleVec3(child=[0,0,0], parent=[0,0,0]) {
-    const vector = new THREE.Vector3(...meanVec3(child, parent, [1, -1]))
+    const vector = new THREE.Vector3(...addVec3(child, parent, [1, -1]))
     return [.5, vector.length(), .5] as Vec3
 }
-export function rotateVec3(child=[0,0,0], parent=[0,0,0]) {
-    const q = new THREE.Quaternion()
-    const axis = new THREE.Vector3(...meanVec3(child, parent, [1, -1]))
+export function quatVec3(child=[0,0,0], parent=[0,0,0]) {
+    const q    = new THREE.Quaternion()
+    const axis = new THREE.Vector3(...addVec3(child, parent, [1, -1]))
     const up   = new THREE.Vector3(0, 1, 0)
     const rad  = axis.angleTo(up)
     const dir  = new THREE.Vector3()
@@ -23,12 +23,28 @@ export function rotateVec3(child=[0,0,0], parent=[0,0,0]) {
     q.setFromAxisAngle(dir, rad)
     return q
 }
+export function calcPosition (child:MolProps, parent:MolProps): Vec3
+export function calcPosition (
+    {position:child=[0,0,0],}: any,
+    {position:parent=[0,0,0],}:any,
+) {
+    const dxyz = addVec3([rand(), rand(), rand()], parent, [1, 1])
+    return addVec3(child, dxyz, [1, 1])
+}
+export function calcRotation (child:MolProps, parent:MolProps): Vec3
+export function calcRotation (
+    {rotation:child=[0,0,0],}: any,
+    {rotation:parent=[0,0,0],}:any,
+) {
+    return addVec3(child, parent, [1, 1])
+}
 
+// ************************* 👻 jotai 👻 ************************* //
 export const atoms = atom<MolProps[]>([])
 export const bones = atom((get) => get(atoms).map(a => {
-    const position =   meanVec3(a.position, a.parentProps?.position)
-    const rotation = rotateVec3(a.position, a.parentProps?.position)
-    const scale    =  scaleVec3(a.position, a.parentProps?.position)
+    const position =   addVec3(a.position, a.parentProps?.position||a.position)
+    const rotation =  quatVec3(a.position, a.parentProps?.position||a.rotation)
+    const scale    = scaleVec3(a.position, a.parentProps?.position||a.position)
     return {position, rotation, scale, color:a.color}
 }))
 

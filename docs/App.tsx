@@ -2,7 +2,7 @@ import React from 'react'
 import {Canvas} from 'react-three-fiber'
 import {OrbitControls} from 'drei'
 import * as THREE from 'three'
-import {M, MolProvider} from '../src'
+import {M, } from '../src'
 
 // const rand =(mul=10,add=-5)=> add+Math.random()*mul
 export function App () {
@@ -23,19 +23,17 @@ export function App () {
                 <axesHelper />
                 <gridHelper />
                 <gridHelper rotation={[Math.PI/2, 0, 0]}/>
-                <MolProvider>
-                    <M color="red" scale={[.1, .1, .1]}>
-                        <M color="green" scale={[.1, .1, .1]}>
-                            <M color="blue" scale={[.1, .1, .1]}>
-                                <M color="red" scale={[.1, .1, .1]}>
-                                    <M color="green" scale={[.1, .1, .1]}>
-                                        <M color="blue" scale={[.1, .1, .1]}/>
-                                    </M>
+                <M color="red" position={[0,0,0]} scale={[.1, .1, .1]}>
+                    <M color="green">
+                        <M color="blue">
+                            <M color="red">
+                                <M color="green">
+                                    <M color="blue"/>
                                 </M>
                             </M>
                         </M>
                     </M>
-                </MolProvider>
+                </M>
                 <OrbitControls />
             </Canvas>
         </>

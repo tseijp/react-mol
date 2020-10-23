@@ -3,6 +3,7 @@ export type Vec3<T=number> = [T,T,T]
 export type MolProps = {
     ref:{current:any},
     depth   : number,
+    element :number,
     position: Vec3,
     rotation: Vec3,
     scale   : Vec3,

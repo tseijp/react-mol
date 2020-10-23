@@ -8,7 +8,6 @@ import * as MOLS from './mols'
 
 const About = () => <>About</>
 const Basic = () => <>Basic</>
-console.log(Object.entries(MOLS))
 const Root = () => (
     <HelmetProvider>
             <BrowserRouter>
