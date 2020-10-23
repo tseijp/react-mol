@@ -76,7 +76,38 @@
 ```
 
 </td></tr>
+<tr><td><!--************************* Acetic acid *************************-->
+<p align="center">
+    <strong>Acetic acid</strong><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/COOH-black.svg"/></a><br/>
+</p>
+</td><!--*************************--><td>
 
+```javascript
+<C>
+  <CH3/>
+  <O/>
+  <OH/>
+</C>
+```
+
+</td><!--*************************--><td>
+
+```javascript
+<M>
+  <CH3/>
+  <COOH/>
+</M>
+```
+
+</td></tr>
 <tr><td><!--************************* Phenol *************************-->
 <p align="center">
     <strong>benzene</strong><br/>
@@ -84,6 +115,10 @@
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
         <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/C6H11-black.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
 
@@ -110,24 +145,68 @@
 
 ```javascript
 <M>
-  <C>
-    <H/><H/>
-  </C>
-  <C>
-    <H/><H/>
-  </C>
-  <C>
-    <H/><H/>
-  </C>
-  <C>
-    <H/><H/>
-  </C>
-  <C>
-    <H/><H/>
-  </C>
+  <CH2/>
+  <CH2/>
+  <CH2/>
+  <CH2/>
+  <CH2/>
   <C>
     <OH/>
   </C>
+</M>
+```
+
+<p>or</p>
+
+```javascript
+<M>
+  <C6H11/>
+  <OH/>
+</M>
+```
+
+</td></tr>
+<tr><td><!--************************* Polyethylene *************************-->
+<p align="center">
+    <strong>Polyethylene</strong><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/Poly-black.svg"/></a><br/>
+</p>
+</td><!--*************************--><td>
+
+```javascript
+<H>
+  <Poly n={100}}>
+    {children =>
+      <M>
+        {children||<H/>}
+        <CH2/>
+        <CH2/>
+      </M>
+    }
+  </Poly>
+</H>
+
+```
+
+</td><!--*************************--><td>
+
+```javascript
+<M>
+  <H/>
+  {[...Array(100)].map(_ =>
+    <>
+      <CH2>
+      <CH2>
+    </>
+  )}
+  <H/>
 </M>
 ```
 
@@ -149,4 +228,5 @@
 
 ```javascript
 ```
+
 </tr></table><!--*************************  *************************-->

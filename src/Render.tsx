@@ -11,28 +11,28 @@ export function Render (props: Partial<{
 }>) : JSX.Element
 
 export function Render ({children, ...props}:any) {
-    const _atom = useMemo(() => new THREE.Object3D(), [])
-    const _bone = useMemo(() => new THREE.Object3D(), [])
-    const _name = useMemo(() => new THREE.Color(), [])
     const atom = useRef<any>(null)
     const bone = useRef<any>(null)
     const [a] = useAtom(atoms)
     const [b] = useAtom(bones)
+    const _a = useMemo(() => new THREE.Object3D(), [])
+    const _b = useMemo(() => new THREE.Object3D(), [])
+    const _c = useMemo(() => new THREE.Color()   , [])
     useFrame(() => {
         a.forEach(({position=[0,0,0], scale=[1,1,1], color}, i) => {
-            _atom.position.set(...position)
-            _atom.scale.set(...scale)
-            _atom.updateMatrix()
-            atom.current.setColorAt(i, _name.setColorName(color));
-            atom.current.setMatrixAt(i, _atom.matrix)
+            _a.position.set(...position)
+            _a.scale.set(...scale)
+            _a.updateMatrix()
+            atom.current.setColorAt(i, _c.setColorName(color));
+            atom.current.setMatrixAt(i, _a.matrix)
         })
-        b.forEach(({position=[0,0,0], rotation=[0,0,0]}, i) => {
-            _bone.position.set(...position)
-            _bone.rotation.set(...rotation)
-            _bone.updateMatrix()
-            // bone.current.geometry.set
-            bone.current.setColorAt(i, _name.setColorName("white"));
-            bone.current.setMatrixAt(i, _bone.matrix)
+        b.forEach(({position=[0,0,0], rotation, scale=[1,1,1], color}, i) => {
+            _b.rotation.setFromQuaternion(rotation)
+            _b.position.set(...position)
+            _b.scale.set(...scale)
+            _b.updateMatrix()
+            bone.current.setColorAt(i, _c.setColorName(color));
+            bone.current.setMatrixAt(i, _b.matrix)
         })
         atom.current.instanceMatrix.needsUpdate = true
     })

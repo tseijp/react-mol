@@ -1,7 +1,7 @@
 import React from 'react'
-import {Provider as JotaiProvider} from 'jotai'
-import {Render} from './Render'
+import {Provider} from 'jotai'
 import {MolProps} from './types'
+import {Render} from './Render'
 import {useMol} from './useMol'
 
 export function Mol <S extends object> (props: unknown & Partial<MolProps>): any//JSX.Element | null // TODO
@@ -11,9 +11,9 @@ export function Mol (props: any) {
 }
 export function MolProvider (props:any) {
     return (
-        <JotaiProvider>
+        <Provider>
             <Render {...props}/>
-        </JotaiProvider>
+        </Provider>
     )
 }
 export default Mol

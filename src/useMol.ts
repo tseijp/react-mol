@@ -3,11 +3,12 @@ import {useAtom} from 'jotai'
 import {atoms, rand} from './utils'
 import {MolProps, Vec3} from './types'
 
-function calcPos ({position=[0,0,0]}:MolProps, _:MolProps): Vec3 {
+function calcPos (parent:MolProps, {position=[0,0,0], ...child}:MolProps): Vec3 {
+    console.log(parent.children, child)
     return [
-        position[0] + rand(2),
-        position[1] ,//+ rand(2),
-        position[2] //+ rand(2),
+        position[0] + rand(2,-1),
+        position[1] + rand(2,-1),
+        position[2] + rand(2,-1),
     ]
 }
 
@@ -21,7 +22,7 @@ export function useMol(props: MolProps) {
         const children = Children.map(props.children, (child:any) =>
             React.cloneElement(child, {
                 parentProps: props,
-                position: calcPos(props, child.props),
+                position: calcPos(child.props, props),
                 depth: (props.depth||0) + 1
             })
         )
