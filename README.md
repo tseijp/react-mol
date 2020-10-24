@@ -48,11 +48,13 @@
 <tr><td><!--************************* Methyl alchol *************************-->
 <p align="center">
     <strong>Methyl alcohol</strong><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/OH-red.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
@@ -79,14 +81,16 @@
 <tr><td><!--************************* Acetic acid *************************-->
 <p align="center">
     <strong>Acetic acid</strong><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/O-red.svg"/></a><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/OH-red.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/COOH-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/COOH-white.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
 
@@ -108,16 +112,63 @@
 ```
 
 </td></tr>
+<tr><td><!--************************* Polyethylene *************************-->
+<p align="center">
+    <strong>Polyethylene</strong><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/Poly-black.svg"/></a><br/>
+</p>
+</td><!--*************************--><td>
+
+```javascript
+<H>
+  <Poly poly={100}}>
+    {children =>
+      <C>
+        <C>
+          {children||<H/>}
+          <H/><H/>
+        </C>
+        <H/><H/>
+      </C>
+    }
+  </Poly>
+</H>
+
+```
+
+</td><!--*************************--><td>
+
+```javascript
+<M>
+  <H/>
+  {[...Array(100)].map(_ =>
+    <>
+      <CH2>
+      <CH2>
+    </>
+  )}
+  <H/>
+</M>
+```
+
+</td></tr>
 <tr><td><!--************************* Phenol *************************-->
 <p align="center">
     <strong>benzene</strong><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/C6H11-black.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
@@ -166,58 +217,13 @@
 ```
 
 </td></tr>
-<tr><td><!--************************* Polyethylene *************************-->
-<p align="center">
-    <strong>Polyethylene</strong><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
-        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/Poly-black.svg"/></a><br/>
-</p>
-</td><!--*************************--><td>
-
-```javascript
-<H>
-  <Poly n={100}}>
-    {children =>
-      <M>
-        {children||<H/>}
-        <CH2/>
-        <CH2/>
-      </M>
-    }
-  </Poly>
-</H>
-
-```
-
-</td><!--*************************--><td>
-
-```javascript
-<M>
-  <H/>
-  {[...Array(100)].map(_ =>
-    <>
-      <CH2>
-      <CH2>
-    </>
-  )}
-  <H/>
-</M>
-```
-
-</td></tr>
 <tr><td><!--************************* XXX *************************-->
 <p align="center">
     <strong>XXX</strong><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
-        <img src="https://img.shields.io/badge/H-black.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
 

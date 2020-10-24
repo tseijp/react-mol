@@ -1,15 +1,19 @@
-import React, {FC} from 'react'
+import React from 'react'
+import {MolProps as P} from './types'
 import M from './Mol'
-export * from './utils'
-export * from './types'
+export {M}
 //  ************************* REACT-MOL ************************* //
-export * from './Mol' //or 'react-mol/three'
+export * from './Mol'
+export * from './Poly'
 export * from './Render'
 export * from './useMol'
-export * from './useMols'
+export * from './utils'
+export * from './types'
 //  ************************* EXAMPLE ************************* //
-export const H: FC =(props:any)=> <M {...props} scale={[.1,.1,.1]} color="white"/>
-export const C: FC =(props:any)=> <M {...props} scale={[.3,.3,.3]} color="black"/>
-export const O: FC =(props:any)=> <M {...props} scale={[.5,.5,.5]} color="red"/>
-export const OH:FC =(props:any)=> <M {...props}><O/><H/></M>
-export {M}
+export const H  =(props:P)=> <M {...props} scale={[.1,.1,.1]} color="white"/>
+export const C  =(props:P)=> <M {...props} scale={[.3,.3,.3]} color="black"/>
+export const O  =(props:P)=> <M {...props} scale={[.5,.5,.5]} color="red"/>
+export const H2 =(props:P)=> Array(2).fill(<H {...props}/>)
+export const H3 =(props:P)=> Array(3).fill(<H {...props}/>)
+export const H4 =(props:P)=> Array(4).fill(<H {...props}/>)
+export const OH =(props:P)=> <O {...props}><H/></O>

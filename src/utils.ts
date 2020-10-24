@@ -1,5 +1,3 @@
-// const rand =(mul=1,add=0)=> add+Math.random()*mul
-// export function meanPosition
 import {atom} from 'jotai'
 import {MolProps,Vec3} from './types'
 import * as THREE from 'three'
@@ -11,11 +9,11 @@ export function addVec3 (child=[0,0,0],parent=[0,0,0], rate=[.5, .5]) {
 }
 export function scaleVec3(child=[0,0,0], parent=[0,0,0]) {
     const vector = new THREE.Vector3(...addVec3(child, parent, [1, -1]))
-    return [.5, vector.length(), .5] as Vec3
+    return [1, vector.length(), 1] as Vec3
 }
 export function quatVec3(child=[0,0,0], parent=[0,0,0]) {
-    const q    = new THREE.Quaternion()
     const axis = new THREE.Vector3(...addVec3(child, parent, [1, -1]))
+    const q    = new THREE.Quaternion()
     const up   = new THREE.Vector3(0, 1, 0)
     const rad  = axis.angleTo(up)
     const dir  = new THREE.Vector3()
@@ -23,20 +21,29 @@ export function quatVec3(child=[0,0,0], parent=[0,0,0]) {
     q.setFromAxisAngle(dir, rad)
     return q
 }
-export function calcPosition (child:MolProps, parent:MolProps): Vec3
+export function calcPosition (child:MolProps, parent:MolProps, key:number): Vec3
 export function calcPosition (
-    {position:child=[0,0,0],}: any,
-    {position:parent=[0,0,0],}:any,
+    {position:child=[0,0,0]}: any,
+    {position:parent=[0,0,0]}:any,
+    key=0,
 ) {
-    const dxyz = addVec3([rand(), rand(), rand()], parent, [1, 1])
-    return addVec3(child, dxyz, [1, 1])
+    const dis = 2
+    if (key>2) return [0, -dis, 0]
+    const rad = dis*Math.sqrt(2) / Math.sqrt(3)
+    const phi = key*Math.PI * 2 / 3
+    const vec = [rad*Math.cos(phi), dis/Math.sqrt(3), rad*Math.sin(phi)]
+    return addVec3(child, addVec3(vec, parent, [1, 1]), [1, 1])
 }
-export function calcRotation (child:MolProps, parent:MolProps): Vec3
-export function calcRotation (
-    {rotation:child=[0,0,0],}: any,
-    {rotation:parent=[0,0,0],}:any,
-) {
-    return addVec3(child, parent, [1, 1])
+export function calcRotation (child:MolProps, parent:MolProps, key:number): Vec3
+export function calcRotation (...props:[any,any,any]) {
+    const axis = new THREE.Vector3(...calcPosition(...props))
+    const q    = new THREE.Quaternion()
+    const up   = new THREE.Vector3(0, 1, 0)
+    const rad  = axis.angleTo(up)
+    const dir  = new THREE.Vector3()
+    dir.crossVectors(up, axis).normalize();
+    q.setFromAxisAngle(dir, rad)
+    return [1,0,0]
 }
 
 // ************************* 👻 jotai 👻 ************************* //

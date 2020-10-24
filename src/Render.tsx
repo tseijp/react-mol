@@ -18,17 +18,17 @@ export function Render ({children, ...props}:any) {
     const _a = useMemo(() => new THREE.Object3D(), [])
     const _b = useMemo(() => new THREE.Object3D(), [])
     const _c = useMemo(() => new THREE.Color()   , [])
-    console.log(a)
+    console.log(a.length)
     useFrame(() => {
-        a.forEach(({position=[0,0,0], scale=[1,1,1], color}, i) => {
+        a.forEach(({position=[0,0,0], scale=[1,1,1], color="white"}, i) => {
             _a.position.set(...position)
             _a.scale.set(...scale)
             _a.updateMatrix()
             atom.current.setColorAt(i, _c.setColorName(color));
             atom.current.setMatrixAt(i, _a.matrix)
         })
-        b.forEach(({position=[0,0,0], rotation, scale=[1,1,1], color}, i) => {
-            _b.rotation.setFromQuaternion(rotation)
+        b.forEach(({position=[0,0,0], rotation, scale=[1,1,1], color="white"}, i) => {
+            _b.rotation.setFromQuaternion(rotation) // TODO abolition quaternion
             _b.position.set(...position)
             _b.scale.set(...scale)
             _b.updateMatrix()
