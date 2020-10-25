@@ -1,58 +1,66 @@
 import {atom} from 'jotai'
 import {MolProps,Vec3} from './types'
 import * as THREE from 'three'
-
-export function rand (mul=1,add=0) {return add+Math.random()*mul}
-
-export function addVec3 (child=[0,0,0],parent=[0,0,0], rate=[.5, .5]) {
-    return child.map((v,i) => v*rate[0] + parent[i]*rate[1]) as Vec3
+// ************************* 🍡 bone 🍡 ************************* //
+export function mergeVec3(rate:number[], ...vec:Vec3[]) {
+    return [0,1,2].map(j=>
+        rate.map((r,i) => r*vec[i][j]).reduce((a,b) => a+b)
+    ) as Vec3
 }
-export function scaleVec3(child=[0,0,0], parent=[0,0,0]) {
-    const vector = new THREE.Vector3(...addVec3(child, parent, [1, -1]))
+export function scaleVec3(vec:Vec3=[0,0,0]) {
+    const vector = new THREE.Vector3(...vec)
     return [1, vector.length(), 1] as Vec3
 }
-export function quatVec3(child=[0,0,0], parent=[0,0,0]) {
-    const axis = new THREE.Vector3(...addVec3(child, parent, [1, -1]))
-    const q    = new THREE.Quaternion()
-    const up   = new THREE.Vector3(0, 1, 0)
-    const rad  = axis.angleTo(up)
-    const dir  = new THREE.Vector3()
-    dir.crossVectors(up, axis).normalize();
-    q.setFromAxisAngle(dir, rad)
-    return q
+export function eulerVec3(vec:Vec3=[0,0,0]) {
+    const base = new THREE.Vector3(0,1,0)
+    const axis = new THREE.Vector3(...vec)
+    const q = new THREE.Quaternion().setFromUnitVectors(base, axis);
+    const e = new THREE.Euler().setFromQuaternion(q)
+    return e.toArray().slice(0,3) as Vec3
 }
+
+// ************************* 🍡 atom 🍡 ************************* //
 export function calcPosition (child:MolProps, parent:MolProps, key:number): Vec3
-export function calcPosition (
-    {position:child=[0,0,0]}: any,
-    {position:parent=[0,0,0]}:any,
-    key=0,
-) {
-    const dis = 2
-    if (key>2) return [0, -dis, 0]
-    const rad = dis*Math.sqrt(2) / Math.sqrt(3)
-    const phi = key*Math.PI * 2 / 3
-    const vec = [rad*Math.cos(phi), dis/Math.sqrt(3), rad*Math.sin(phi)]
-    return addVec3(child, addVec3(vec, parent, [1, 1]), [1, 1])
+export function calcPosition (child:any, parent:any, key=0) {
+    const dis = 1 //TODO calcDistance
+    const rad = Math.sqrt(2/3)
+    const phi = key* Math.PI* 2/3 + (parent.angle || 0)
+    const vec = [rad*Math.cos(phi), 1/Math.sqrt(3), rad*Math.sin(phi)]
+    const base = new THREE.Vector3(0,1,0)
+    const axis = new THREE.Vector3(...(parent.direction||[0,1,0])).normalize()
+    const temp = new THREE.Vector3(...(key<3? vec: [0,-1,0])).normalize()
+    const e = new THREE.Euler(...(child.rotation||[0,0,0]))
+    const q = new THREE.Quaternion().setFromUnitVectors(base, axis)
+    const p = new THREE.Quaternion().setFromEuler(e)
+    temp.applyQuaternion(q.multiply(p))
+    temp.setLength(dis)
+    return mergeVec3(Array(4).fill(1),
+        temp.toArray() as Vec3,
+        child.position ||[0,0,0],
+        parent.position||[0,0,0],
+        child.double
+            ? calcPosition({...child,double:false}, parent, key+2)
+            : [0,0,0]
+    )
 }
-export function calcRotation (child:MolProps, parent:MolProps, key:number): Vec3
-export function calcRotation (...props:[any,any,any]) {
-    const axis = new THREE.Vector3(...calcPosition(...props))
-    const q    = new THREE.Quaternion()
-    const up   = new THREE.Vector3(0, 1, 0)
-    const rad  = axis.angleTo(up)
-    const dir  = new THREE.Vector3()
-    dir.crossVectors(up, axis).normalize();
-    q.setFromAxisAngle(dir, rad)
-    return [1,0,0]
+export function calcRotation (child:Vec3, parent:Vec3) {
+    return mergeVec3([1,-1], child, parent)
 }
 
 // ************************* 👻 jotai 👻 ************************* //
 export const atoms = atom<MolProps[]>([])
-export const bones = atom((get) => get(atoms).map(a => {
-    const position =   addVec3(a.position, a.parentProps?.position||a.position)
-    const rotation =  quatVec3(a.position, a.parentProps?.position||a.rotation)
-    const scale    = scaleVec3(a.position, a.parentProps?.position||a.position)
-    return {position, rotation, scale, color:a.color}
+export const bones = atom((get) => get(atoms).map(({
+    position:child=[0,0,0],
+    parentProps:{position:parent}={},
+    color
+}) => {
+    const position = mergeVec3([.5,.5], child, parent||child)
+    const distance = mergeVec3([ 1,-1], child, parent||child)
+    return {
+        position, color,
+        rotation: eulerVec3(distance),
+        scale   : scaleVec3(distance),
+    }
 }))
 
 // ************************* 🍭 helpers 🍭 ************************* //

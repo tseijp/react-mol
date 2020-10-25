@@ -5,5 +5,5 @@ export function Poly (props: MolProps & Partial<{
     poly: number
 }>): null|JSX.Element
 export function Poly ({children,poly=0,...props}:any) {
-    return poly>0 && children(<Poly poly={poly-1} children={children}/>, props, poly)
+    return poly>-1 && children(poly>0 && <Poly poly={poly-1} children={children}/>, props, poly)
 }

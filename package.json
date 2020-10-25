@@ -1,7 +1,7 @@
 {
     "name": "react-mol",
     "homepage": "/",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "module": "index.js",
     "types": "index.d.ts",
     "main": "index.cjs.js",
@@ -12,6 +12,7 @@
     "description": "🪐🥝react chemical package for molecure🥝🪐",
     "repository": "https://github.com/tseijp/use-page",
     "bugs": "https://github.com/tseijp/use-page/issues",
+    "publishConfig": { "registry": "https://npm.pkg.github.com/" },
     "keywords": [
         "react",
         "typescript",

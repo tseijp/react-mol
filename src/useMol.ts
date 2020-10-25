@@ -11,10 +11,10 @@ export function useMol(props: any) {
     const [,set] = useAtom(atoms)
     const state = useMemo<MolProps|null>(() => {
         const children = Children.map(props.children, (child:any, key) => {
+            const position = calcPosition(child.props, props, key)
+            const direction = calcRotation(position, props.position)
             return child && React.cloneElement(child, {
-                parentProps: props,
-                position: calcPosition(child.props, props, key),
-                rotation: calcRotation(child.props, props, key),
+                parentProps: props, position, direction,
                 scale: child.props.scale || props.scale,
                 color: child.props.color || props.color,
                 depth: (props.depth||0) + 1

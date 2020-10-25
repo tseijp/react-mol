@@ -1,5 +1,3 @@
-# React-mol
-<!--IMGS * 6-->
 <!-- ************************* ************************* >
 - REFS
     - https://threejs.org/examples/#webgl_loader_pdb
@@ -9,9 +7,36 @@
         - https://threejs.org/examples/#webgl_buffergeometry_lines
         - https://threejs.org/examples/#webgl_instancing_raycast
         - https://threejs.org/examples/#webgl_postprocessing_sao
-- TODO
-    - useMols -> useMol -> Mol -> Example
 <!   ************************* ************************* -->
+<!-- <p align="center">
+<a href="https://github.com/tseijp/react-mol">
+    <img src="https://i.imgur.com/xxxx.png" width="240" /></a>
+</p>
+
+<br/>
+<br/>
+<br/> -->
+
+<p align="center">️
+    🍡<strong>react-mol</strong> is a molecular chemistry based simulation library
+    that covers most cases of organic molecule simulation.
+</p>
+
+<p align="center">
+    <a href="https://github.com/tseijp/react-mol">
+        <img alt="build"src="https://img.shields.io/badge/build-✔-green.svg"/></a>
+    <a href="https://github.com/tseijp/react-mol">
+        <img alt="types"src="https://img.shields.io/badge/types-✔-yellow.svg"/></a>
+    <a href="https://github.com/tseijp/react-mol">
+        <img alt="demos"src="https://img.shields.io/badge/demos-✔-red.svg"/></a>
+<br>
+    <a href="https://github.com/tseijp/react-mol">
+        <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/></a>
+    <a href="https://www.npmjs.com/package/react-mol">
+        <img src="https://badge.fury.io/js/react-mol.svg" alt="npm version" height="18"/></a>
+    <a href="https://twitter.com/intent/tweet?url=https://tsei.jp/rmol/&text=🍡A molecular chemistry based simulation library" >
+        <img alt="tweet" src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Ftseijp"/></a>
+</p>
 
 ## Quick started
 - `create-react-app myapp`
@@ -20,12 +45,7 @@
 - open browser and visit [localhost:3000](http://localhost:3000)
 - ~Now you can go to our [demo](https://tsei.jp/react-mol), and try its usage.~
 
-## Available API
-- `useMol({})`
-- `useMols(length, {}, {}, {})`
-
 ## Simple example
-
 
 <table>
 <tr><td><p align="center">
@@ -97,7 +117,7 @@
 ```javascript
 <C>
   <CH3/>
-  <O/>
+  <O double/>
   <OH/>
 </C>
 ```
@@ -112,9 +132,9 @@
 ```
 
 </td></tr>
-<tr><td><!--************************* Polyethylene *************************-->
+<tr><td><!--************************* Polypropylene *************************-->
 <p align="center">
-    <strong>Polyethylene</strong><br/>
+    <strong>Polypropylene</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
@@ -129,11 +149,12 @@
 ```javascript
 <H>
   <Poly poly={100}}>
-    {children =>
-      <C>
-        <C>
+    {(children, props) =>
+      <C {...props}>
+        <C rotation={[0,Math.PI,0]}>
           {children||<H/>}
-          <H/><H/>
+          <C><H/><H/><H/></C>
+          <H/>
         </C>
         <H/><H/>
       </C>
@@ -148,11 +169,11 @@
 ```javascript
 <M>
   <H/>
-  {[...Array(100)].map(_ =>
-    <>
+  {[...Array(100)].map((_,i) =>
+    <M key={i}>
       <CH2>
       <CH2>
-    </>
+    </M>
   )}
   <H/>
 </M>

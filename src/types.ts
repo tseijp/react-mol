@@ -6,10 +6,12 @@ export type MolProps = Partial<{
     rotation: Vec3,
     scale: Vec3,
     color: string,
-    depth: number,
     // FOR MOL
     ref: {current:any},
     children: ReactNode,
     parentProps: MolProps,
     element: number,
+    angle: number,
+    depth: number,
+    double: boolean,
 }>

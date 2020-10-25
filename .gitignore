@@ -1,5 +1,9 @@
 react-app-env.d.ts
 coverage
+index.cjs.js
+index.d.ts
+index.js
+
 # Created by https://www.toptal.com/developers/gitignore/api/code,django,git,jupyternotebooks,react,redis,python,typings,unity
 # Edit at https://www.toptal.com/developers/gitignore?templates=code,django,git,jupyternotebooks,react,redis,python,typings,unity
 
@@ -35,7 +39,7 @@ media
 
 # Distribution / packaging
 .Python
-build/
+#build/
 develop-eggs/
 dist/
 downloads/

@@ -24,5 +24,8 @@
   "include": [
     "src",
     "docs"
+],
+  "exclude": [
+      "node_modules"
   ]
 }

@@ -1,14 +1,14 @@
 import {
-    addVec3,
+    mergeVec3,
     scaleVec3,
     calcPosition.
     calcRotation
 } from '../src'
-describe('addVec3', () => {
+describe('mergeVec3', () => {
     it('basic', () => {
-        expect(addVec3([1,0,0], [0,1,0])).toStrictEqual([.5,.5,0])
-        expect(addVec3([1,0,0], [0,1,0], [ 1,1])).toStrictEqual([1,1,0])
-        expect(addVec3([1,0,0], [0,1,0], [-1,1])).toStrictEqual([-1,1,0])
+        expect(mergeVec3([1,0,0], [0,1,0])).toStrictEqual([.5,.5,0])
+        expect(mergeVec3([1,0,0], [0,1,0], [ 1,1])).toStrictEqual([1,1,0])
+        expect(mergeVec3([1,0,0], [0,1,0], [-1,1])).toStrictEqual([-1,1,0])
     })
 })
 describe('scaleVec3', () => {
