@@ -12,7 +12,9 @@
     "description": "🪐🥝react chemical package for molecure🥝🪐",
     "repository": "https://github.com/tseijp/use-page",
     "bugs": "https://github.com/tseijp/use-page/issues",
-    "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "keywords": [
         "react",
         "typescript",
