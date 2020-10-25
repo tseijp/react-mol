@@ -275,7 +275,7 @@ typings
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
-/[Bb]uild/
+# /[Bb]uild/ my changed
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/

@@ -1,7 +1,7 @@
 {
     "name": "react-mol",
     "homepage": "/",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "module": "index.js",
     "types": "index.d.ts",
     "main": "index.cjs.js",
@@ -9,10 +9,9 @@
     "license": "MIT",
     "private": false,
     "sideEffects": false,
-    "description": "🪐🥝react chemical package for molecure🥝🪐",
-    "repository": "https://github.com/tseijp/use-page",
-    "bugs": "https://github.com/tseijp/use-page/issues",
-    "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+    "description": "🍡A molecular chemistry based simulation library",
+    "repository": "https://github.com/tseijp/react-mol",
+    "bugs": "https://github.com/tseijp/react-mol/issues",
     "keywords": [
         "react",
         "typescript",
