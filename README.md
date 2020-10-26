@@ -9,8 +9,8 @@
         - https://threejs.org/examples/#webgl_postprocessing_sao
 <!   ************************* ************************* -->
 <p align="center">
-    <a href="https://github.com/tseijp/rmol">
-        <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/rmol.mp4.gif" width="400" /></a>
+    <a href="https://tsei.jp/rmol">
+        <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/rmol.mp4.gif" /></a>
 </p>
 <br/>
 <br/>
@@ -96,7 +96,7 @@
 ```
 
 </td><!--*************************--><td>
-    <a href="https://github.com/tseijp/rmol">
+    <a href="https://tsei.jp/rmol/CH3OH">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/CH3OH.png" width="240" /></a>
 </td></tr>
 <tr><td><!--************************* Acetic acid *************************-->
@@ -132,7 +132,7 @@
 </M>
 ```
 </td><!--*************************--><td>
-    <a href="https://github.com/tseijp/rmol">
+    <a href="https://tsei.jp/rmol/CH3COOH">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/CH3COOH.png" width="240" /></a>
 </td></tr>
 <tr><td><!--************************* Polypropylene *************************-->
@@ -182,7 +182,7 @@
 </M>
 ```
 </td><!--*************************--><td>
-    <a href="https://github.com/tseijp/rmol">
+    <a href="https://tsei.jp/rmol/Polyethylene">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/CnH2n2.png" width="240" /></a>
 </td></tr>
 <tr><td><!--************************* Phenol *************************-->
