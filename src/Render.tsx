@@ -40,6 +40,7 @@ export function Render ({children, ...props}:any) {
             a[a.length]?.position||[0,0,0])
         )
         atom.current.instanceMatrix.needsUpdate = true
+        bone.current.instanceMatrix.needsUpdate = true
     })
     return (
         <group {...props}>

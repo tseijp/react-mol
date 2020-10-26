@@ -1,29 +1,22 @@
 import React from 'react'
 import {C, H, O, Poly} from '../src'
-export const H2O =()=> <O><H/><H/></O>
+export const H2O =()=> <H><O><H/></O></H>
 export const CH4 =()=> <C><H/><H/><H/><H/></C>
 export const CH3OH =()=>
-    <C>
-        <H/><H/><H/>
-        <O><H/></O>
-    </C>
+    <H>
+        <O>
+        <C><H/><H/><H/></C>
+        </O>
+    </H>
 export const CH3COOH =()=>
     <C>
         <C><H/><H/><H/></C>
         <O><H/></O>
         <O double/>
     </C>
-export const CH3COCH3 =()=>
-    <C>
-        <H/><H/><H/>
-        <C>
-            <C><H/><H/><H/></C>
-            <O double/>
-        </C>
-    </C>
 export const Polyethylene =()=>
     <H>
-        <Poly poly={3}>
+        <Poly poly={2}>
         {(children,props) =>
             <C {...props}>
                 <C rotation={[0,Math.PI,0]}>
@@ -38,7 +31,7 @@ export const Polyethylene =()=>
     </H>
 export const Polypropylene =()=>
     <H>
-        <Poly poly={3}>
+        <Poly poly={2}>
         {(children, props) =>
             <C {...props} angle={Math.PI}>
                 <C>
