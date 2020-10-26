@@ -8,15 +8,13 @@
         - https://threejs.org/examples/#webgl_instancing_raycast
         - https://threejs.org/examples/#webgl_postprocessing_sao
 <!   ************************* ************************* -->
-<!-- <p align="center">
-<a href="https://github.com/tseijp/react-mol">
-    <img src="https://i.imgur.com/xxxx.png" width="240" /></a>
+<p align="center">
+    <a href="https://github.com/tseijp/rmol">
+        <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/rmol.mp4.gif" width="400" /></a>
 </p>
-
 <br/>
 <br/>
-<br/> -->
-
+<br/>
 <p align="center">️
     🍡<strong>react-mol</strong> is a molecular chemistry based simulation library
     that covers most cases of organic molecule simulation.
@@ -97,6 +95,9 @@
 </M>
 ```
 
+</td><!--*************************--><td>
+    <a href="https://github.com/tseijp/rmol">
+        <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/CH3OH.png" width="240" /></a>
 </td></tr>
 <tr><td><!--************************* Acetic acid *************************-->
 <p align="center">
@@ -130,7 +131,9 @@
   <COOH/>
 </M>
 ```
-
+</td><!--*************************--><td>
+    <a href="https://github.com/tseijp/rmol">
+        <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/CH3COOH.png" width="240" /></a>
 </td></tr>
 <tr><td><!--************************* Polypropylene *************************-->
 <p align="center">
@@ -178,7 +181,9 @@
   <H/>
 </M>
 ```
-
+</td><!--*************************--><td>
+    <a href="https://github.com/tseijp/rmol">
+        <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/CnH2n2.png" width="240" /></a>
 </td></tr>
 <tr><td><!--************************* Phenol *************************-->
 <p align="center">
