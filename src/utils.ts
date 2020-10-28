@@ -47,7 +47,7 @@ export function calcPosition (child:any, parent:any, key=0) {
         child.position ||[0,0,0],
         parent.position||[0,0,0],
         child.double
-            ? calcPosition({...child,double:false}, parent, key+2)
+            ? calcPosition({...child,double:false}, parent,key+(key?2:3))
             : [0,0,0]
     )
 }

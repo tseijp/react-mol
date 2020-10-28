@@ -39,7 +39,7 @@
 - `npm i react-mol`
 
 ## Quick started
-- `git clone https://github.com/tseijp/rmol`
+- `git clone https://github.com/tseijp/react-mol`
 - `cd react-mol`
 - `npm i`
 - `npm start`
@@ -49,16 +49,27 @@
 ## Recipes
 
 <table>
-<tr><td><p align="center"><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
-        <img src="https://img.shields.io/badge/Mol-black.svg"/></a><br/>
-</p></td><td><p align="center"><br/>
-    <strong>hierarchy</strong><br/>
-</p></td><td><p align="center"><br/>
-    <strong>merging</strong><br/>
-</p></td><td><p align="center"><br/>
-    <strong>results</strong><br/>
-</p></td></tr>
+<tr><td>
+<p align="center"><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/Mol.tsx">
+        <img src="https://img.shields.io/badge/Mol-black.svg"/></a>
+<br/></p>
+</td><td>
+<p align="center"><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/Mol.tsx">
+        <img src="https://img.shields.io/badge/Hierarchy-black.svg"/></a>
+<br/></p>
+</td><td>
+<p align="center"><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/Mol.tsx">
+        <img src="https://img.shields.io/badge/Recution-black.svg"/></a>
+<br/></p>
+</td><td>
+<p align="center"><br/>
+    <a href="https://tsei.jp/rmol">
+        <img src="https://img.shields.io/badge/Results-black.svg"/></a>
+<br/></p>
+</td></tr>
 <tr><td><!--************************* Methyl alchol *************************-->
 <p align="center">
     <strong>Methyl alcohol</strong><br/>
@@ -66,7 +77,7 @@
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/OH-red.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
@@ -102,7 +113,7 @@
         <img src="https://img.shields.io/badge/O-red.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/OH-red.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
@@ -131,12 +142,12 @@
     <a href="https://tsei.jp/rmol/CH3COOH">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/main/public/CH3COOH.png" width="240" /></a>
 </td></tr>
-<tr><td><!--************************* Polypropylene *************************-->
+<tr><td><!--************************* Polyethylene *************************-->
 <p align="center">
-    <strong>Polypropylene</strong><br/>
+    <strong>Polyethylene</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
@@ -154,8 +165,7 @@
     <C {...props}>
       <C>{child||
         <H/>}
-        <H/>
-        <CH3/>
+        <H/><H/>
       </C>
       <H/><H/>
     </C>
@@ -173,7 +183,7 @@
   {Array(200)
   .fill(0)
   .map((_,i) =>
-    <CH2 key=<i>>
+    <CH2 key={i}/>
   )}
   <H/>
 </M>
@@ -187,7 +197,7 @@
     <strong>benzene</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
@@ -245,7 +255,7 @@
     <strong>XXX</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
