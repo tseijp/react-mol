@@ -27,7 +27,6 @@
         <img alt="types"src="https://img.shields.io/badge/types-✔-yellow.svg"/></a>
     <a href="https://github.com/tseijp/react-mol">
         <img alt="demos"src="https://img.shields.io/badge/demos-✔-red.svg"/></a>
-<br>
     <a href="https://github.com/tseijp/react-mol">
         <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/></a>
     <a href="https://www.npmjs.com/package/react-mol">
@@ -36,32 +35,29 @@
         <img alt="tweet" src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Ftseijp"/></a>
 </p>
 
-## Quick started
-- `create-react-app myapp`
-- `cd myapp`
-- `npm i -S react-mol`
-- open browser and visit [localhost:3000](http://localhost:3000)
-- ~Now you can go to our [demo](https://tsei.jp/react-mol), and try its usage.~
+## Installation
+- `npm i react-mol`
 
-## Simple example
+## Quick started
+- `git clone https://github.com/tseijp/rmol`
+- `cd react-mol`
+- `npm i`
+- `npm start`
+- open browser and visit [localhost:3000](http://localhost:3000)
+- Now you can go to our [demo](https://tsei.jp/rmol), and try its usage.
+
+## Recipes
 
 <table>
-<tr><td><p align="center">
-    <strong>Mol</strong>
-</p></td><td><p align="center">
-    <strong>hierarchy</strong><br/>
+<tr><td><p align="center"><br/>
     <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
         <img src="https://img.shields.io/badge/Mol-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
-        <img src="https://img.shields.io/badge/useMol-black.svg"/></a><br/>
-</p></td><td><p align="center">
+</p></td><td><p align="center"><br/>
+    <strong>hierarchy</strong><br/>
+</p></td><td><p align="center"><br/>
     <strong>merging</strong><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
-        <img src="https://img.shields.io/badge/Mols-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
-        <img src="https://img.shields.io/badge/useMols-black.svg"/></a><br/>
-</p></td><td><p align="center">
-    results
+</p></td><td><p align="center"><br/>
+    <strong>results</strong><br/>
 </p></td></tr>
 <tr><td><!--************************* Methyl alchol *************************-->
 <p align="center">
@@ -90,8 +86,8 @@
 
 ```javascript
 <M>
-  <OH/>
   <CH3/>
+  <OH/>
 </M>
 ```
 
@@ -145,6 +141,8 @@
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
+        <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/Poly-black.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
@@ -152,16 +150,16 @@
 ```javascript
 <H>
   <Poly poly={100}}>
-    {(children, props) =>
-      <C {...props}>
-        <C rotation={[0,Math.PI,0]}>
-          {children||<H/>}
-          <C><H/><H/><H/></C>
-          <H/>
-        </C>
-        <H/><H/>
+  {(child, props)=>
+    <C {...props}>
+      <C>{child||
+        <H/>}
+        <H/>
+        <CH3/>
       </C>
-    }
+      <H/><H/>
+    </C>
+  }
   </Poly>
 </H>
 
@@ -172,11 +170,10 @@
 ```javascript
 <M>
   <H/>
-  {[...Array(100)].map((_,i) =>
-    <M key={i}>
-      <CH2>
-      <CH2>
-    </M>
+  {Array(200)
+  .fill(0)
+  .map((_,i) =>
+    <CH2 key=<i>>
   )}
   <H/>
 </M>
@@ -200,7 +197,7 @@
 </td><!--*************************--><td>
 
 ```javascript
-<C>
+<C ring>
   <C>
     <C>
       <C>
@@ -221,7 +218,7 @@
 </td><!--*************************--><td>
 
 ```javascript
-<M>
+<M ring>
   <CH2/>
   <CH2/>
   <CH2/>
@@ -236,7 +233,7 @@
 <p>or</p>
 
 ```javascript
-<M>
+<M ring>
   <C6H11/>
   <OH/>
 </M>
