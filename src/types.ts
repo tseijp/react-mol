@@ -13,5 +13,6 @@ export type MolProps = Partial<{
     element: number,
     angle: number,
     depth: number,
+    ring: boolean, 
     double: boolean,
 }>

@@ -49,7 +49,7 @@ const App:React.FC = ({children}) => {
 export const Home =({rand=(mul=Math.PI*2)=>Math.random()*mul})=>
     <App>
         <H>
-            <Poly poly={100}>
+            <Poly poly={250}>
             {(children,props) =>
                 <C {...props} angle={rand()}>
                     <C angle={rand()}>

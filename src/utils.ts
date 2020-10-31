@@ -1,17 +1,19 @@
+import React, {Children} from 'react'
 import {atom} from 'jotai'
-import {MolProps,Vec3} from './types'
+import {atomFamily} from 'jotai/utils'
 import * as THREE from 'three'
+import {MolProps as MP,Vec3} from './types'
 
+// ************************* 🍡 bone 🍡 ************************* //
 const base = new THREE.Vector3(0,1,0)
 const axis = new THREE.Vector3()
 const temp = new THREE.Vector3()
 const euler = new THREE.Euler()
 const quat1 = new THREE.Quaternion()
 const quat2 = new THREE.Quaternion()
-const sqrt23 = Math.sqrt(2/3)
-const sqrt13 = Math.sqrt(1/3)
+const sqrt2_3 = Math.sqrt(2/3)
+const sqrt1_3 = Math.sqrt(1/3)
 
-// ************************* 🍡 bone 🍡 ************************* //
 export function mergeVec3(rate:number[], ...vec:Vec3[]) {
     return [0,1,2].map(j=>
         rate.map((r,i) => r*vec[i][j]).reduce((a,b) => a+b)
@@ -30,11 +32,11 @@ export function eulerVec3(vec:Vec3=[0,0,0]) {
 }
 
 // ************************* 🍡 atom 🍡 ************************* //
-export function calcPosition (child:MolProps, parent:MolProps, key:number): Vec3
+export function calcPosition (child:MP, parent:MP, key:number): Vec3
 export function calcPosition (child:any, parent:any, key=0) {
     const dis = 1 //TODO calcDistance
     const phi = key* Math.PI* 2/3 + (parent.angle || 0)
-    const vec = [sqrt23*Math.cos(phi), sqrt13, sqrt23*Math.sin(phi)]
+    const vec = [sqrt2_3*Math.cos(phi), sqrt1_3, sqrt2_3*Math.sin(phi)]
     axis.set(...(parent.direction as Vec3||[0,1,0])).normalize()
     temp.set(...(key<3? vec as Vec3: [0,-1,0] as Vec3)).normalize()
     euler.set(...(child.rotation as Vec3||[0,0,0]))
@@ -56,21 +58,57 @@ export function calcRotation (child:Vec3, parent:Vec3) {
 }
 
 // ************************* 👻 jotai 👻 ************************* //
-export const atoms = atom<MolProps[]>([])
-export const bones = atom((get) => get(atoms).map(({
-    position:child=[0,0,0],
-    parentProps:{position:parent}={},
-    color
-}) => {
+const calcAtom = (props:MP): MP => {
+    if (!props) return {}
+    beauty(_=>console.log(..._), {[`\t\t\t`]:"calcAtom"}, props)
+    const children = Children.map(props.children ,(child:any, key) => {
+        const position  = calcPosition(child.props, props, key)
+        const direction = calcRotation(position, props.position as Vec3)
+        return child && React.cloneElement(child, {
+            parentProps: props, position, direction,
+            scale: child.props.scale || props.scale,
+            color: child.props.color || props.color,
+            depth: (props.depth||0) + 1
+        })
+    })
+    return {...props, children} as MP
+}
+const calcBone = (props: MP): MP => {
+    if (!props) return {}
+    const {position: child=[0,0,0], color,
+        parentProps: {position: parent}={position: [0,0,0]}} = props
     const position = mergeVec3([.5,.5], child, parent||child)
     const distance = mergeVec3([ 1,-1], child, parent||child)
-    return {
-        position, color,
-        rotation: eulerVec3(distance),
-        scale   : scaleVec3(distance),
-    }
-}))
-
+    const rotation = eulerVec3(distance)
+    const scale    = scaleVec3(distance)
+    return {position, rotation, scale, color}
+}
+// way 1: calc  in set
+export const atoms = atomFamily(() => ({} as MP))
+export const bones = atomFamily(() => ({} as MP))
+export const index = atom(0, (_, set, [i, props]:[number, any]) => {
+    beauty(_=>console.log(..._), {["\t\t"]:`set index ${i}`})
+    const atom = calcAtom(props)
+    const bone = calcBone(atom)
+    set(atoms(i), atom)
+    set(bones(i), bone)
+    set(index, i+1 as any)
+})
+export const render = atom<[MP, MP][]>(get => {
+    console.log(`\t\tget in render ${get(index)}`, get(atoms(0)), get(atoms(1)))
+    return Array(get(index)).fill(0)
+            .map((_, i) =>[ get(atoms(i)), get(bones(i)) ])
+})
+// way 2: calc  in get
+// export const index = atom<MP[]>([])
+// export const atoms = atomFamily(i => get => calcAtom(get(index)[i as number]))
+// export const bones = atomFamily(i => get => calcBone(get(atoms(i))))
+// export const render = atom(get => {
+//     console.log(`\t\tget in render ${get(index).length}`, get(atoms(0)), get(atoms(1)))
+//     return Array(get(index).length).fill(0)
+//             .map((_, i) => [ get(atoms(i)), get(bones(i)) ]
+//     )
+// })
 // ************************* 🍭 helpers 🍭 ************************* //
 // * This function is fork of react-spring
 // * Code : https://github.com/pmndrs/react-spring/blob/master/src/shared/helpers.ts
@@ -111,4 +149,16 @@ export function merge(target: any, lowercase: boolean = true) {
         },
         target
     )
+}
+
+export function beauty (
+    fn: (args:any[])=>void, ...props: {}[]): void {
+    fn( Array.prototype.concat([], ...Object
+        .entries(Object.assign({}, ...props))
+        .map(([key, val], i, self) =>
+            [[  i?"\n\t":"",
+                self[0][0],
+                key==="" || key.match("\t")? "": key
+            ].join(""), val ])
+    ))
 }

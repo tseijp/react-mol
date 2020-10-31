@@ -7,6 +7,10 @@
         - https://threejs.org/examples/#webgl_buffergeometry_lines
         - https://threejs.org/examples/#webgl_instancing_raycast
         - https://threejs.org/examples/#webgl_postprocessing_sao
+- TODO
+    - multi threading
+    - benzene
+    - CSSRenderer
 <!   ************************* ************************* -->
 <p align="center">
     <a href="https://tsei.jp/rmol">
@@ -62,7 +66,7 @@
 </td><td>
 <p align="center"><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/Mol.tsx">
-        <img src="https://img.shields.io/badge/Recution-black.svg"/></a>
+        <img src="https://img.shields.io/badge/Recurtion-black.svg"/></a>
 <br/></p>
 </td><td>
 <p align="center"><br/>
@@ -144,7 +148,7 @@
 </td></tr>
 <tr><td><!--************************* Polyethylene *************************-->
 <p align="center">
-    <strong>Polyethylene</strong><br/>
+    <strong>Poly ethylene</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/main/src/index.tsx">
@@ -208,12 +212,12 @@
 
 ```javascript
 <C ring>
-  <C>
-    <C>
-      <C>
-        <C>
-          <C/>
-          <OH/>
+  <C ring>
+    <C ring>
+      <C ring>
+        <C ring>
+          <C ring/>
+          <H/><H/>
         </C>
         <H/><H/>
       </C>
@@ -228,15 +232,12 @@
 </td><!--*************************--><td>
 
 ```javascript
-<M ring>
-  <CH2/>
-  <CH2/>
-  <CH2/>
-  <CH2/>
-  <CH2/>
-  <C>
-    <OH/>
-  </C>
+<M>
+{Array(6)
+.fill(0)
+.map((_,i)=>
+  <CH2 ring/>
+)}
 </M>
 ```
 

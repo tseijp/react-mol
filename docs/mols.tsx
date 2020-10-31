@@ -1,14 +1,15 @@
 import React from 'react'
 import {
     C, H, O, M,
-    CH3, //CH2, CH, OH, // ERROR : for Recursion 
+    CH3, OH, //CH2, CH, // ERROR : for Recursion
     Poly} from '../src'
+export {O, OH}
 export const H2O =()=> <H><O><H/></O></H>
 export const CH4 =()=> <C><H/><H/><H/><H/></C>
 export const CH3OH =()=>
     <H>
         <O angle={Math.PI}>
-        <C><H/><H/><H/></C>
+            <C><H/><H/><H/></C>
         </O>
     </H>
 export const CH3COOH =()=>
@@ -46,6 +47,24 @@ export const Polypropylene =()=>
         }
         </Poly>
     </H>
+export const Benzene = ()=>
+    <C ring>
+      <C ring>
+        <C ring>
+          <C ring>
+            <C ring>
+              <C ring/>
+              <H/><H/>
+            </C>
+            <H/><H/>
+          </C>
+          <H/><H/>
+        </C>
+        <H/><H/>
+      </C>
+      <H/><H/>
+    </C>
+
 export const MCH3OH =()=>
     <M>
         <C><H/><H/><H/></C>
