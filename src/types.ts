@@ -4,6 +4,7 @@ export type MolProps = Partial<{
     // BASIC THREE
     position: Vec3,
     rotation: Vec3,
+    direction: Vec3,
     scale: Vec3,
     color: string,
     // FOR MOL
@@ -13,6 +14,7 @@ export type MolProps = Partial<{
     element: number,
     angle: number,
     depth: number,
-    ring: boolean, 
+    // index: number[],
+    ring: boolean,
     double: boolean,
 }>

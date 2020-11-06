@@ -5,7 +5,6 @@ import {useFrame} from 'react-three-fiber'
 import * as THREE from 'three'
 import {useAtom} from 'jotai'
 import {render} from './utils'
-import {beauty} from './utils'
 const MAX_LENGTH = 1000
 export function Render (props: Partial<{
     children: ReactNode
@@ -18,7 +17,6 @@ export function Render ({children, ...props}:any) {
     const _a = useMemo(() => new THREE.Object3D(), [])
     const _b = useMemo(() => new THREE.Object3D(), [])
     const _c = useMemo(() => new THREE.Color()   , [])
-    beauty(_=>console.log(..._), {[""]:"Render"}, ...ab.map((v:any) => v[0]))
     useFrame(() => {
         ab.forEach(([a, b], i) => {
             _a.position.set(...(a.position||[0,0,0]))

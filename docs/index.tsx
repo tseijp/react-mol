@@ -5,7 +5,6 @@ import {unregister}  from './utils'
 import {OrbitControls} from 'drei'
 import {HelmetProvider} from 'react-helmet-async'
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
-import {C, H, Poly} from '../src'
 import * as MOLS from './mols'
 const About = () => <>TODO</>
 const Basic = () => <>TODO</>
@@ -46,25 +45,8 @@ const App:React.FC = ({children}) => {
         </>
     )
 }
-export const Home =({rand=(mul=Math.PI*2)=>Math.random()*mul})=>
-    <App>
-        <H>
-            <Poly poly={250}>
-            {(children,props) =>
-                <C {...props} angle={rand()}>
-                    <C angle={rand()}>
-                        {children||<H/>}
-                        <H/>
-                        <C><H/><H/><H/></C>
-                    </C>
-                    <H/><H/>
-                </C>
-            }
-            </Poly>
-        </H>
-    </App>
-
-const Root = () => (
+const Home =()=> <App><MOLS.Random/></App>
+const Root =()=> (
     <HelmetProvider>
             <BrowserRouter>
                 <Switch>

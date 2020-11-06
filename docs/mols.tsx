@@ -106,3 +106,18 @@ export const MCH3COCH3 =()=>
         <C><O double/></C>
         <C><H/><H/><H/></C>
     </M>
+export const Random =({rand=(mul=Math.PI*2)=>Math.random()*mul})=>
+    <H>
+        <Poly poly={250}>
+        {(children,props) =>
+            <C {...props} angle={rand()}>
+                <C angle={rand()}>
+                    {children||<H/>}
+                    <H/>
+                    <C><H/><H/><H/></C>
+                </C>
+                <H/><H/>
+            </C>
+        }
+        </Poly>
+    </H>

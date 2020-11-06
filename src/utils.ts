@@ -1,6 +1,5 @@
 import React, {Children} from 'react'
 import {atom} from 'jotai'
-import {atomFamily} from 'jotai/utils'
 import * as THREE from 'three'
 import {MolProps as MP,Vec3} from './types'
 
@@ -14,17 +13,17 @@ const quat2 = new THREE.Quaternion()
 const sqrt2_3 = Math.sqrt(2/3)
 const sqrt1_3 = Math.sqrt(1/3)
 
-export function mergeVec3(rate:number[], ...vec:Vec3[]) {
+export function mergeVec3(rate:number[], ...vec:Vec3[]): Vec3 {
     return [0,1,2].map(j=>
         rate.map((r,i) => r*vec[i][j]).reduce((a,b) => a+b)
     ) as Vec3
 
 }
-export function scaleVec3(vec:Vec3=[0,0,0]) {
+export function scaleVec3(vec:Vec3=[0,0,0]): Vec3 {
     const vector = new THREE.Vector3(...vec)
     return [1, vector.length(), 1] as Vec3
 }
-export function eulerVec3(vec:Vec3=[0,0,0]) {
+export function eulerVec3(vec:Vec3=[0,0,0]): Vec3 {
     axis.set(...vec)
     quat1.setFromUnitVectors(base, axis);
     euler.setFromQuaternion(quat1)
@@ -33,13 +32,13 @@ export function eulerVec3(vec:Vec3=[0,0,0]) {
 
 // ************************* 🍡 atom 🍡 ************************* //
 export function calcPosition (child:MP, parent:MP, key:number): Vec3
-export function calcPosition (child:any, parent:any, key=0) {
+export function calcPosition (child:MP, parent:MP, key=0) {
     const dis = 1 //TODO calcDistance
     const phi = key* Math.PI* 2/3 + (parent.angle || 0)
     const vec = [sqrt2_3*Math.cos(phi), sqrt1_3, sqrt2_3*Math.sin(phi)]
-    axis.set(...(parent.direction as Vec3||[0,1,0])).normalize()
-    temp.set(...(key<3? vec as Vec3: [0,-1,0] as Vec3)).normalize()
-    euler.set(...(child.rotation as Vec3||[0,0,0]))
+    axis.set(...(parent.direction||[0,1,0])).normalize()
+    temp.set(...((key<3? vec: [0,-1,0]) as Vec3)).normalize()
+    euler.set(...(child.rotation||[0,0,0]))
     quat1.setFromUnitVectors(base, axis)
     quat2.setFromEuler(euler)
     temp.applyQuaternion(quat1.multiply(quat2))
@@ -58,7 +57,7 @@ export function calcRotation (child:Vec3, parent:Vec3) {
 }
 
 // ************************* 👻 jotai 👻 ************************* //
-const calcAtom = (props:MP): MP => {
+export const calcAtom = (props:MP): MP => {
     if (!props) return {}
     beauty(_=>console.log(..._), {[`\t\t\t`]:"calcAtom"}, props)
     const children = Children.map(props.children ,(child:any, key) => {
@@ -68,13 +67,15 @@ const calcAtom = (props:MP): MP => {
             parentProps: props, position, direction,
             scale: child.props.scale || props.scale,
             color: child.props.color || props.color,
-            depth: (props.depth||0) + 1
+            depth: (props.depth||0) + 1,
+            // index: [...(props.index||[]), key||0]
         })
     })
     return {...props, children} as MP
 }
-const calcBone = (props: MP): MP => {
+export const calcBone = (props: MP): MP => {
     if (!props) return {}
+    beauty(_=>console.log(..._), {[`\t\t\t`]:"calcBone"}, props)
     const {position: child=[0,0,0], color,
         parentProps: {position: parent}={position: [0,0,0]}} = props
     const position = mergeVec3([.5,.5], child, parent||child)
@@ -83,28 +84,34 @@ const calcBone = (props: MP): MP => {
     const scale    = scaleVec3(distance)
     return {position, rotation, scale, color}
 }
+// way 0: calc in hook
+export const atoms = atom([] as MP[])
+// export const bones = atomFamily(i => get => calcBone(get(atoms)[Number(i)]))
+export const render= atom(get => {
+    // ERROR: if atoms or index changed, it will update
+    return Array(get(atoms).length).fill(0)
+            .map((_, i) => [ get(atoms)[Number(i)], calcBone(get(atoms)[Number(i)]) ]
+    )
+})
 // way 1: calc  in set
-export const atoms = atomFamily(() => ({} as MP))
-export const bones = atomFamily(() => ({} as MP))
-export const index = atom(0, (_, set, [i, props]:[number, any]) => {
-    beauty(_=>console.log(..._), {["\t\t"]:`set index ${i}`})
-    const atom = calcAtom(props)
-    const bone = calcBone(atom)
-    set(atoms(i), atom)
-    set(bones(i), bone)
-    set(index, i+1 as any)
-})
-export const render = atom<[MP, MP][]>(get => {
-    console.log(`\t\tget in render ${get(index)}`, get(atoms(0)), get(atoms(1)))
-    return Array(get(index)).fill(0)
-            .map((_, i) =>[ get(atoms(i)), get(bones(i)) ])
-})
+// export const atoms = atomFamily(() => ({} as MP))
+// export const bones = atomFamily(() => ({} as MP))
+// export const index = atom(0, (_, set, [i, props]:[number, any]) => {
+//     const atom = calcAtom(props)
+//     const bone = calcBone(atom)
+//     set(atoms(i), atom)
+//     set(bones(i), bone)
+//     set(index, i+1 as any)
+// })
+// export const render = atom<[MP, MP][]>(get => {
+//     return Array(get(index)).fill(0)
+//             .map((_, i) =>[ get(atoms(i)), get(bones(i)) ])
+// })
 // way 2: calc  in get
 // export const index = atom<MP[]>([])
-// export const atoms = atomFamily(i => get => calcAtom(get(index)[i as number]))
+// export const atoms = atomFamily(i => get => calcAtom(get(index)[Number(i)]))
 // export const bones = atomFamily(i => get => calcBone(get(atoms(i))))
-// export const render = atom(get => {
-//     console.log(`\t\tget in render ${get(index).length}`, get(atoms(0)), get(atoms(1)))
+// export const render= atom(get => {
 //     return Array(get(index).length).fill(0)
 //             .map((_, i) => [ get(atoms(i)), get(bones(i)) ]
 //     )
