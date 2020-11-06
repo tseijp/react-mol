@@ -1,9 +1,11 @@
 import {ReactNode} from 'react'
+import {Matrix4} from 'three'
 export type Vec3<T=number> = [T,T,T]
-export type MolProps = Partial<{
+export type MolProps = {
     // BASIC THREE
     position: Vec3,
     rotation: Vec3,
+    matrix: Matrix4,
     direction: Vec3,
     scale: Vec3,
     color: string,
@@ -15,6 +17,6 @@ export type MolProps = Partial<{
     angle: number,
     depth: number,
     // index: number[],
-    ring: boolean,
-    double: boolean,
-}>
+    ring?: boolean,
+    double?: boolean,
+}

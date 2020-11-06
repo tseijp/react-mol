@@ -1,11 +1,10 @@
-import React, {
-    ReactNode, useMemo, useRef
-} from 'react'
+import React, {ReactNode, useMemo, useRef} from 'react'
 import {useFrame} from 'react-three-fiber'
 import * as THREE from 'three'
 import {useAtom} from 'jotai'
-import {render} from './utils'
+import {render,mergeVec3} from './utils'
 const MAX_LENGTH = 1000
+
 export function Render (props: Partial<{
     children: ReactNode
 }>) : JSX.Element
@@ -15,21 +14,20 @@ export function Render ({children, ...props}:any) {
     const bone = useRef<any>(null)
     const [ab] = useAtom(render)
     const _a = useMemo(() => new THREE.Object3D(), [])
-    const _b = useMemo(() => new THREE.Object3D(), [])
-    const _c = useMemo(() => new THREE.Color()   , [])
+    const _b = useMemo(() => new THREE.Color()   , [])
     useFrame(() => {
         ab.forEach(([a, b], i) => {
             _a.position.set(...(a.position||[0,0,0]))
             _a.scale.set(...(a.scale||[1,1,1]))
             _a.updateMatrix()
-            atom.current.setColorAt(i, _c.setColorName(a.color||"white"));
+            atom.current.setColorAt(i, _b.setColorName(a.color||"white"));
             atom.current.setMatrixAt(i, _a.matrix)
-            _b.position.set(...(b.position||[0,0,0]))
-            _b.rotation.set(...(b.rotation||[0,0,0]))
-            _b.scale.set(...(b.scale||[.1,.1,.1]))
-            _b.updateMatrix()
-            bone.current.setColorAt(i, _c.setColorName(b.color||"white"));
-            bone.current.setMatrixAt(i, _b.matrix)
+            _a.position.set(...(b.position||[0,0,0]))
+            _a.rotation.set(...(b.rotation||[0,0,0]))
+            _a.scale.set(...(b.scale||[.1,.1,.1]))
+            _a.updateMatrix()
+            bone.current.setColorAt(i, _b.setColorName(b.color||"white"));
+            bone.current.setMatrixAt(i, _a.matrix)
         })
         // TODO : only set matrix and color in atoms and bones
         // ab.forEach(([a, b], i) => {
@@ -38,26 +36,10 @@ export function Render ({children, ...props}:any) {
         //     bone.current.setColorAt (i, b.color)
         //     bone.current.setMatrixAt(i, b.matrix)
         // })
-        // before
-        // a.forEach(({position=[0,0,0], scale=[1,1,1], color="white"}, i) => {
-        //     _a.position.set(...position)
-        //     _a.scale.set(...scale)
-        //     _a.updateMatrix()
-        //     atom.current.setColorAt(i, _c.setColorName(color));
-        //     atom.current.setMatrixAt(i, _a.matrix)
-        // })
-        // b.forEach(({position, rotation, scale, color="white"}, i) => {
-        //     _b.position.set(...position)
-        //     _b.rotation.set(...rotation)
-        //     _b.scale.set(...scale)
-        //     _b.updateMatrix()
-        //     bone.current.setColorAt(i, _c.setColorName(color));
-        //     bone.current.setMatrixAt(i, _b.matrix)
-        // })
-        // group.current.position.set(...mergeVec3([-.5,-.5],
-        //     a[0]?.position||[0,0,0],
-        //     a[a.length]?.position||[0,0,0])
-        // )
+        group.current.position.set(...mergeVec3([-.5,-.5],
+            ab[0][0]?.position||[0,0,0],
+            ab[ab.length-1][0]?.position||[0,0,0])
+        )
         atom.current.instanceMatrix.needsUpdate = true
         bone.current.instanceMatrix.needsUpdate = true
     })

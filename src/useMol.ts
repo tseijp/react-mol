@@ -1,18 +1,17 @@
 import React from 'react'
 import {useAtom} from 'jotai'
 import {MolProps} from './types'
-import {atoms,} from './utils'
-import {calcAtom} from './utils'
+import {calcAtom, calcBone, render} from './utils'
 export function useMol <S extends object> (
-    props:MolProps,
-) : MolProps
-// const [props] = React.useState(initProps)
+    props:Partial<MolProps>,
+) : Partial<MolProps>
+
 export function useMol(props: any) {
-    const [,set] = useAtom(atoms)
-    const [_pr] = React.useState(props)
-    const state = React.useMemo(()=>calcAtom(_pr), [_pr])
-    React.useEffect(() => {set(p => [...p, state])}, [set, state])
-    return state
+    const [,set] = useAtom(render)
+    const atom = React.useMemo(() => calcAtom(props), [props])
+    const bone = React.useMemo(() => calcBone(atom ), [atom])
+    React.useEffect(() => {set(p => [...p, [atom,bone]])}, [set,atom,bone])
+    return atom
 }
 
 // way 1, 2

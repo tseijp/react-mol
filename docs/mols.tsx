@@ -108,7 +108,7 @@ export const MCH3COCH3 =()=>
     </M>
 export const Random =({rand=(mul=Math.PI*2)=>Math.random()*mul})=>
     <H>
-        <Poly poly={250}>
+        <Poly poly={100}>
         {(children,props) =>
             <C {...props} angle={rand()}>
                 <C angle={rand()}>

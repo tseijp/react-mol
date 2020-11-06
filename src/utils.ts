@@ -6,7 +6,7 @@ import {MolProps as MP,Vec3} from './types'
 // ************************* 🍡 bone 🍡 ************************* //
 const base = new THREE.Vector3(0,1,0)
 const axis = new THREE.Vector3()
-const temp = new THREE.Vector3()
+const vec3 = new THREE.Vector3()
 const euler = new THREE.Euler()
 const quat1 = new THREE.Quaternion()
 const quat2 = new THREE.Quaternion()
@@ -29,7 +29,6 @@ export function eulerVec3(vec:Vec3=[0,0,0]): Vec3 {
     euler.setFromQuaternion(quat1)
     return euler.toArray().slice(0,3) as Vec3
 }
-
 // ************************* 🍡 atom 🍡 ************************* //
 export function calcPosition (child:MP, parent:MP, key:number): Vec3
 export function calcPosition (child:MP, parent:MP, key=0) {
@@ -37,14 +36,14 @@ export function calcPosition (child:MP, parent:MP, key=0) {
     const phi = key* Math.PI* 2/3 + (parent.angle || 0)
     const vec = [sqrt2_3*Math.cos(phi), sqrt1_3, sqrt2_3*Math.sin(phi)]
     axis.set(...(parent.direction||[0,1,0])).normalize()
-    temp.set(...((key<3? vec: [0,-1,0]) as Vec3)).normalize()
+    vec3.set(...((key<3? vec: [0,-1,0]) as Vec3)).normalize()
     euler.set(...(child.rotation||[0,0,0]))
     quat1.setFromUnitVectors(base, axis)
     quat2.setFromEuler(euler)
-    temp.applyQuaternion(quat1.multiply(quat2))
-    temp.setLength(dis)
+    vec3.applyQuaternion(quat1.multiply(quat2))
+    vec3.setLength(dis)
     return mergeVec3(Array(4).fill(1),
-        temp.toArray() as Vec3,
+        vec3.toArray() as Vec3,
         child.position ||[0,0,0],
         parent.position||[0,0,0],
         child.double
@@ -52,17 +51,15 @@ export function calcPosition (child:MP, parent:MP, key=0) {
             : [0,0,0]
     )
 }
-export function calcRotation (child:Vec3, parent:Vec3) {
+export function calcDirection (child:Vec3, parent:Vec3) {
     return mergeVec3([1,-1], child, parent)
 }
 
-// ************************* 👻 jotai 👻 ************************* //
+// ************************* 👻 jotai 👻 ************************* //[
 export const calcAtom = (props:MP): MP => {
-    if (!props) return {}
-    beauty(_=>console.log(..._), {[`\t\t\t`]:"calcAtom"}, props)
     const children = Children.map(props.children ,(child:any, key) => {
         const position  = calcPosition(child.props, props, key)
-        const direction = calcRotation(position, props.position as Vec3)
+        const direction = calcDirection(position, props.position as Vec3)
         return child && React.cloneElement(child, {
             parentProps: props, position, direction,
             scale: child.props.scale || props.scale,
@@ -73,9 +70,7 @@ export const calcAtom = (props:MP): MP => {
     })
     return {...props, children} as MP
 }
-export const calcBone = (props: MP): MP => {
-    if (!props) return {}
-    beauty(_=>console.log(..._), {[`\t\t\t`]:"calcBone"}, props)
+export const calcBone = (props: Partial<MP>): Partial<MP> => {
     const {position: child=[0,0,0], color,
         parentProps: {position: parent}={position: [0,0,0]}} = props
     const position = mergeVec3([.5,.5], child, parent||child)
@@ -84,15 +79,7 @@ export const calcBone = (props: MP): MP => {
     const scale    = scaleVec3(distance)
     return {position, rotation, scale, color}
 }
-// way 0: calc in hook
-export const atoms = atom([] as MP[])
-// export const bones = atomFamily(i => get => calcBone(get(atoms)[Number(i)]))
-export const render= atom(get => {
-    // ERROR: if atoms or index changed, it will update
-    return Array(get(atoms).length).fill(0)
-            .map((_, i) => [ get(atoms)[Number(i)], calcBone(get(atoms)[Number(i)]) ]
-    )
-})
+export const render = atom<[Partial<MP>, Partial<MP>][]>([])
 // way 1: calc  in set
 // export const atoms = atomFamily(() => ({} as MP))
 // export const bones = atomFamily(() => ({} as MP))
