@@ -6,15 +6,18 @@ import {useMol} from './useMol'
 
 export const Hierarchy = (props:any) => <bone {...useMol(props)}/>
 export const Recursion = (props:any) => {
-    const [child, ...grand] = React.Children.map(props.children, c=>c)
-    return typeof child!=="object"? null: React.cloneElement(child, {
+    const [child, ...children] = React.Children.map(props.children, c=>c)
+    if (typeof child!=="object") return null
+    return React.cloneElement(child, {
         ...props, depth:1, children: [
             ...(React.Children.toArray(child.props.children)||[]),
-            <Recursion>{grand}</Recursion>
+            <Recursion {...{children}}/>
         ]
     })
 }
-export function Mol <S extends object> (props: unknown & Partial<MolProps>): any//JSX.Element | null // TODO
+export function Mol <S extends object> (
+    props: unknown & Partial<MolProps>
+): null|JSX.Element
 export function Mol ({renderConfig={}, depth=0, ...props}:any) {
     const Atom = props.element? Hierarchy : Recursion
     return !depth || depth < 1

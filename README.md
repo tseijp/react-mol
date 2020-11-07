@@ -76,7 +76,8 @@
 </td></tr>
 <tr><td><!--************************* Methyl alchol *************************-->
 <p align="center">
-    <strong>Methyl alcohol</strong><br/>
+    <strong>Methyl</strong><br/>
+    <strong>alcohol</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
@@ -112,7 +113,8 @@
 </td></tr>
 <tr><td><!--************************* Acetic acid *************************-->
 <p align="center">
-    <strong>Acetic acid</strong><br/>
+    <strong>Acetic</strong><br/>
+    <strong>acid</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
         <img src="https://img.shields.io/badge/O-red.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
@@ -142,13 +144,15 @@
   <COOH/>
 </M>
 ```
+
 </td><!--*************************--><td>
     <a href="https://tsei.jp/rmol/CH3COOH">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/master/public/CH3COOH.png" width="240" /></a>
 </td></tr>
 <tr><td><!--************************* Polyethylene *************************-->
 <p align="center">
-    <strong>Poly ethylene</strong><br/>
+    <strong>Poly</strong><br/>
+    <strong>ethylene</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
@@ -165,8 +169,8 @@
 ```javascript
 <H>
   <Poly poly={100}}>
-  {(child, props)=>
-    <C {...props}>
+  {child =>
+    <C>
       <C>{child||
         <H/>}
         <H/><H/>
@@ -176,7 +180,6 @@
   }
   </Poly>
 </H>
-
 ```
 
 </td><!--*************************--><td>
@@ -185,28 +188,29 @@
 <M>
   <H/>
   {Array(200)
-  .fill(0)
-  .map((_,i) =>
+    .fill(0)
+    .map((_,i) =>
     <CH2 key={i}/>
   )}
   <H/>
 </M>
 ```
+
 </td><!--*************************--><td>
     <a href="https://tsei.jp/rmol/Polyethylene">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/master/public/CnH2n2.png" width="240" /></a>
 </td></tr>
 <tr><td><!--************************* Phenol *************************-->
 <p align="center">
-    <strong>benzene</strong><br/>
+    <strong>Benzene</strong><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
         <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
         <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
+        <img src="https://img.shields.io/badge/CH-black.svg"/></a><br/>
     <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/C6H11-black.svg"/></a><br/>
+        <img src="https://img.shields.io/badge/C6H5-black.svg"/></a><br/>
 </p>
 </td><!--*************************--><td>
 
@@ -216,17 +220,13 @@
     <C ring>
       <C ring>
         <C ring>
-          <C ring/>
-          <H/><H/>
-        </C>
-        <H/><H/>
-      </C>
-      <H/><H/>
-    </C>
-    <H/><H/>
-  </C>
-  <H/><H/>
-</C>
+          <C ring>
+          <H/></C>
+        <H/></C>
+      <H/></C>
+    <H/></C>
+  <H/></C>
+<H/></C>
 ```
 
 </td><!--*************************--><td>
@@ -234,9 +234,9 @@
 ```javascript
 <M>
 {Array(6)
-.fill(0)
-.map((_,i)=>
-  <CH2 ring/>
+  .fill(0)
+  .map((_,i)=>
+  <CH ring/>
 )}
 </M>
 ```
@@ -245,8 +245,8 @@
 
 ```javascript
 <M ring>
-  <C6H11/>
-  <OH/>
+  <C6H5/>
+  <H/>
 </M>
 ```
 

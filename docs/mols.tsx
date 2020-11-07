@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-    C, H, O, M,
-    CH3, OH, //CH2, CH, // ERROR : for Recursion
-    Poly} from '../src'
-export {O, OH}
+import {C, H, O, M, CH3, Poly} from '../src'
 export const H2O =()=> <H><O><H/></O></H>
 export const CH4 =()=> <C><H/><H/><H/><H/></C>
 export const CH3OH =()=>
@@ -21,8 +17,8 @@ export const CH3COOH =()=>
 export const Polyethylene =()=>
     <H>
         <Poly poly={2}>
-        {(children,props) =>
-            <C {...props} angle={Math.PI}>
+        {children =>
+            <C angle={Math.PI}>
                 <C>
                     {children||<H/>}
                     <H/><H/>
@@ -35,8 +31,8 @@ export const Polyethylene =()=>
 export const Polypropylene =()=>
     <H>
         <Poly poly={2}>
-        {(children, props, i) =>
-            <C {...props} angle={Math.PI}>
+        {(children, i) =>
+            <C angle={Math.PI}>
                 <C>
                     {children||<H/>}
                     <CH3 angle={i%2*Math.PI}/>
@@ -53,18 +49,13 @@ export const Benzene = ()=>
         <C ring>
           <C ring>
             <C ring>
-              <C ring/>
-              <H/><H/>
-            </C>
-            <H/><H/>
-          </C>
-          <H/><H/>
-        </C>
-        <H/><H/>
-      </C>
-      <H/><H/>
-    </C>
-
+              <C ring>
+              <H/></C>
+            <H/></C>
+          <H/></C>
+        <H/></C>
+      <H/></C>
+    <H/></C>
 export const MCH3OH =()=>
     <M>
         <C><H/><H/><H/></C>
@@ -100,17 +91,11 @@ export const MPolypropylene =()=>
         )}
         <H/>
     </M>
-export const MCH3COCH3 =()=>
-    <M>
-        <C><H/><H/><H/></C>
-        <C><O double/></C>
-        <C><H/><H/><H/></C>
-    </M>
 export const Random =({rand=(mul=Math.PI*2)=>Math.random()*mul})=>
     <H>
         <Poly poly={100}>
-        {(children,props) =>
-            <C {...props} angle={rand()}>
+        {children =>
+            <C angle={rand()}>
                 <C angle={rand()}>
                     {children||<H/>}
                     <H/>
