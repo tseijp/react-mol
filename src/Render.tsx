@@ -1,48 +1,54 @@
-import React, {ReactNode, useRef} from 'react'
+import React, {ReactNode, createRef, useRef} from 'react'
 import {useFrame} from 'react-three-fiber'
 import {useAtom} from 'jotai'
-import {render,mergeVec3,calcMatrix,calcColor} from './utils'
-const MAX_LENGTH = 1000
+import {render,calcMatrix,calcColor,mergeVec3} from './utils'
 
-export function Render (props: Partial<{
+export function Render (props: {
+    length: number,
+    maxLength?: number
     children: ReactNode
-}>) : JSX.Element
+}) : JSX.Element
 
 export function Render ({
+    length=1,
+    maxLength=1000,
     geometry,
     material,
-    children, ...props
-}:any) {
-    const group= useRef<any>(null)
-    const atom = useRef<any>(null)
-    const bone = useRef<any>(null)
-    const [ab] = useAtom(render)
+    children,
+    ...props
+}: any) {
+    if (!(geometry instanceof Array)) geometry = [geometry]
+    if (!(material instanceof Array)) material = [material]
+    const group = useRef<any>(null) // TODO set type
+    const meshs = useRef<any>([])
+    const [state] = useAtom(render)
+    Array(length).fill(0).forEach((_, i) => {
+        meshs.current[i] = createRef();
+    })
     useFrame(() => {
-        ab.forEach(([a, b], i) => {
-            atom.current.setColorAt (i, calcColor (a.color));
-            bone.current.setColorAt (i, calcColor (b.color));
-            atom.current.setMatrixAt(i, calcMatrix(a.position,a.rotation,a.scale))
-            bone.current.setMatrixAt(i, calcMatrix(b.position,b.rotation,b.scale))
+        state.forEach((mols, j) => {
+            meshs.current.forEach((mesh:any, i=0) => {
+                const {color, position:p, rotation:r, scale:s} = mols[i]
+                mesh.current.setColorAt (j, calcColor (color))
+                mesh.current.setMatrixAt(j, calcMatrix(p,r,s))
+            })
+        })
+        meshs.current.forEach((mesh:any) => {
+            mesh.current.instanceMatrix.needsUpdate = true
         })
         group.current.position.set(...mergeVec3([-.5,-.5],
-            ab[0][0]?.position||[0,0,0],
-            ab[ab.length-1][0]?.position||[0,0,0])
+            state[0][0]?.position||[0,0,0],
+            state[state.length-1][0]?.position||[0,0,0])
         )
-        atom.current.instanceMatrix.needsUpdate = true
-        bone.current.instanceMatrix.needsUpdate = true
     })
     return (
         <group {...props}>
             <group ref={group}>
-                <instancedMesh ref={atom} args={[null,null,MAX_LENGTH] as [any,any,number]}>
-                    <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
-                    <meshPhongMaterial    attach="material" />
-                </instancedMesh>
-                <instancedMesh ref={bone} args={[null,null,MAX_LENGTH] as [any,any,number]} >
-                    <cylinderBufferGeometry attach="geometry" args={[.05, .05, 1, 10]} />
-                    <meshPhongMaterial      attach="material" />
-                </instancedMesh>
-                {children}
+            {Array(length).fill(0).map((_,i) =>
+                <instancedMesh ref={meshs.current[i]} key={i}
+                    args={[geometry[i],material[i],maxLength] as [any,any,number]}/>
+            )}
+            {children}
             </group>
         </group>
     )

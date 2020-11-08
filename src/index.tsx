@@ -1,9 +1,8 @@
 import React from 'react'
 import {MolProps} from './types'
-import M from './Mol'
-export {M}
+import {Mol as M} from './Mol'
 //  ************************* REACT-MOL ************************* //
-export {Mol, Hierarchy, Recursion} from './Mol'
+export {Mol as default, Mol, Hierarchy, Recursion} from './Mol'
 export {Poly} from './Poly'
 export {Render} from './Render'
 export {useMol} from './useMol'

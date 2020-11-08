@@ -1,5 +1,5 @@
 import React from 'react'
-import {C, H, O, M, CH3, Poly} from '../src'
+import M, {C, H, O, CH3, Poly} from '../src'
 export const H2O =()=> <H><O><H/></O></H>
 export const CH4 =()=> <C><H/><H/><H/><H/></C>
 export const CH3OH =()=>
