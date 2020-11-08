@@ -168,15 +168,14 @@
 
 ```javascript
 <H>
-  <Poly poly={100}}>
+  <Poly n={100}}>
   {child =>
-    <C>
-      <C>{child||
-        <H/>}
-        <H/><H/>
-      </C>
-      <H/><H/>
-    </C>
+    <CH2>
+      <CH2>
+      {child
+        ||<H/>}
+      </CH2>
+    </CH2>
   }
   </Poly>
 </H>
@@ -190,7 +189,10 @@
   {Array(200)
     .fill(0)
     .map((_,i) =>
-    <CH2 key={i}/>
+    <C key={i}>
+      <H/>
+      <H/>
+    </C>
   )}
   <H/>
 </M>
@@ -215,18 +217,18 @@
 </td><!--*************************--><td>
 
 ```javascript
-<C ring>
-  <C ring>
-    <C ring>
-      <C ring>
-        <C ring>
-          <C ring>
-          <H/></C>
-        <H/></C>
-      <H/></C>
-    <H/></C>
-  <H/></C>
-<H/></C>
+<CH ring>
+  <CH ring>
+    <CH ring>
+      <CH ring>
+        <CH ring>
+          <CH ring>
+          </CH>
+        </CH>
+      </CH>
+    </CH>
+  </CH>
+</CH>
 ```
 
 </td><!--*************************--><td>
@@ -234,19 +236,12 @@
 ```javascript
 <M>
 {Array(6)
-  .fill(0)
-  .map((_,i)=>
-  <CH ring/>
+    .fill(0)
+    .map((_,i)=>
+  <C ring/>
+    <H/>
+  </C>
 )}
-</M>
-```
-
-<p>or</p>
-
-```javascript
-<M ring>
-  <C6H5/>
-  <H/>
 </M>
 ```
 
@@ -270,3 +265,25 @@
 ```
 
 </tr></table><!--*************************  *************************-->
+
+
+## Extensions
+
+```javascript
+const geometry = new THREE.SphereBufferGeometry(1,32,32)
+const material = new THREE.meshPhongMaterial()
+const calcPos = (target, parent, key) => {
+    return [
+        target.position[0] + parent.position[0],
+        target.position[1] + parent.position[1],
+        target.position[2] + parent.position[2]
+    ]
+}
+const Extension =(props)=> <M {...props} {...{geometry, material, calcPos}} />
+const App = (
+    <Canvas>
+        <Extension>
+        </Extension>
+    </Canvas>
+)
+```

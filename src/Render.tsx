@@ -7,7 +7,12 @@ const MAX_LENGTH = 1000
 export function Render (props: Partial<{
     children: ReactNode
 }>) : JSX.Element
-export function Render ({children, ...props}:any) {
+
+export function Render ({
+    geometry,
+    material,
+    children, ...props
+}:any) {
     const group= useRef<any>(null)
     const atom = useRef<any>(null)
     const bone = useRef<any>(null)
@@ -31,11 +36,11 @@ export function Render ({children, ...props}:any) {
             <group ref={group}>
                 <instancedMesh ref={atom} args={[null,null,MAX_LENGTH] as [any,any,number]}>
                     <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
-                    <meshPhongMaterial    attach="material" color={0xffffff} />
+                    <meshPhongMaterial    attach="material" />
                 </instancedMesh>
-                <instancedMesh ref={bone} args={[null,null,MAX_LENGTH] as [any,any,number]}>
+                <instancedMesh ref={bone} args={[null,null,MAX_LENGTH] as [any,any,number]} >
                     <cylinderBufferGeometry attach="geometry" args={[.05, .05, 1, 10]} />
-                    <meshPhongMaterial      attach="material" color={0xffffff} />
+                    <meshPhongMaterial      attach="material" />
                 </instancedMesh>
                 {children}
             </group>
