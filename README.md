@@ -50,22 +50,74 @@
 - open browser and visit [localhost:3000](http://localhost:3000)
 - Now you can go to our [demo](https://tsei.jp/rmol), and try its usage.
 
-## Recipes
+## Examples of simulation
+
+### Molecular simulation
 
 <table>
 <tr><td>
 <p align="center"><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/Mol.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx">
+        <img src="https://img.shields.io/badge/Atom-black.svg"/></a>
+<br/></p>
+</td><td>
+<p align="center"><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx">
+        <img src="https://img.shields.io/badge/Results-black.svg"/></a>
+<br/></p>
+</td></tr>
+<tr><td>
+
+```javascript
+import React from 'react'
+import {Atom, calcMol} from 'react-mol'
+export const Mol = ({children, ...props}) => (
+  <Atom length={2} {...props} calc={calcMol}>
+    <meshPhongMaterial      attach="material" />
+    <sphereBufferGeometry   attach="geometry"
+                            args ={[1,32,32]}/>
+    <meshPhongMaterial      attach="material" />
+    <cylinderBufferGeometry attach="geometry"
+                            args ={[.05,.05,1,10]}/>
+    {children}
+  </Atom>
+)
+```
+</td></tr>
+<tr><td>
+
+```javascript
+import React from 'react'
+import {Atom, calcHel} from 'react-mol'
+export const Hel = ({children, ...props}) => (
+  <Atom length={1} {...props} calc={calcHel}>
+    <meshPhongMaterial  attach="material" />
+    <boxBufferGeometry  attach="geometry"
+                        args={[1,1,1]} />
+    {children}
+  </Atom>
+)
+```
+</td></td>
+</table>
+
+
+## Recipes of Molecular
+
+<table>
+<tr><td>
+<p align="center"><br/>
+    <a href="https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx">
         <img src="https://img.shields.io/badge/Mol-black.svg"/></a>
 <br/></p>
 </td><td>
 <p align="center"><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/Mol.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx">
         <img src="https://img.shields.io/badge/Hierarchy-black.svg"/></a>
 <br/></p>
 </td><td>
 <p align="center"><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/Mol.tsx">
+    <a href="https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx">
         <img src="https://img.shields.io/badge/Recurtion-black.svg"/></a>
 <br/></p>
 </td><td>
@@ -74,19 +126,17 @@
         <img src="https://img.shields.io/badge/Results-black.svg"/></a>
 <br/></p>
 </td></tr>
-<tr><td><!--************************* Methyl alchol *************************-->
-<p align="center">
-    <strong>Methyl</strong><br/>
-    <strong>alcohol</strong><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/OH-red.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
-</p>
+<tr><td align="center"><!--************************* Methyl alchol *************************-->
+<strong>Methyl</strong><br/>
+<strong>alcohol</strong><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/OH-red.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
 </td><!--*************************--><td>
 
 ```javascript
@@ -101,31 +151,28 @@
 </td><!--*************************--><td>
 
 ```javascript
-<M>
+<Mol>
   <CH3/>
   <OH/>
-</M>
+</Mol>
 ```
 
 </td><!--*************************--><td>
     <a href="https://tsei.jp/rmol/CH3OH">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/master/public/CH3OH.png" width="240" /></a>
 </td></tr>
-<tr><td><!--************************* Acetic acid *************************-->
-<p align="center">
-    <strong>Acetic</strong><br/>
-    <strong>acid</strong><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/O-red.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/OH-red.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/COOH-white.svg"/></a><br/>
-</p>
+<tr><td align="center"><!--************************* Acetic acid *************************-->
+<strong>Acetic</strong><br/>
+<strong>acid</strong><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/O-red.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/OH-red.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/COOH-white.svg"/></a><br/>
 </td><!--*************************--><td>
 
 ```javascript
@@ -139,41 +186,36 @@
 </td><!--*************************--><td>
 
 ```javascript
-<M>
+<Mol>
   <CH3/>
   <COOH/>
-</M>
+</Mol>
 ```
 
 </td><!--*************************--><td>
     <a href="https://tsei.jp/rmol/CH3COOH">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/master/public/CH3COOH.png" width="240" /></a>
 </td></tr>
-<tr><td><!--************************* Polyethylene *************************-->
-<p align="center">
-    <strong>Poly</strong><br/>
-    <strong>ethylene</strong><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/Poly-black.svg"/></a><br/>
-</p>
+<tr><td align="center"><!--************************* Polyethylene *************************-->
+<strong>Poly</strong><br/>
+<strong>ethylene</strong><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/Poly-white.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/CH2-black.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/CH3-black.svg"/></a><br/>
 </td><!--*************************--><td>
 
 ```javascript
 <H>
   <Poly n={100}}>
-  {child =>
+  {next =>
     <CH2>
       <CH2>
-      {child
-        ||<H/>}
+      {next||<H/>}
       </CH2>
     </CH2>
   }
@@ -184,37 +226,35 @@
 </td><!--*************************--><td>
 
 ```javascript
-<M>
+<Mol>
   <H/>
   {Array(200)
-    .fill(0)
-    .map((_,i) =>
+  .fill(0)
+  .map((_,i) =>
     <C key={i}>
       <H/>
       <H/>
     </C>
   )}
   <H/>
-</M>
+</Mol>
 ```
 
 </td><!--*************************--><td>
     <a href="https://tsei.jp/rmol/Polyethylene">
         <img src="https://raw.githubusercontent.com/tseijp/react-mol/master/public/CnH2n2.png" width="240" /></a>
 </td></tr>
-<tr><td><!--************************* Phenol *************************-->
-<p align="center">
-    <strong>Benzene</strong><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/CH-black.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/C6H5-black.svg"/></a><br/>
-</p>
-</td><!--*************************--><td>
+<!-- tr><td align="center" --><!--************************* Benzene *************************-->
+<!-- strong>Benzene</strong><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/CH-black.svg"/></a><br/>
+<a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
+    <img src="https://img.shields.io/badge/C6H5-black.svg"/></a><br/>
+</td --><!--*************************--><!-- td>
 
 ```javascript
 <CH ring>
@@ -231,59 +271,20 @@
 </CH>
 ```
 
-</td><!--*************************--><td>
+</td --><!--*************************--><!-- td>
 
 ```javascript
-<M>
+<Mol>
 {Array(6)
-    .fill(0)
-    .map((_,i)=>
-  <C ring/>
+.fill(0)
+.map((_,i) =>
+  <C ring
+    key={i}/>
     <H/>
   </C>
 )}
-</M>
+</Mol>
 ```
 
-</td></tr>
-<tr><td><!--************************* XXX *************************-->
-<p align="center">
-    <strong>XXX</strong><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/H-white.svg"/></a><br/>
-    <a href="https://github.com/tseijp/react-mol/blob/master/src/index.tsx">
-        <img src="https://img.shields.io/badge/C-black.svg"/></a><br/>
-</p>
-</td><!--*************************--><td>
-
-```javascript
-```
-
-</td><!--*************************--><td>
-
-```javascript
-```
-
-</tr></table><!--*************************  *************************-->
-
-
-## Extensions
-
-```javascript
-const geometry = new THREE.SphereBufferGeometry(1,32,32)
-const material = new THREE.meshPhongMaterial()
-const calcPos = (target, parent, key) => {
-    return [
-        target.position[0] + parent.position[0],
-        target.position[1] + parent.position[1],
-        target.position[2] + parent.position[2]
-    ]
-}
-const Extension =(props)=> <M {...props} {...{geometry, material, calcPos}} />
-const App = (
-    <Canvas>
-        <Extension>
-        </Extension>
-    </Canvas>
-)
-```
+</td></tr -->
+</table><!--*************************  *************************-->

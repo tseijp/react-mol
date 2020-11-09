@@ -1,10 +1,14 @@
-import React, {Suspense} from 'react'
+import React from 'react'
 import {Canvas} from 'react-three-fiber'
 import {OrbitControls} from 'drei'
 import {Helmet} from 'react-helmet-async';
-import * as MOLS from './mols'
+import * as MOLSH from './MolsHierarchy'
+import * as MOLSR from './MolsRecursion'
+const Link =({path="",name=""})=>
+    <div onClick={() => void (window.location.href = "/rmol/"+path+name)}>{name}</div>
 
 export const App:React.FC = ({children}) => {
+    const paths = window.location.pathname.split('/').filter(v=>v)
     return (
         <>
             <Canvas
@@ -19,14 +23,13 @@ export const App:React.FC = ({children}) => {
                     <circleBufferGeometry attach="geometry" args={[8, 64]} />
                     <meshBasicMaterial attach="material" color="lightpink" />
                 </mesh>
-                <Suspense fallback={null}>
-                    {children}
-                </Suspense>
+                {children}
             </Canvas>
             <div style={{position:"absolute", userSelect:"none",fontSize:"1.5rem", display:"inline-block"}}>
-                {Object.keys(MOLS).map(key =>
-                    <div key={key} onClick={()=>void (window.location.href = "/rmol/"+key)}>{key}</div>
-                )}
+                {paths[1]!=="m" // TODO use Tree.tsx from core
+                    ? Object.keys(MOLSH).map(key => <Link key={key} name={key} />)
+                    : Object.keys(MOLSR).map(key => <Link key={key} name={key} path="m/" />)
+                }
                 <a href="https://twitter.com/intent/tweet?url=https://tsei.jp/rmol/&text=🍡A molecular chemistry based simulation library" >
                     <img alt="tweet" src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Ftseijp"/></a>
                 <a href="https://github.com/tseijp/react-mol">

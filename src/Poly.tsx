@@ -1,7 +1,7 @@
 import React from 'react'
-import {MolProps} from './types'
+import {Props} from './types'
 
-export function Poly (props: Partial<MolProps> & Partial<{
+export function Poly (props: Partial<Props> & Partial<{
     children: null|((child:JSX.Element, key:number) => JSX.Element),
     n: number
 }>): null|JSX.Element

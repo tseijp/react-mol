@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import {atom} from 'jotai'
-import {MolProps as MP,Vec3} from './types'
+import {Props as MP,Vec3} from './types'
 
 const base = new THREE.Vector3(0,1,0)
 const axis = new THREE.Vector3()

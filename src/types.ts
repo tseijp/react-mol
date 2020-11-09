@@ -3,7 +3,7 @@ import {Matrix4} from 'three'
 
 export type Vec3<T=number> = [T,T,T]
 export type Array<T> = T | T[]
-export type MolProps = {
+export type Props = {
     // BASIC THREE
     scale: Vec3,
     position: Vec3,
@@ -11,15 +11,17 @@ export type MolProps = {
     direction: Vec3,
     matrix: Matrix4,
     color: string,
-    // FOR MOL
-    calcMol: (target:MolProps)=>MolProps[],
-    calcPos: (target:MolProps,parent:MolProps,key:number)=>Vec3,
-    parentProps: MolProps,
+    // BASIC MOL
+    calc   : (target:Props)=>Props[],
+    calcPos: (target:Props,parent:Props,key:number)=>Vec3,
+    depth: number,
+    length: number,
+    // FOR M
+    parentProps: Props,
     children: ReactNode,
     element: number,
     index: number,
     angle: number,
-    depth: number,
     ring?: boolean,
     double?: boolean,
 }
