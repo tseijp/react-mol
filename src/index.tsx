@@ -1,6 +1,7 @@
 import React from 'react'
 import {Props} from './types'
 import {Atom} from './Atom'
+import {calcPos, calcMol, calcHel} from './calc'
 //  ************************* REACT-MOL ************************* //
 export {Atom as default, Atom, Hierarchy, Recursion} from './Atom'
 export {Poly} from './Poly'
@@ -11,7 +12,7 @@ export * from './types'
 //  ************************* EXAMPLE ************************* //
 type P = Partial<Props>
 export const Mol = ({children, ...props}:P) => (
-    <Atom length={2} {...props}>
+    <Atom length={2} {...props} calc={calcMol} calcPos={calcPos}>
         <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
         <meshPhongMaterial    attach="material" color={0xffffff} />
         <cylinderBufferGeometry attach="geometry" args={[.05, .05, 1, 10]} />
@@ -20,7 +21,9 @@ export const Mol = ({children, ...props}:P) => (
     </Atom>
 )
 export const Hel = ({children, ...props}:P) => (
-    <Atom length={0} {...props}>
+    <Atom length={1} {...props} calc={calcMol}>
+        <boxBufferGeometry attach="geometry" args={[1,1,1]}/>
+        <meshPhongMaterial attach="material" />
         {children}
     </Atom>
 )

@@ -24,4 +24,5 @@ export type Props = {
     angle: number,
     ring?: boolean,
     double?: boolean,
+    recurse?: boolean,
 }
