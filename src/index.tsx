@@ -9,22 +9,24 @@ export {Render} from './Render'
 export {useMol} from './useMol'
 export * from './utils'
 export * from './types'
-//  ************************* EXAMPLE ************************* //
 type P = Partial<Props>
-export const Mol = ({children, ...props}:P) => (
+export const Sign = () => <>TODO</>
+export const Tree = () => <>TODO</>
+export const Flow = () => <>TODO</>
+export const Mol = (props:P) => (
     <Atom length={2} {...props} calc={calcMol} calcPos={calcPos}>
         <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
         <meshPhongMaterial    attach="material" color={0xffffff} />
         <cylinderBufferGeometry attach="geometry" args={[.05, .05, 1, 10]} />
         <meshPhongMaterial      attach="material" color={0xffffff} />
-        {children}
+        {props.children}
     </Atom>
 )
-export const Hel = ({children, ...props}:P) => (
-    <Atom length={1} {...props} calc={calcMol}>
-        <boxBufferGeometry attach="geometry" args={[1,1,1]}/>
+export const Hel = (props:P) => (
+    <Atom length={1} {...props} calc={calcHel}>
+        <boxBufferGeometry attach="geometry" args={[1,1,1]} />
         <meshPhongMaterial attach="material" />
-        {children}
+        {props.children}
     </Atom>
 )
 export const H =(p:P)=> <Mol {...p} element={1} scale={[.2,.2,.2]} color="white"/>

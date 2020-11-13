@@ -47,32 +47,6 @@ export function calcRelative (position:Vec3=[0,0,0], rotation:Vec3=[0,0,0], dire
 
 export const render = atom<[Partial<MP>, Partial<MP>][]>([])
 
-
-// ISSUE
-// CH3OH: (H)-(O)-(CH3)
+// TODO use parent: CH3OH = (H)-(O)-(CH3)
 // - now  calcAtom: (H: parent)-(O: me)-(CH3: calc child): using O and CH3
 // - next calcAtom: (H: parent)-(O: calc me)-(CH3: not using child): using H and O
-//
-// TODO use position as (...)=>Vec3
-// const position = calcArg(props.position, ...args)
-// export function calcArg <T extends any[]=Vec3>(
-//     arg: T | Calc<T>, ...args: Parameters<Calc<T>>
-// ): T {
-//     return typeof arg === "function"
-//         ? arg(...args)
-//         : arg
-// }
-// const {depth=0, position:parent} = props.parentProps||{}
-// const pos = calcPos(props, props.parentProps||{}, props.index)// ERROR: key doesnt found
-// const dir = calcDir(pos, parent)
-// const children = Children.map(props.children, (c:any, index)=>
-//     React.cloneElement(c, {index, parentProps: props})
-// )
-// return {
-//     ...props.parentProps,
-//     ...props,
-//     children,
-//     position : pos,
-//     direction: dir,
-//     depth: depth + 1
-// }

@@ -37,7 +37,7 @@ export function Render ({
         meshs.current.forEach((mesh:any) => {
             mesh.current.instanceMatrix.needsUpdate = true
         })
-        group.current.position.set(...mergeVec3([-.5,-.5],
+        atom.length && group.current.position.set(...mergeVec3([-.5,-.5],
             atom[0][0]?.position||[0,0,0],
             atom[atom.length-1][0]?.position||[0,0,0])
         )

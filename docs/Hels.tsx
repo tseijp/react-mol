@@ -5,3 +5,15 @@ export const Test =()=> (
         <Hel/>
     </Hel>
 )
+export const Archimedes =()=> (
+    <Hel>
+    </Hel>
+)
+export const Fermat =()=> (
+    <Hel>
+    </Hel>
+)
+export const Power =()=> (
+    <Hel>
+    </Hel>
+)

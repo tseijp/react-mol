@@ -69,9 +69,7 @@
 <tr><td>
 
 ```javascript
-import React from 'react'
-import {Atom, calcMol} from 'react-mol'
-export const Mol = ({children, ...props}) => (
+const Mol =props=> (
   <Atom length={2} {...props} calc={calcMol}>
     <meshPhongMaterial      attach="material" />
     <sphereBufferGeometry   attach="geometry"
@@ -79,22 +77,21 @@ export const Mol = ({children, ...props}) => (
     <meshPhongMaterial      attach="material" />
     <cylinderBufferGeometry attach="geometry"
                             args ={[.05,.05,1,10]}/>
-    {children}
+    {props.children}
   </Atom>
 )
 ```
+
 </td></tr>
 <tr><td>
 
 ```javascript
-import React from 'react'
-import {Atom, calcHel} from 'react-mol'
-export const Hel = ({children, ...props}) => (
+const Hel =props=> (
   <Atom length={1} {...props} calc={calcHel}>
     <meshPhongMaterial  attach="material" />
     <boxBufferGeometry  attach="geometry"
                         args={[1,1,1]} />
-    {children}
+    {props.children}
   </Atom>
 )
 ```
@@ -151,7 +148,7 @@ export const Hel = ({children, ...props}) => (
 </td><!--*************************--><td>
 
 ```javascript
-<Mol>
+<Mol recursion>
   <CH3/>
   <OH/>
 </Mol>
@@ -186,7 +183,7 @@ export const Hel = ({children, ...props}) => (
 </td><!--*************************--><td>
 
 ```javascript
-<Mol>
+<Mol recursion>
   <CH3/>
   <COOH/>
 </Mol>
@@ -226,7 +223,7 @@ export const Hel = ({children, ...props}) => (
 </td><!--*************************--><td>
 
 ```javascript
-<Mol>
+<Mol recursion>
   <H/>
   {Array(200)
   .fill(0)
@@ -274,7 +271,7 @@ export const Hel = ({children, ...props}) => (
 </td --><!--*************************--><!-- td>
 
 ```javascript
-<Mol>
+<Mol recursion>
 {Array(6)
 .fill(0)
 .map((_,i) =>

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import {unregister}  from './utils'
 import {HelmetProvider} from 'react-helmet-async'
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
-import * as MOLSH from './MolsHierarchy'
-import * as MOLSR from './MolsRecursion'
+import * as HIERARCHY from './MolsHierarchy'
+import * as RECURSION from './MolsRecursion'
 import * as HELS from './Hels'
 import {App} from './App'
 const About =()=> <>TODO</>
@@ -13,15 +13,14 @@ const Root  =()=> (
     <HelmetProvider>
         <BrowserRouter>
             <Switch>
-                {Object.entries(MOLSH).map(([k, V]) =>
+                {Object.entries(HIERARCHY).map(([k, V]) =>
                 <Route path={"/rmol/"+k}   component={()=><App><V/></App>} key={k}/> )}
-                {Object.entries(MOLSR).map(([k, V]) =>
+                {Object.entries(RECURSION).map(([k, V]) =>
                 <Route path={"/rmol/m/"+k} component={()=><App><V/></App>} key={k}/> )}
                 {Object.entries(HELS).map(([k, V]) =>
                 <Route path={"/rmol/h/"+k} component={()=><App><V/></App>} key={k}/> )}
-                <Route path="/rmol/"       component={()=><App><MOLSH.Random/></App>} exact/>
-                <Route path="/rmol/m/"     component={()=><App><MOLSR.Random/></App>} exact/>
-                <Route path="/rmol/h"      component={()=><App><HELS.Test/></App>} exact/>
+                <Route path="/rmol/"       component={()=><App><HIERARCHY.Random/></App>} exact/>
+                <Route path="/rmol/m/"     component={()=><App><RECURSION.CH3OH/></App>} exact/>
                 <Route path="/rmol/about"  component={About} exact/>
                 <Route path="/rmol/basic"  component={Basic} exact/>
                 <Redirect to='/rmol/' />

@@ -1,20 +1,20 @@
 import React from 'react'
 import {Mol as M, C, H, O, CH3,} from '../src'
-export const H2O =()=> <M><H/><O/><H/></M>
-export const CH4 =()=> <M><H/><C><H/><H/><H/></C></M>
+export const H2O =()=> <M recursion><H/><O/><H/></M>
+export const CH4 =()=> <M recursion><H/><C><H/><H/><H/></C></M>
 export const CH3OH =()=>
-    <M recurse>
+    <M recursion>
         <C><H/><H/><H/></C>
         <O><H/></O>
     </M>
 export const CH3COOH =()=>
-    <M recurse>
+    <M recursion>
         <C><H/><H/><H/></C>
         <C><O double/></C>
         <O><H/></O>
     </M>
 export const Polyethylene =()=>
-    <M recurse>
+    <M recursion>
         <H/>
         {Array(6).fill(0).map((_, i) =>
             <C key={i} angle={(i%2)?Math.PI:0}>
@@ -24,7 +24,7 @@ export const Polyethylene =()=>
         <H/>
     </M>
 export const Polypropylene =()=>
-    <M recurse>
+    <M recursion>
         <H/>
         {Array(6).fill(0).map((_, i) =>
             <C key={i} angle={(i%2)?Math.PI:0}>
@@ -39,7 +39,7 @@ export const Polypropylene =()=>
     </M>
 
 export const Random =({rand=(mul=Math.PI*2)=>Math.random()*mul})=>
-    <M recurse>
+    <M recursion>
         <H/>
         {Array(200).fill(0).map((_, i) =>
             <C key={i} angle={rand()}>

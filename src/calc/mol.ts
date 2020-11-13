@@ -29,7 +29,7 @@ export const calcMol = ({children, ...props}:Props): Props[] => {
         const direction = mergeVec3([1,-1], position, props.position)
         return React.cloneElement(child, {
             ...props, parentProps: props, position, direction,
-            ...child.props, depth:(props.depth||0) + 1, recurse: false,
+            ...child.props, depth:(props.depth||0) + 1, 
         })
     })
     return [
