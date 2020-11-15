@@ -29,6 +29,8 @@
 <p align="center">️
     🍡<strong>react-mol</strong> is a molecular chemistry based simulation library
     that covers most cases of organic molecule simulation.
+</p>
+<p align="center">️
 
 [![build-✔](
     https://img.shields.io/badge/build-✔-green.svg)](
@@ -65,13 +67,13 @@
 ## Examples of simulation
 
 <table>
-<tr><td align="center">
+<tr><td align="center"><br/>
 
 [![Atom](
     https://img.shields.io/badge/Atom-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
 
-</td><td>
+</td><td align="center"><br/>
 
 [![Results](
     https://img.shields.io/badge/Results-black.svg)](
@@ -119,25 +121,25 @@ const Hel =(props)=> (
 
 ## Recipes of Mol(Molecule)
 
-<table><!--*************** Recipes of Mol ***************--><tr align="center"><td>
+<table><!--*************** Recipes of Mol ***************--><tr align="center"><td><br/>
 
 [![Mol](
     https://img.shields.io/badge/Mol-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
 
-</td><td>
+</td><td><br/>
 
 [![Hierarchy](
     https://img.shields.io/badge/Hierarchy-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
 
-</td><td>
+</td><td><br/>
 
 [![Recurtion](
     https://img.shields.io/badge/Recurtion-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
 
-</td><td>
+</td><td><br/>
 
 [![Results](
     https://img.shields.io/badge/Results-black.svg)](
@@ -288,19 +290,19 @@ __ethylene__
 
 
 ## Recipes of Hel(Helix)
-<table><!--*************** Recipes of Hel ***************--><tr><td>
+<table><!--*************** Recipes of Hel ***************--><tr><td><br/>
 
 [![Hel](
     https://img.shields.io/badge/Hel-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
 
-</td><td>
+</td><td><br/>
 
 [![Hierarchy](
     https://img.shields.io/badge/Hierarchy-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
 
-</td><td>
+</td><td><br/>
 
 [![Recurtion](
     https://img.shields.io/badge/Recurtion-black.svg)](
