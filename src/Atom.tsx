@@ -15,17 +15,14 @@ export const Recursion = (props:any) => {
         ]
     })
 }
-export function Atom <S extends object> (
-    props: unknown & Partial<Props>
+export function Atom <T extends object={}> (
+    props: unknown & Partial<Props<T>>
 ): null | JSX.Element
 
 export function Atom ({
-    geometry,
-    material,
-    children,
-    length=0,
-    depth =0,
-    ...props
+    geometry, length=0,
+    material,  depth=0,
+    children, ...props
 }: any) {
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
     const Atom = props.recursion? Recursion : Hierarchy

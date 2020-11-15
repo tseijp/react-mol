@@ -20,7 +20,8 @@ const Root  =()=> (
                 {Object.entries(HELS).map(([k, V]) =>
                 <Route path={"/rmol/h/"+k} component={()=><App><V/></App>} key={k}/> )}
                 <Route path="/rmol/"       component={()=><App><HIERARCHY.Random/></App>} exact/>
-                <Route path="/rmol/m/"     component={()=><App><RECURSION.CH3OH/></App>} exact/>
+                <Route path="/rmol/m/"     component={()=><App><RECURSION.Random/></App>} exact/>
+                <Route path="/rmol/h/"     component={()=><App><HELS.Archimedes/></App>} exact/>
                 <Route path="/rmol/about"  component={About} exact/>
                 <Route path="/rmol/basic"  component={Basic} exact/>
                 <Redirect to='/rmol/' />

@@ -10,18 +10,15 @@ export function Render (props: {
 }) : JSX.Element
 
 export function Render ({
-    length=1,
-    maxLength=1000,
-    geometry,
-    material,
-    children,
-    ...props
+    geometry, length=1,
+    material, maxLength=1000,
+    children, ...props
 }: any) {
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
     if (!(geometry instanceof Array)) geometry = [geometry]
     if (!(material instanceof Array)) material = [material]
-    const group = useRef<any>(null) // TODO set type
-    const meshs = useRef<any>([])
+    const group  = useRef<any>(null) // TODO set type
+    const meshs  = useRef<any>([])
     const [atom] = useAtom(render)
     Array(length).fill(0).forEach((_, i) => {
         meshs.current[i] = createRef();

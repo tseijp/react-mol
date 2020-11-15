@@ -1,13 +1,14 @@
 import React from 'react'
-import {Hel} from '../src'
-export const Test =()=> (
-    <Hel>
-        <Hel/>
-    </Hel>
-)
+import {Poly, Hel} from '../src'
+
 export const Archimedes =()=> (
-    <Hel>
-    </Hel>
+    <Poly n={100}>
+        {next =>
+            <Hel>
+                {next}
+            </Hel>
+        }
+    </Poly>
 )
 export const Fermat =()=> (
     <Hel>
