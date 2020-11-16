@@ -2,6 +2,7 @@ import {ReactNode} from 'react'
 import {Matrix4} from 'three'
 
 export type Vec3<T=number> = [T,T,T]
+export type Fun<T> = T | ((n:number) => T)
 export type Array<T> = T | T[]
 export type Props<T extends object={}> = Spread<{
     // BASIC THREE
@@ -16,11 +17,6 @@ export type Props<T extends object={}> = Spread<{
     children: ReactNode,
 }, T>
 export type MolProps = {
-    calcPos: (
-        target:Props<MolProps>,
-        parent:Props<MolProps>,
-        key:number
-    ) => Vec3,
     parentProps: Props,
     direction: Vec3,
     element: number,
@@ -34,6 +30,7 @@ export type MolProps = {
 export type HelProps = {
     parentProps?: Props<HelProps>,
 }
+export type FlowProps = {}
 
 // ************************* UTILS ************************* //
 type Spread<L extends object, R extends object> = Id<

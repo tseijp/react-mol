@@ -1,6 +1,5 @@
 import * as THREE from 'three'
-import {atom} from 'jotai'
-import {Props as MP,Vec3} from './types'
+import {Vec3} from './types'
 
 const base = new THREE.Vector3(0,1,0)
 const axis = new THREE.Vector3()
@@ -44,9 +43,6 @@ export function calcRelative (position:Vec3=[0,0,0], rotation:Vec3=[0,0,0], dire
                 .setLength(1)
                 .toArray() as Vec3
 }
-
-export const render = atom<[Partial<MP>, Partial<MP>][]>([])
-
 // TODO use parent: CH3OH = (H)-(O)-(CH3)
 // - now  calcAtom: (H: parent)-(O: me)-(CH3: calc child): using O and CH3
 // - next calcAtom: (H: parent)-(O: calc me)-(CH3: not using child): using H and O

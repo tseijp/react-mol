@@ -1,9 +1,21 @@
-import React, {Children} from 'react'
-import {Provider} from 'jotai'
-import {Render} from './Render'
-import {useMol} from './useMol'
+import React, {Children, useEffect, useMemo, useRef} from 'react'
+import {Provider, useAtom} from 'jotai'
+import {Render, render} from './Render'
 import {Props} from './types'
-export const Hierarchy = (props:any) => <bone {...useMol(props)}/>
+// let uuid = 0
+export const Hierarchy = (props:any) => {
+    // const [index] = useState(() => uuid++)
+    const [,set]  = useAtom(render)
+    const group   = useRef<any>(null)
+    const state   = useMemo(() => props.calc(props), [props])
+    useEffect(() => {
+        group.current.updateMatrixWorld()
+        set(p => [...p, state])
+        // set(p => {p[index] = state; return p}) // way 2
+        // return () => delete state.current[id]
+    }, [set, state])
+    return <group ref={group} {...state[0]}/>
+}
 export const Recursion = (props:any) => {
     const [child, ...children] = Children.map(props.children, c=>c)
     if (typeof child!=="object") return null
@@ -20,7 +32,7 @@ export function Atom <T extends object={}> (
 ): null | JSX.Element
 
 export function Atom ({
-    geometry, length=0,
+    geometry, length=1,
     material,  depth=0,
     children, ...props
 }: any) {

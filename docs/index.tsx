@@ -5,6 +5,7 @@ import {HelmetProvider} from 'react-helmet-async'
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
 import * as HIERARCHY from './MolsHierarchy'
 import * as RECURSION from './MolsRecursion'
+import * as FLOW from './Flow'
 import * as HELS from './Hels'
 import {App} from './App'
 const About =()=> <>TODO</>
@@ -22,6 +23,7 @@ const Root  =()=> (
                 <Route path="/rmol/"       component={()=><App><HIERARCHY.Random/></App>} exact/>
                 <Route path="/rmol/m/"     component={()=><App><RECURSION.Random/></App>} exact/>
                 <Route path="/rmol/h/"     component={()=><App><HELS.Archimedes/></App>} exact/>
+                <Route path="/rmol/f/"     component={()=><App><FLOW.Stage/></App>} exact/>
                 <Route path="/rmol/about"  component={About} exact/>
                 <Route path="/rmol/basic"  component={Basic} exact/>
                 <Redirect to='/rmol/' />

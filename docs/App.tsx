@@ -9,15 +9,12 @@ import * as HELS from './Hels'
 const Link =({path="",name=""})=> (
     <div onClick={() => void (window.location.href = "/rmol/"+path+name)}>{name}</div>
 )
-const Button =({loc="",alt="",src="",br=false})=> (
-    <>
-        <a href={(src?"https://":"")+loc}>
-            <img alt={alt} src={"https://"+(
-                src||`img.shields.io/badge/${alt}-gray.svg`
-            )}/>
-        </a>
-        {br && <br/>}
-    </>
+const Button =({loc="",alt="",src=""})=> (
+    <a href={(src?"https://":"")+loc}>
+        <img alt={alt} src={"https://"+(
+            src||`img.shields.io/badge/${alt}-gray.svg`
+        )}/>
+    </a>
 )
 const TWEET = "🍡A molecular chemistry based simulation library"
 const INDEX: any = {
@@ -47,18 +44,18 @@ export const App: React.FC = ({children}) => {
             <div style={{position:"absolute", userSelect:"none",fontSize:"1.5rem", display:"inline-block"}}>
                 {INDEX[paths[1]] || INDEX._}
                 <Button loc="/rmol/"   alt="Hierarchy" />
-                <Button loc="/rmol/m/" alt="Recursion" br />
+                <Button loc="/rmol/m/" alt="Recursion" /><br/>
                 <Button loc="/rmol/h/" alt="Helical" />
+                <Button loc="/rmol/f/" alt="Flow" />
                 <Button loc="/rmol/s/" alt="Sign" />
-                <Button loc="/rmol/t/" alt="Tree" />
-                <Button loc="/rmol/f/" alt="Flow" br/>
+                <Button loc="/rmol/t/" alt="Tree" /><br/>
                 <Button loc="github.com/tseijp/react-mol"     alt="license MIT"/>
                 <Button loc="www.npmjs.com/package/react-mol" alt="npm version"
-                        src="badge.fury.io/js/react-mol.svg"  br/>
+                        src="badge.fury.io/js/react-mol.svg"  /><br/>
                 <Button loc={`twitter.com/intent/tweet?url=https=//tsei.jp/rmol/&text=${TWEET}`} alt="Tweet"
                         src="img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Ftseijp"/>
                 <Button loc="github.com/tseijp/react-mol" alt="GitHub watchers"
-                        src="img.shields.io/github/watchers/tseijp/react-mol?style=social" br/>
+                        src="img.shields.io/github/watchers/tseijp/react-mol?style=social" /><br/>
             </div>
             <Helmet>
                 <title>{window.location.pathname.split('/').slice(-1)[0]}</title>

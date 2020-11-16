@@ -1,7 +1,7 @@
 import {useEffect, useMemo} from 'react'
 import {useAtom} from 'jotai'
 import {Props} from './types'
-import {render} from './utils'
+import {render} from './Render'
 
 export function useMol <T extends object={}> (
     props:Partial<Props<T>>,
