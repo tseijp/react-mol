@@ -1,21 +1,30 @@
-import React, {Children, useEffect, useMemo, useRef} from 'react'
-import {Provider, useAtom} from 'jotai'
-import {Render, render} from './Render'
+import React, {Children, useMemo, useRef, useState} from 'react'
+import {Render, context} from './Render'
 import {Props} from './types'
-// let uuid = 0
-export const Hierarchy = (props:any) => {
-    // const [index] = useState(() => uuid++)
-    const [,set]  = useAtom(render)
+let uuid = 0
+export const Hierarchy = React.forwardRef((props:any, ref) => {
+    const [index] = useState(() => uuid++)
     const group   = useRef<any>(null)
     const state   = useMemo(() => props.calc(props), [props])
-    useEffect(() => {
+    const { instances } = React.useContext(context) as any
+
+    React.useEffect(() => {
         group.current.updateMatrixWorld()
-        set(p => [...p, state])
-        // set(p => {p[index] = state; return p}) // way 2
-        // return () => delete state.current[id]
-    }, [set, state])
-    return <group ref={group} {...state[0]}/>
-}
+        instances.current[index] = state
+    }, [index, state, instances])
+
+    React.useImperativeHandle(ref, () => ({
+        position: group.current.position,
+        rotation: group.current.rotation,
+        scale   : group.current.scale,
+    }))
+    return (
+        <group ref={group} {...state[0]}>
+            {state[0].children}
+        </group>
+    )
+})
+
 export const Recursion = (props:any) => {
     const [child, ...children] = Children.map(props.children, c=>c)
     if (typeof child!=="object") return null
@@ -27,30 +36,27 @@ export const Recursion = (props:any) => {
         ]
     })
 }
-export function Atom <T extends object={}> (
-    props: unknown & Partial<Props<T>>
-): null | JSX.Element
-
-export function Atom ({
+export type Atom = {
+    <T extends object={}>(props: unknown & Partial<Props<T>>): null | JSX.Element;
+}
+export const Atom: Atom = React.forwardRef(({
     geometry, length=1,
     material,  depth=0,
     children, ...props
-}: any) {
+}: any, ref) => {
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
     const Atom = props.recursion? Recursion : Hierarchy
     if (typeof depth==="number" && depth > 0)
-        return <Atom {...props}>{children.slice(length*2)}</Atom>
+        return <Atom ref={ref} {...props}>{children.slice(length*2)}</Atom>
     return (
-        <Provider>
-            <Render length={length}>
-                {[...children.slice(0,length*2),
-                <Atom {...props} key={0}
-                    position= {props.position|| [0,0,0]}
-                    calc    = {props.calc       }
-                    calcPos = {props.calcPos}>
-                    {children.slice(length*2)}
-                </Atom>]}
-            </Render>
-        </Provider>
+        <Render length={length}>
+            {[...children.slice(0,length*2),
+            <Atom ref={ref} {...props} key={0}
+                position= {props.position|| [0,0,0]}
+                calc    = {props.calc       }
+                calcPos = {props.calcPos}>
+                {children.slice(length*2)}
+            </Atom>]}
+        </Render>
     )
-}
+})

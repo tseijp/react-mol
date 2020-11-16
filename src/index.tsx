@@ -6,11 +6,21 @@ import {calcFlow, calcMol, calcHel} from './work'
 //  ************************* REACT-MOL ************************* //
 type MP = Partial<Props<MolProps>>
 export {Atom as default, Atom, Hierarchy, Recursion} from './Atom'
-export {Poly} from './Poly'
 export {Render} from './Render'
-export {useMol} from './useMol'
 export * from './utils'
 export * from './types'
+
+export function Poly <T extends object={}>(
+    props: Partial<Props<T>> & Partial<{
+        n: number, children: null|((child:JSX.Element, key:number) => JSX.Element),
+    }>
+): null|JSX.Element
+export function Poly ({children,n=0,...props}: any) {
+    if (n<0) return null
+    return React.cloneElement(children(n>0
+        ? <Poly n={n-1} children={children}/>
+        : null, n), props)
+}
 export function Mol (props: MP): null | JSX.Element
 export function Mol (props: any) {
     return (
