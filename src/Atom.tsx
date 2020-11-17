@@ -1,18 +1,17 @@
 import React, {Children, useMemo, useRef, useState} from 'react'
-import {Render, context} from './Render'
+import {Render, render} from './Render'
 import {Props} from './types'
+
 let uuid = 0
 export const Hierarchy = React.forwardRef((props:any, ref) => {
     const [index] = useState(() => uuid++)
     const group   = useRef<any>(null)
     const state   = useMemo(() => props.calc(props), [props])
-    const { instances } = React.useContext(context) as any
-
+    const {matrix} = React.useContext(render) as any
     React.useEffect(() => {
         group.current.updateMatrixWorld()
-        instances.current[index] = state
-    }, [index, state, instances])
-
+        matrix.current[index] = state
+    }, [index, state, matrix])
     React.useImperativeHandle(ref, () => ({
         position: group.current.position,
         rotation: group.current.rotation,
@@ -20,11 +19,16 @@ export const Hierarchy = React.forwardRef((props:any, ref) => {
     }))
     return (
         <group ref={group} {...state[0]}>
-            {state[0].children}
+            {React.Children.map(state[0].children, (child:any) =>
+                child && React.cloneElement(child, {
+                    ...state[0], children:null,// ⚠ crash if not assigned null ⚠
+                    ...child.props, parentProps: state[0],
+                    depth:(props.depth||0) + 1,
+                })
+            )}
         </group>
     )
 })
-
 export const Recursion = (props:any) => {
     const [child, ...children] = Children.map(props.children, c=>c)
     if (typeof child!=="object") return null
@@ -40,8 +44,8 @@ export type Atom = {
     <T extends object={}>(props: unknown & Partial<Props<T>>): null | JSX.Element;
 }
 export const Atom: Atom = React.forwardRef(({
-    geometry, length=1,
-    material,  depth=0,
+    geometry, length,
+    material,  depth,
     children, ...props
 }: any, ref) => {
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
@@ -52,9 +56,9 @@ export const Atom: Atom = React.forwardRef(({
         <Render length={length}>
             {[...children.slice(0,length*2),
             <Atom ref={ref} {...props} key={0}
-                position= {props.position|| [0,0,0]}
-                calc    = {props.calc       }
-                calcPos = {props.calcPos}>
+                calc    = {props.calc}
+                calcPos = {props.calcPos}
+                position= {props.position || [0,0,0]}>
                 {children.slice(length*2)}
             </Atom>]}
         </Render>

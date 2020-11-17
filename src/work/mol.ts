@@ -27,10 +27,7 @@ export const calcMol = ({children, ...props}:Props<MolProps>): Props[] => {
         if (!child) return null
         const position  = calcPos(child.props, props as any, key)
         const direction = mergeVec3([1,-1], position, props.position)
-        return React.cloneElement(child, {
-            ...props, parentProps: props, position, direction,
-            ...child.props, depth:(props.depth||0) + 1,
-        })
+        return React.cloneElement(child, {position, direction})
     })
     return [
         {...props, children: clone},

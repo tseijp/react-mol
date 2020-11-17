@@ -18,6 +18,14 @@
     - returned props is multi kind of type
         - plan1: calc return single data: Props<T> => Props<T>
         - plan2: assign multi Props type: Props<S,T> => [Props<S>,Props<T>,...]
+    ― functional props
+          - Atom position={[t => [t, t, t]]}
+        if (typeof c==="function") c = c(time.current)
+        if (typeof p==="function") c = c(time.current)
+        if (typeof r==="function") c = c(time.current)
+        if (typeof s==="function") c = c(time.current)
+    - count instaned length
+          - const count = Object.keys(instances.current).length
 <!   ****************************** ****************************** -->
 <p align="center">
     <a href="https://tsei.jp/rmol">

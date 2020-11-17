@@ -11,7 +11,7 @@ export * from './utils'
 export * from './types'
 
 export function Poly <T extends object={}>(
-    props: Partial<Props<T>> & Partial<{
+    props: Partial<Props<T> & {
         n: number, children: null|((child:JSX.Element, key:number) => JSX.Element),
     }>
 ): null|JSX.Element
