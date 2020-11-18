@@ -1,20 +1,23 @@
 import {ReactNode} from 'react'
-import {Matrix4} from 'three'
+import {Matrix4, Geometry, Material} from 'three'
 
 export type Vec3<T=number> = [T,T,T]
 export type Fun<T> = T | ((n:number) => T)
-export type Array<T> = T | T[]
 export type Props<T extends object={}> = Spread<{
     // BASIC THREE
     position: Vec3,
     rotation: Vec3,
+    matrix: Matrix4,
     scale: Vec3,
     color: string,
     // BASIC ATOM
-    calc: (target:Props<T>)=>Props<T>[],
+    calc: (target:Props<T>)=>Props<T>,
     depth: number,
-    length: number,
-    children: ReactNode,
+    cutLength?: number,
+    maxLength?: number,
+    children?: ReactNode,
+    geometry?: null|Geometry,
+    material?: null|Material,
 }, T>
 export type MolProps = {
     parentProps: Props,

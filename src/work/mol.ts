@@ -17,7 +17,7 @@ export function calcPos (target:Props<MolProps>, parent:Props<MolProps>, key=0):
             : [0,0,0]
     )
 }
-export const calcMol = ({children, ...props}:Props<MolProps>): Props[] => {
+export const calcMol = ({children, ...props}:Props<MolProps>): Props<MolProps> => {
     const {position: target=[0,0,0], parentProps} = props
     const position = mergeVec3([.5,.5], target, parentProps?.position||target)
     const distance = mergeVec3([ 1,-1], target, parentProps?.position||target)
@@ -29,8 +29,5 @@ export const calcMol = ({children, ...props}:Props<MolProps>): Props[] => {
         const direction = mergeVec3([1,-1], position, props.position)
         return React.cloneElement(child, {position, direction})
     })
-    return [
-        {...props, children: clone},
-        {...props, position, rotation, scale} as any,
-    ]
+    return {...props, children: clone, position, rotation, scale}
 }

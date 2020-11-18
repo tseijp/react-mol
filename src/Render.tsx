@@ -1,58 +1,47 @@
-import React, {Children, ReactNode, createRef, useRef} from 'react'
+import React, {Children, ReactNode, useRef} from 'react'
 import {useFrame} from 'react-three-fiber'
-import {calcMatrix,calcColor} from './utils'
 
 export const render = React.createContext(undefined)
 export function Render (props: {
-    length: number,
+    cutLength?: number,
     maxLength?: number
     children: ReactNode
 }) : JSX.Element
 export function Render ({
-    geometry,    length=1,
-    material, maxLength=1000,
+    geometry, cutLength,
+    material, maxLength,
     children, ...props
 }: any) {
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
-    if (!(geometry instanceof Array)) geometry = [geometry]
-    if (!(material instanceof Array)) material = [material]
-    const group  = useRef<any>(null)
-    const meshs  = useRef<any>([])
-    const matrix = useRef<any[][]>([])
-    // const colors = useRef<any[][]>([])
-    Array(length).fill(0).forEach((_, i) => {
-        meshs.current[i] = createRef();
-    })
+    if (typeof geometry==="function") geometry = geometry()
+    if (typeof material==="function") material = material()
+    const mesh  = useRef<any>([])
+    const group = useRef<any>(null)
+    const states = useRef<any[]>([])
     useFrame(() => {
-        meshs.current.forEach((mesh:any, j=0) => {
-            if (!mesh.current) return
-            Object.values(matrix.current).forEach((m: any, i) => {
-                let {color:c, position:p, rotation:r, scale:s} = m[j]
-                mesh.current.setColorAt (i, calcColor (c))
-                mesh.current.setMatrixAt(i, calcMatrix(p,r,s))
-            })
-            mesh.current.instanceMatrix.needsUpdate = true
+        if (!mesh.current) return
+        Object.values(states.current).forEach((state: any, i) => {
+            const {color: c, matrix: m} = state
+            mesh.current.setColorAt (i, c)
+            mesh.current.setMatrixAt(i, m)
         })
-        // const l = matrix.current.length-1
-        // 0<l && group.current.position.set(...mergeVec3([-.5,-.5],
-        //     matrix.current[0][0]?.position||[0,0,0],
-        //     matrix.current[l][0]?.position||[0,0,0])
-        // )
+        mesh.current.instanceMatrix.needsUpdate = true
     })
     return (
-        <render.Provider value={{matrix} as any}>
-            <group {...props}>
-                <group ref={group}>
-                {Array(length).fill(0).map((_,i) =>
-                    <instancedMesh
-                        key={i} ref={meshs.current[i]}
-                        args={[null,null,maxLength] as [any,any,number]}>
-                        {children.slice(i*2, i*2+2)}
-                    </instancedMesh>
-                )}
-                {children.slice(length)}
-                </group>
+        <render.Provider value={{states} as any}>
+            <group ref={group} {...props}>
+                <instancedMesh ref={mesh}
+                    args={[geometry,material,maxLength] as [any,any,number]}>
+                    {children.slice(0, cutLength)}
+                </instancedMesh>
+                {children.slice(cutLength)}
             </group>
         </render.Provider>
     )
 }
+
+// TODO
+//
+// let {color:c, position:p, rotation:r, scale:s} = m
+// mesh.current.setColorAt (i, calcColor (c))
+// mesh.current.setMatrixAt(i, calcMatrix(p,r,s))

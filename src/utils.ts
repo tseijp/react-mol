@@ -4,7 +4,6 @@ import {Vec3} from './types'
 const base = new THREE.Vector3(0,1,0)
 const axis = new THREE.Vector3()
 const vec3 = new THREE.Vector3()
-const temp = new THREE.Object3D()
 const color= new THREE.Color()
 const euler= new THREE.Euler()
 const quat1= new THREE.Quaternion()
@@ -24,13 +23,6 @@ export function eulerVec3(vec:Vec3=[0,0,0]): Vec3 {
 }
 export function calcColor (_color="white") {
     return color.setColorName(_color)
-}
-export function calcMatrix (position:Vec3=[0,0,0], rotation:Vec3=[0,0,0], scale:Vec3=[1,1,1]) {
-    temp.position.set(...position)
-    temp.rotation.set(...rotation)
-    temp.scale.set(...scale)
-    temp.updateMatrix()
-    return temp.matrix
 }
 export function calcRelative (position:Vec3=[0,0,0], rotation:Vec3=[0,0,0], direction:Vec3=[0,1,0]) {
     axis.set (...direction).normalize() // TODO use group.updateMatrix()
