@@ -2,13 +2,15 @@ import React from 'react'
 import {Poly, Hel} from '../src'
 
 export const Archimedes =()=> (
-    <Poly n={100}>
-        {next =>
-            <Hel>
-                {next}
-            </Hel>
-        }
-    </Poly>
+    <Hel>
+        <Poly n={100}>
+            {next =>
+                <Hel position={[1,1,1]}>
+                    {next}
+                </Hel>
+            }
+        </Poly>
+    </Hel>
 )
 export const Fermat =()=> (
     <Hel>

@@ -1,4 +1,4 @@
-import React, {Children, ReactNode, useRef} from 'react'
+import React, {Children, ReactNode, useRef, useMemo} from 'react'
 import {useFrame} from 'react-three-fiber'
 
 export const render = React.createContext(undefined)
@@ -18,6 +18,7 @@ export function Render ({
     const mesh  = useRef<any>([])
     const group = useRef<any>(null)
     const states = useRef<any[]>([])
+    const value = useMemo<any>(() => ({states}), [states]) // todo delete?
     useFrame(() => {
         if (!mesh.current) return
         Object.values(states.current).forEach((state: any, i) => {
@@ -28,20 +29,13 @@ export function Render ({
         mesh.current.instanceMatrix.needsUpdate = true
     })
     return (
-        <render.Provider value={{states} as any}>
+        <render.Provider value={value}>
             <group ref={group} {...props}>
-                <instancedMesh ref={mesh}
-                    args={[geometry,material,maxLength] as [any,any,number]}>
-                    {children.slice(0, cutLength)}
+                <instancedMesh ref={mesh} args={[geometry,material,maxLength] as [any,any,number]}>
+                    {children?.slice(0, cutLength)}
                 </instancedMesh>
-                {children.slice(cutLength)}
+                {children?.slice(cutLength)}
             </group>
         </render.Provider>
     )
 }
-
-// TODO
-//
-// let {color:c, position:p, rotation:r, scale:s} = m
-// mesh.current.setColorAt (i, calcColor (c))
-// mesh.current.setMatrixAt(i, calcMatrix(p,r,s))

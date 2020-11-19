@@ -1,4 +1,4 @@
-import {ReactNode} from 'react'
+import {ReactNode, MutableRefObject} from 'react'
 import {Matrix4, Geometry, Material} from 'three'
 
 export type Vec3<T=number> = [T,T,T]
@@ -11,11 +11,13 @@ export type Props<T extends object={}> = Spread<{
     scale: Vec3,
     color: string,
     // BASIC ATOM
+    ref: MutableRefObject<any>,
     calc: (target:Props<T>)=>Props<T>,
     depth: number,
+    index: number,
     cutLength?: number,
     maxLength?: number,
-    children?: ReactNode,
+    children?: ReactNode|((state:Props<T>)=>ReactNode),
     geometry?: null|Geometry,
     material?: null|Material,
 }, T>

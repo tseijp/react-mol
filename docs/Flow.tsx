@@ -1,11 +1,11 @@
 import React from 'react'
-import {Flow} from '../src'
+import {Render, Flow} from '../src'
 export const Stage =()=> (
-    <Flow>
+    <Render>
         {Array(10).fill(0).map((_,z) =>
             <>{Array(10).fill(0).map((_,x) =>
-                <Flow key={""+z+"-"+x} position={[x,0,z]} scale={[1,1,1]} />
+                <Flow key={""+z+"-"+x} depth={1} position={[x,0,z]} scale={[1,1,1]} />
             )}</>
         )}
-    </Flow>
+    </Render>
 )
