@@ -12,33 +12,28 @@
     - ISSUE
 - ISSUE
     - Recursion cant get children as array if child is redefined as <OH/>
-    - calc of CH3OH: (H)-(O)-(CH3)
-        - now : (H: parent)-(O: me)-(CH3: calc child): using O and CH3
-        - next: (H: parent)-(O: calc me)-(CH3: not using child): using H and O
-    - returned props is multi kind of type
-        - plan1: calc return single data: Props<T> => Props<T>
-        - plan2: assign multi Props type: Props<S,T> => [Props<S>,Props<T>,...]
     ― functional props
-          - Atom position={[t => [t, t, t]]}
+        - Atom position={[t => [t, t, t]]}
         if (typeof c==="function") c = c(time.current)
         if (typeof p==="function") c = c(time.current)
         if (typeof r==="function") c = c(time.current)
         if (typeof s==="function") c = c(time.current)
-    - count instaned length
+    - count instaned length in Render.tsx
           - const count = Object.keys(instances.current).length
 <!   ****************************** ****************************** -->
 <p align="center">
-    <a href="https://tsei.jp/rmol">
-        <img src="https://raw.githubusercontent.com/tseijp/react-mol/master/public/rmol.mp4.gif" /></a>
+
+[ ![https://tsei.jp/rmol](
+    https://raw.githubusercontent.com/tseijp/react-mol/master/public/rmol.mp4.gif) ](
+    https://tsei.jp/rmol)
+
 </p>
 <br/>
 <br/>
 <br/>
 <p align="center">️
-    🍡<strong>react-mol</strong> is a molecular chemistry based simulation library
-    that covers most cases of organic molecule simulation.
-</p>
-<p align="center">️
+
+<!--TODO-->
 
 [![build-✔](
     https://img.shields.io/badge/build-✔-green.svg)](
@@ -61,10 +56,10 @@
 
 </p>
 
-## Installation
-- `npm i react-mol`
+__Installation__
+- `npm i three react-three-fiber react-mol`
 
-## Quick started
+__Quick started__
 - `git clone https://github.com/tseijp/react-mol`
 - `cd react-mol`
 - `npm i`
@@ -72,37 +67,31 @@
 - open browser and visit [localhost:3000](http://localhost:3000)
 - Now you can go to our [demo](https://tsei.jp/rmol), and try its usage.
 
-## Examples of simulation
+<br/><br/><hr/><br/><br/>
+
+# Recipes
+
+__Recipes of Atom__
 
 <table>
-<tr><td align="center"><br/>
+<tr><td><br/>
 
-[![Atom](
-    https://img.shields.io/badge/Atom-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
+🍡<strong>`<Mol/>`</strong> is a molecular chemistry based simulation component
+that covers most cases of organic molecule simulation.
+<details><summary>View Code</summary>
 
-</td><td align="center"><br/>
+```tsx
+import {calcMol, mergedGeometry} from 'react-mol'
 
-[![Results](
-    https://img.shields.io/badge/Results-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
-
-</td></tr>
-<tr><td>
-
-```javascript
 const Mol =(props)=> (
-  <Atom length={2} {...props} calc={calcMol}>
+  <Atom {...props} calc={calcMol} geometry={mergedGeometry}>
     <meshPhongMaterial      attach="material" />
-    <sphereBufferGeometry   attach="geometry"
-                            args  ={[1,32,32]}/>
-    <meshPhongMaterial      attach="material" />
-    <cylinderBufferGeometry attach="geometry"
-                         args={[.05,.05,1,10]}/>
     {props.children}
   </Atom>
 )
 ```
+
+</details>
 
 </td><td>
 
@@ -112,22 +101,110 @@ const Mol =(props)=> (
 
 </td></tr>
 <tr><td>
+<details><summary>View Code</summary>
 
-```javascript
-const Hel =(props)=> (
-  <Atom length={1} {...props} calc={calcHel}>
-    <meshPhongMaterial  attach="material" />
-    <boxBufferGeometry  attach="geometry"
-                        args={[1,1,1]} />
-    {props.children}
-  </Atom>
-)
-```
+~~🧬<strong>`<Hel/>`</strong> is TODO~~
+
+</details>
 
 </td></td>
 </table>
 
-## Recipes of Mol(Molecule)
+__What does it look like?__
+
+<table>
+<tr><td>
+
+🍡<strong>`<Atom/>`</strong> is TODO
+(~~[live demo](https://tsei.jp/rmol/basic)~~).
+
+</td><td>
+    <a href="https://tsei.jp/rmol/basic"><img
+        src="" /></a>
+</td></tr>
+</table>
+
+```tsx
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Atom, Poly } from 'react-mol'
+import { Canvas, useFrame } from 'react-three-fiber'
+
+function BasicExample () {
+  // This reference will give us direct access to the last instance
+  const instance = React.useRef<any>(null)
+
+  // Rotate instance every frame, this is outside of React without overhead
+  useFrame(() => {
+    instance.current.rotation.x  =
+    instance.current.rotation.y  =
+    instance.current.rotation.z += 0.025
+  })
+
+  return (
+    <Atom color="red" position={[1,-2,-10]} rotation={[0,0,Math.PI/3]}>
+      <boxBufferGeometry attach="geometry" />
+      <meshPhongMaterial attach="material" />
+      <Poly n={10}>
+        {next =>
+          <Atom color="green" position={[2,0,1]} rotation={[0,0,Math.PI/3]}>
+            {next ||
+              <Atom color="blue" position={[2,0,0]} ref={instance}/>
+            }
+          </Atom>
+        }
+      </Poly>
+    </Atom>
+  )
+}
+
+ReactDOM.render(
+  <Canvas>
+    <pointLight   />
+    <ambientLight />
+    <BasicExample />
+  </Canvas>,
+  document.getElementById('root')
+)
+```
+<details>
+<summary>Show Recursion Example</summary>
+
+```tsx
+/* ~~same~~ */
+
+function BasicExample () {
+  // This reference will give us direct access to the last instance
+  const instance = React.useRef<any>(null)
+
+  // Rotate instance every frame, this is outside of React without overhead
+  useFrame(() => {
+    instance.current.rotation.x  =
+    instance.current.rotation.y  =
+    instance.current.rotation.z += 0.025
+  })
+
+  return (
+    <Atom recursion>
+      <boxBufferGeometry attach="geometry" />
+      <meshPhongMaterial attach="material" />
+      <Atom color="red" position={[1, -2, -10]} rotation={[0,  0,  Math.PI/3]}/>
+      {Array(10).fill(0).map((_, i) =>
+        <Atom key={i} color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}/>
+      )}
+      <Atom ref={ref} color="blue" position={[2,0,0]}/>
+    </Atom>
+  )
+}
+
+/* ~~same~~ */
+```
+
+</details>
+
+<br/><br/><hr/><br/><br/>
+
+__Recipes of Mol (Molecule)__
 
 <table><!--*************** Recipes of Mol ***************--><tr align="center"><td><br/>
 
@@ -172,7 +249,7 @@ __alcohol__
 
 </td><td>
 
-```javascript
+```tsx
 <C>
   <H/>
   <H/>
@@ -183,7 +260,7 @@ __alcohol__
 
 </td><td>
 
-```javascript
+```tsx
 <Mol recursion>
   <CH3/>
   <OH/>
@@ -215,7 +292,7 @@ __acid__
 
 </td><td>
 
-```javascript
+```tsx
 <C>
   <CH3/>
   <O double/>
@@ -225,7 +302,7 @@ __acid__
 
 </td><td>
 
-```javascript
+```tsx
 <Mol recursion>
   <CH3/>
   <COOH/>
@@ -257,7 +334,7 @@ __ethylene__
 
 </td><td>
 
-```javascript
+```tsx
 <H>
   <Poly n={100}}>
   {next =>
@@ -273,7 +350,7 @@ __ethylene__
 
 </td><td>
 
-```javascript
+```tsx
 <Mol recursion>
   <H/>
   {Array(200)
@@ -296,8 +373,9 @@ __ethylene__
 
 </td></tr><!--***************  ***************--></table>
 
+<br/><br/><hr/><br/><br/>
 
-## Recipes of Hel(Helix)
+__Recipes of Hel (Helix)__
 <table><!--*************** Recipes of Hel ***************--><tr><td><br/>
 
 [![Hel](

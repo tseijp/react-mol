@@ -1,7 +1,7 @@
 import React, {Children, ReactNode, useRef, useMemo} from 'react'
+import {State, States} from './types'
 import {useFrame} from 'react-three-fiber'
-
-export const render = React.createContext(undefined)
+export const render = React.createContext<States>(null as any)
 export function Render (props: {
     cutLength?: number,
     maxLength?: number
@@ -15,16 +15,16 @@ export function Render ({
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
     if (typeof geometry==="function") geometry = geometry()
     if (typeof material==="function") material = material()
-    const mesh  = useRef<any>([])
+    const mesh  = useRef<any>(null)
     const group = useRef<any>(null)
-    const states = useRef<any[]>([])
-    const value = useMemo<any>(() => ({states}), [states]) // todo delete?
+    const states= useRef<State[]>([])
+    const value = useMemo<States>(() => ({states}), [])
     useFrame(() => {
         if (!mesh.current) return
         Object.values(states.current).forEach((state: any, i) => {
-            const {color: c, matrix: m} = state
-            mesh.current.setColorAt (i, c)
-            mesh.current.setMatrixAt(i, m)
+            const {color, group} = state
+            mesh.current.setColorAt (i, color)
+            mesh.current.setMatrixAt(i, group.matrixWorld)
         })
         mesh.current.instanceMatrix.needsUpdate = true
     })
