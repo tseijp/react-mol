@@ -1,10 +1,10 @@
 import React from 'react'
 // import * as THREE from 'three'
-import {Props, MolProps, HelProps, FlowProps} from './types'
-import {Atom} from './Atom'
 import * as THREE from 'three'
 import {BufferGeometryUtils} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import {Props, MolProps, HelProps, FlowProps} from './types'
 import {calcFlow, calcMol} from './work'
+import {Atom} from './Atom'
 //  ************************* REACT-MOL ************************* //
 type MP = Partial<Props<MolProps>>
 export {Atom as default, Atom, Hierarchy, Recursion} from './Atom'
@@ -37,7 +37,7 @@ export function Poly ({children,n=0,...props}: any) {
     const child = children(n>0 && <Poly n={n-1} children={children}/>, n)
     return React.cloneElement(child, {...props, children:null, ...child.props})
 }
-const mergedGeometry =()=> {
+export const mergedGeometry =()=> {
     const arr = new THREE.Matrix4().makeTranslation(0,-1/2,0)
     const sph = new THREE.SphereBufferGeometry(.3, 32, 32)
     const cyl = new THREE.CylinderBufferGeometry(.1,.1,1,10)
@@ -59,8 +59,8 @@ export type Hel = {
 export const  Hel: Hel = React.forwardRef((props: any, ref) =>  {
     return (
         <Atom<HelProps> ref={ref} {...props}>
-            <boxBufferGeometry   attach="geometry" args={[1,1,1]} />
-            <meshPhongMaterial   attach="material" />
+            <boxBufferGeometry attach="geometry" args={[1,1,1]} />
+            <meshPhongMaterial attach="material" />
             {props.children}
         </Atom>
     )

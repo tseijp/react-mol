@@ -1,12 +1,8 @@
-import React, {Children, ReactNode, useRef, useMemo} from 'react'
-import {State, States} from './types'
+import React, {Children, useRef, useMemo} from 'react'
+import {Props, State, States} from './types'
 import {useFrame} from 'react-three-fiber'
 export const render = React.createContext<States>(null as any)
-export function Render (props: {
-    cutLength?: number,
-    maxLength?: number
-    children: ReactNode
-}) : JSX.Element
+export function Render <T extends object={}>(props: Partial<Props<T>>) : JSX.Element
 export function Render ({
     geometry, cutLength,
     material, maxLength,

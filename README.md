@@ -85,7 +85,7 @@ import {calcMol, mergedGeometry} from 'react-mol'
 
 const Mol =(props)=> (
   <Atom {...props} calc={calcMol} geometry={mergedGeometry}>
-    <meshPhongMaterial      attach="material" />
+    <meshPhongMaterial attach="material" />
     {props.children}
   </Atom>
 )
@@ -148,9 +148,7 @@ function BasicExample () {
       <Poly n={10}>
         {next =>
           <Atom color="green" position={[2,0,1]} rotation={[0,0,Math.PI/3]}>
-            {next ||
-              <Atom color="blue" position={[2,0,0]} ref={instance}/>
-            }
+            {next || <Atom color="blue" position={[2,0,0]} ref={instance}/>}
           </Atom>
         }
       </Poly>

@@ -11,7 +11,7 @@ export const Hierarchy: Hierarchy = React.forwardRef(({children, ...props}:any, 
     const {states} = useContext<States>(render)
     const [index] = useState(() => uuid++)
     const depth = useMemo(() => (props.depth||0)+1, [props.depth])
-    const state = useMemo(() => props.calc({...props, depth, cutLength: 0}), [props, depth])
+    const state = useMemo(() => props.calc({...props, depth}), [props, depth])
     const color = useRef<any>(new THREE.Color().setColorName(state.color||"white"))
     const group = useRef<any>(null)
     React.useEffect(() => {
@@ -68,12 +68,11 @@ export const Atom: Atom = React.forwardRef(({
     if ( geometry &&  material) cutLength  = 0
     if ( geometry && !material) cutLength /= 2
     const Atom = props.recursion? Recursion : Hierarchy
-    // if (typeof depth==="number" && depth > 0)
-    if (uuid!==0)
+    if (typeof depth==="number" && depth > 0)
         return <Atom ref={ref} {...props}>{children?.slice(cutLength)}</Atom>
     return (
         <Render {...{geometry, material, cutLength, maxLength}}>
-            {children && [...children.slice(0, cutLength),
+            {[...children.slice(0, cutLength),
             <Atom ref={ref} {...props} key={0}
                 calc    = {props.calc || ((p:any)=>p)}
                 position= {props.position || [0,0,0]}>
