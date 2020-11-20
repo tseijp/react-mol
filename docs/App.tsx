@@ -5,6 +5,7 @@ import {Helmet} from 'react-helmet-async';
 import * as MOLSH from './MolsHierarchy'
 import * as MOLSR from './MolsRecursion'
 import * as HELS from './Hels'
+import * as FLOW from './Flow'
 
 const Link =({path="",name=""})=> (
     <div onClick={() => void (window.location.href = "/rmol/"+path+name)}>{name}</div>
@@ -21,6 +22,7 @@ const INDEX: any = {
     _: Object.keys(MOLSH).map(key => <Link key={key} name={key} />),
     m: Object.keys(MOLSR).map(key => <Link key={key} name={key} path="m/" />),
     h: Object.keys(HELS ).map(key => <Link key={key} name={key} path="h/" />),
+    f: Object.keys(FLOW ).map(key => <Link key={key} name={key} path="f/" />),
 }
 
 export const App: React.FC = ({children}) => {
@@ -34,12 +36,12 @@ export const App: React.FC = ({children}) => {
                 camera={{ fov: 75, position: [0, 0, 5] }}>
                 <ambientLight intensity={1} />
                 <pointLight position={[ 100, 100, 100]} intensity={2.2} />
-                <pointLight position={[-100,-100,-100]} intensity={5} color="red" />
-                <OrbitControls />
+                <pointLight position={[-100,-100,-100]} intensity={5} color="pink" />
                 <mesh position={[0, 0, -10]}>
                     <circleBufferGeometry attach="geometry" args={[8, 64]} />
                     <meshBasicMaterial attach="material" color="lightpink" />
                 </mesh>
+                <OrbitControls />
                 {children}
             </Canvas>
             {/**/

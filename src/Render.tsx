@@ -2,12 +2,14 @@ import React, {Children, useRef, useMemo} from 'react'
 import {Props, State, States} from './types'
 import {useFrame} from 'react-three-fiber'
 export const render = React.createContext<States>(null as any)
-export function Render <T extends object={}>(props: Partial<Props<T>>) : JSX.Element
-export function Render ({
+export type  Render = {
+    <T extends object={}>(props: Partial<Props<T>>) : JSX.Element;
+}
+export const Render = React.forwardRef(({
     geometry, cutLength,
     material, maxLength,
     children, ...props
-}: any) {
+}: any, forwardRef) => {
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
     if (typeof geometry==="function") geometry = geometry()
     if (typeof material==="function") material = material()
@@ -24,6 +26,7 @@ export function Render ({
         })
         mesh.current.instanceMatrix.needsUpdate = true
     })
+    React.useImperativeHandle(forwardRef, () => group.current)
     return (
         <render.Provider value={value}>
             <group ref={group} {...props}>
@@ -35,3 +38,4 @@ export function Render ({
         </render.Provider>
     )
 }
+)

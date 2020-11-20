@@ -21,10 +21,12 @@ const Root  =()=> (
                 <Route path={"/rmol/m/"+k} component={()=><App><V/></App>} key={k}/> )}
                 {Object.entries(HELS).map(([k, V]) =>
                 <Route path={"/rmol/h/"+k} component={()=><App><V/></App>} key={k}/> )}
+                {Object.entries(FLOW).map(([k, V]) =>
+                <Route path={"/rmol/f/"+k} component={()=><App><V/></App>} key={k}/> )}
                 <Route path="/rmol/"       component={()=><App><HIERARCHY.Random/></App>} exact/>
                 <Route path="/rmol/m/"     component={()=><App><RECURSION.Random/></App>} exact/>
                 <Route path="/rmol/h/"     component={()=><App><HELS.Archimedes/></App>} exact/>
-                <Route path="/rmol/f/"     component={()=><App><FLOW.Stage/></App>} exact/>
+                <Route path="/rmol/f/"     component={()=><App><FLOW.Points/></App>} exact/>
                 <Route path="/rmol/about"  component={()=><App><About/></App>} exact/>
                 <Route path="/rmol/basic"  component={()=><App><Basic/></App>} exact/>
                 <Redirect to='/rmol/' />

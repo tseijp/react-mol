@@ -7,12 +7,14 @@ let uuid = 0
 export type Hierarchy = {
     <T extends object={}>(props: unknown & Partial<Props<T>>): null | JSX.Element
 }
-export const Hierarchy: Hierarchy = React.forwardRef(({children, ...props}:any, ref) => {
+export const Hierarchy: Hierarchy = React.forwardRef(({
+    children, calc=((p: any)=>p), ...props
+}:any, ref) => {
     const {states} = useContext<States>(render)
     const [index] = useState(() => uuid++)
     const depth = useMemo(() => (props.depth||0)+1, [props.depth])
-    const state = useMemo(() => props.calc({...props, depth}), [props, depth])
-    const color = useRef<any>(new THREE.Color().setColorName(state.color||"white"))
+    const state = useMemo(() => calc({...props, calc, depth}), [calc, props, depth])
+    const color = useRef<any>(new THREE.Color().set(state.color||"white"))
     const group = useRef<any>(null)
     React.useEffect(() => {
         group.current.updateMatrixWorld()
@@ -27,17 +29,17 @@ export const Hierarchy: Hierarchy = React.forwardRef(({children, ...props}:any, 
         scale   : group.current.scale,
         color   : color.current
     }))
-    children = children && typeof children[0]==="function"
-        ? children[0]({...state, state, children:null})
-        : React.Children.map(children, (child: any) =>
-            child && React.cloneElement(child, {
-                ...state, state, children:null,// ⚠ crash if not assigned null ⚠
-                ...child.props
-        })
-    )
     return (
         <group ref={group} {...state}>
-            {children}
+            {children && typeof children[0]==="function"
+                ? children[0]({...state, state, children:null})
+                : React.Children.map(children, (child: any) =>
+                    child && React.cloneElement(child, {
+                        //⚠ crash if children isnt assigned null ⚠
+                        ...state, state, children:null,
+                        ...child.props
+                })
+            )}
         </group>
     )
 })
