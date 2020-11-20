@@ -29,6 +29,7 @@ export const App: React.FC = ({children}) => {
         <>
             <Canvas
                 style={{position:"absolute", width:'100%', height: '100%', top:0, left:0, zIndex:-1}}
+                pixelRatio={window.devicePixelRatio}
                 gl={{ alpha: true, antialias: false, logarithmicDepthBuffer: true }}
                 camera={{ fov: 75, position: [0, 0, 5] }}>
                 <ambientLight intensity={1} />
@@ -41,6 +42,7 @@ export const App: React.FC = ({children}) => {
                 </mesh>
                 {children}
             </Canvas>
+            {/**/
             <div style={{position:"absolute", userSelect:"none",fontSize:"1.5rem", display:"inline-block"}}>
                 {INDEX[paths[1]] || INDEX._}
                 <Button loc="/rmol/"   alt="Hierarchy" />
@@ -57,6 +59,7 @@ export const App: React.FC = ({children}) => {
                 <Button loc="github.com/tseijp/react-mol" alt="GitHub watchers"
                         src="img.shields.io/github/watchers/tseijp/react-mol?style=social" /><br/>
             </div>
+            /**/}
             <Helmet>
                 <title>{window.location.pathname.split('/').slice(-1)[0]}</title>
                 <meta charSet="utf-8" />

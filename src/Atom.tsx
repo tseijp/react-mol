@@ -1,24 +1,25 @@
 import React, {Children, useContext, useMemo, useRef, useState} from 'react'
 import {Render, render} from './Render'
-import {Props} from './types'
+import {Props, States} from './types'
 import * as THREE from 'three'
 
 let uuid = 0
-export const Hierarchy = React.forwardRef((props:any, ref) => {
-    const {states} = useContext(render) as any
+export type Hierarchy = {
+    <T extends object={}>(props: unknown & Partial<Props<T>>): null | JSX.Element
+}
+export const Hierarchy: Hierarchy = React.forwardRef(({children, ...props}:any, ref) => {
+    const {states} = useContext<States>(render)
     const [index] = useState(() => uuid++)
-    // const state   = useMemo(() => props.calc(props), [props])
     const depth = useMemo(() => (props.depth||0)+1, [props.depth])
     const state = useMemo(() => props.calc({...props, depth, cutLength: 0}), [props, depth])
-    const color = useRef<any>(new THREE.Color().setColorName(state.color))
+    const color = useRef<any>(new THREE.Color().setColorName(state.color||"white"))
     const group = useRef<any>(null)
     React.useEffect(() => {
         group.current.updateMatrixWorld()
         states.current[index] = {
-            matrix: group.current.matrixWorld,
-            color : color.current
-        }
-        // return () => void (delete states.current[index])
+            group: group.current,
+            color: color.current
+        }// return () => void (delete states.current[index])
     }, [states, index])
     React.useImperativeHandle(ref, () => ({
         position: group.current.position,
@@ -26,13 +27,12 @@ export const Hierarchy = React.forwardRef((props:any, ref) => {
         scale   : group.current.scale,
         color   : color.current
     }))
-    const children = React.Children.map(state.children, (child:any, i) =>
-        child && React.cloneElement(child, {
-            ...state, children:null,// ⚠ crash if not assigned null ⚠
-            ...child.props, parentProps: state,
-            index: i,
-            depth: (props.depth||0) + 1,
-            cutLength: 0,
+    children = children && typeof children[0]==="function"
+        ? children[0]({...state, state, children:null})
+        : React.Children.map(children, (child: any) =>
+            child && React.cloneElement(child, {
+                ...state, state, children:null,// ⚠ crash if not assigned null ⚠
+                ...child.props
         })
     )
     return (
@@ -45,15 +45,15 @@ export const Recursion = (props:any) => {
     const [child, ...children] = Children.map(props.children, c=>c)
     if (typeof child!=="object") return null
     const grandren = Children.map(child.props.children, c=>c)
+    console.log(child, children)
     return React.cloneElement(child, {
         ...props, depth: 1, recursion: false, children: [
-            ...(grandren || []).slice(props.length),
-            <Recursion key={-1} {...{children}}/>
+            ...(grandren || []),//.slice(props.length) // ???
+            children.length && <Recursion key={-1} {...{children}}/>
         ]
     })
 }
 export type Atom = {
-    <T extends object={}>(props: unknown & Partial<Props<T>>): null | JSX.Element;
     <T extends object={}>(props: unknown & Partial<Props<T>>): null | JSX.Element;
 }
 export const Atom: Atom = React.forwardRef(({
@@ -62,6 +62,7 @@ export const Atom: Atom = React.forwardRef(({
     children=null, depth=0,
     ...props
 }: any, ref) => {
+    if (typeof children==="function") children = [children]
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
     if (!geometry &&  material) cutLength /= 2
     if ( geometry &&  material) cutLength  = 0

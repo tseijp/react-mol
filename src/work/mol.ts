@@ -1,19 +1,17 @@
+// import React from 'react'
 import {Vec3, Props, MolProps} from '../types'
 import {eulerVec3, mergeVec3} from '../utils'
 
-const sqrt2_3 = Math.sqrt(2/3)
-const sqrt1_3 = Math.sqrt(1/3)
+const r = Math.sqrt(2)*2/3
 
 export const calcMol = (props: Props<MolProps>): Props<MolProps> => {
-    const {index: key} = props
-    console.log(key)
-    const phi = key* Math.PI* 2/3 + (props.angle || 0)
-    const vec = [sqrt2_3*Math.cos(phi), sqrt1_3, sqrt2_3*Math.sin(phi)]
-    const position = (key<3? vec: [0,-1,0]) as Vec3
-    const distance = mergeVec3([ 1,-1], props.position||[0,0,0], position)
-    const rotation = eulerVec3(distance)
-    console.log(position, rotation)
-    return {...props, position, rotation, scale: [1,1,1]}
+    const {index=0, } = props
+    const phi = index* Math.PI* 2/3 + (props.angle || 0)
+    const vec = [r*Math.cos(phi), 1/3, r*Math.sin(phi)]
+    const position = (index<3? vec: [0,-1,0]) as Vec3
+    const distance = mergeVec3([-1,1], props.position, position)
+    const rotation = eulerVec3(distance, props.distance||[0,1,0])
+    return {...props, position, rotation, distance, scale: [1,1,1]}
 }
 
 // export function calcPos (target:Props<MolProps>, parent:Props<MolProps>, key=0): Vec3 {
@@ -29,9 +27,9 @@ export const calcMol = (props: Props<MolProps>): Props<MolProps> => {
 //     )
 // }
 // export const calcMol = ({children, ...props}:Props<MolProps>): Props<MolProps> => {
-//     const {position: target=[0,0,0], parentProps} = props
-//     const position = mergeVec3([.5,.5], target, parentProps?.position||[0,-1,0])
-//     const distance = mergeVec3([ 1,-1], target, parentProps?.position||[0,-1,0])
+//     const {position: target=[0,0,0], state} = props
+//     const position = mergeVec3([.5,.5], target, state?.position||[0,-1,0])
+//     const distance = mergeVec3([ 1,-1], target, state?.position||[0,-1,0])
 //     const rotation = eulerVec3(distance)
 //     const clone    = React.Children.map(children, (child:any, key) => {
 //         if (!child) return null

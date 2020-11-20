@@ -11,7 +11,22 @@ export {Atom as default, Atom, Hierarchy, Recursion} from './Atom'
 export {Render} from './Render'
 export * from './utils'
 export * from './types'
-
+// export function Poly <T extends object={}>(
+//     props: Partial<Props<T> & {
+//         n: number,
+//     children: null | ((
+//         next: ((nextProps?:Partial<Props<T>>) => JSX.Element),
+//         key : number
+//     ) => JSX.Element),
+//     }>
+// ): null|JSX.Element
+// export function Poly ({children,n=0,...props}: any) {
+//     if (n<0) return null
+//     const child = children(n>0 && ((nextProps: any={}) => {
+//         return <Poly n={n-1} {...nextProps} children={children}/>
+//     }), n)
+//     return React.cloneElement(child, {...props, children: null,...child.props})
+// }
 export function Poly <T extends object={}>(
     props: Partial<Props<T>> & Partial<{
         n: number, children: null|((child:JSX.Element, key:number) => JSX.Element),
@@ -23,11 +38,11 @@ export function Poly ({children,n=0,...props}: any) {
     return React.cloneElement(child, {...props, children:null, ...child.props})
 }
 const mergedGeometry =()=> {
-    const arr = new THREE.Matrix4().makeTranslation(0,1/2,0)
-    const sph = new THREE.SphereBufferGeometry(.1, 32, 32)
+    const arr = new THREE.Matrix4().makeTranslation(0,-1/2,0)
+    const sph = new THREE.SphereBufferGeometry(.3, 32, 32)
     const cyl = new THREE.CylinderBufferGeometry(.1,.1,1,10)
     cyl.applyMatrix4(arr);
-    return BufferGeometryUtils.mergeBufferGeometries([sph, cyl])
+    return BufferGeometryUtils.mergeBufferGeometries([cyl, sph])
 }
 export function Mol (props: MP): null | JSX.Element
 export function Mol (props: any) {
@@ -53,7 +68,7 @@ export const  Hel: Hel = React.forwardRef((props: any, ref) =>  {
 export function Flow (props: Partial<Props<FlowProps>>): null | JSX.Element
 export function Flow (props: any) {
     return (
-        <Atom<FlowProps> {...props} calc={calcFlow}>
+        <Atom<FlowProps> {...props} calc={calcFlow} color="black">
             <sphereBufferGeometry attach="geometry" args={[1,32,32]}/>
             <meshPhongMaterial    attach="material" />
             {props.children}
@@ -61,9 +76,9 @@ export function Flow (props: any) {
     )
 }
 //  ************************* MOL ************************* //
-export const H =(p:MP)=> <Mol {...p} element={1} scale={[.2,.2,.2]} color="white"/>
-export const C =(p:MP)=> <Mol {...p} element={6} scale={[.3,.3,.3]} color="black"/>
-export const O =(p:MP)=> <Mol {...p} element={8} scale={[.4,.4,.4]} color="red"/>
+export const H =(p:MP)=> <Mol {...p} element={1} color="white"/>
+export const C =(p:MP)=> <Mol {...p} element={6} color="black"/>
+export const O =(p:MP)=> <Mol {...p} element={8} color="red"/>
 export const OH =(p:MP)=> <O {...p}><H/></O>
 export const CO =(p:MP)=> <C {...p}><O double/></C>
 export const CH =(p:MP)=> <C {...p}><H/></C>
