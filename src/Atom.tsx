@@ -59,26 +59,26 @@ export type Atom = {
     <T extends object={}>(props: unknown & Partial<Props<T>>): null | JSX.Element;
 }
 export const Atom: Atom = React.forwardRef(({
-    geometry=null, cutLength=2,
-    material=null, maxLength=1000,
+    geometry=null, cut=2,
+    material=null, max=1000,
     children=null, depth=0,
     ...props
 }: any, ref) => {
     if (typeof children==="function") children = [children]
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
-    if (!geometry &&  material) cutLength /= 2
-    if ( geometry &&  material) cutLength  = 0
-    if ( geometry && !material) cutLength /= 2
+    if (!geometry &&  material) cut /= 2
+    if ( geometry &&  material) cut  = 0
+    if ( geometry && !material) cut /= 2
     const Atom = props.recursion? Recursion : Hierarchy
     if (typeof depth==="number" && depth > 0)
-        return <Atom ref={ref} {...props}>{children?.slice(cutLength)}</Atom>
+        return <Atom ref={ref} {...props}>{children?.slice(cut)}</Atom>
     return (
-        <Render {...{geometry, material, cutLength, maxLength}}>
-            {[...children.slice(0, cutLength),
+        <Render {...{geometry, material, cut, max}}>
+            {[...children.slice(0, cut),
             <Atom ref={ref} {...props} key={0}
                 calc    = {props.calc || ((p:any)=>p)}
                 position= {props.position || [0,0,0]}>
-                {children.slice(cutLength)}
+                {children.slice(cut)}
             </Atom>]}
         </Render>
     )

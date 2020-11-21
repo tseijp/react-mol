@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import {Vec3} from './types'
+import {BufferGeometryUtils} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 const base = new THREE.Vector3(0,1,0)
 const axis = new THREE.Vector3()
@@ -20,6 +21,13 @@ export function eulerVec3(_axis:Vec3=[1,0,0],_base:Vec3=[0,1,0]): Vec3 {
     quat1.setFromUnitVectors(base, axis);
     euler.setFromQuaternion(quat1)
     return euler.toArray().slice(0,3) as Vec3
+}
+export function mergedGeometry () {
+    const arr = new THREE.Matrix4().makeTranslation(0,-1/2,0)
+    const sph = new THREE.SphereBufferGeometry(.3, 32, 32)
+    const cyl = new THREE.CylinderBufferGeometry(.1,.1,1,10)
+    cyl.applyMatrix4(arr);
+    return BufferGeometryUtils.mergeBufferGeometries([cyl, sph])
 }
 // export function calcRelative (position:Vec3=[0,0,0], rotation:Vec3=[0,0,0], distance:Vec3=[0,1,0]) {
 //     base.set(0,1,0)

@@ -394,3 +394,64 @@ __Recipes of Hel (Helix)__
 
 
 </td></tr><!--***************  ***************--></table>
+
+
+<br/><br/><hr/><br/><br/>
+
+__Recipes of Flow__
+
+<table><!--*************** Recipes of Hel ***************--><tr><td><br/>
+
+[![Flow](
+    https://img.shields.io/badge/Flow-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
+
+</td><td><br/>
+
+[![Example](
+    https://img.shields.io/badge/Example-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
+
+</td></tr><tr><td>
+
+__Points__
+
+</td><td>
+
+```tsx
+<Render position={[-12.5,0,-25]} max={2500}>
+  <sphereBufferGeometry attach="geometry"/>
+  <meshPhongMaterial    attach="material"/>
+  {Array(2500).fill(0).map((_,i) =>
+    <Point key={i} color={colors[i]}
+        scale={r=>[r/3,r/3,r/3]}
+        position={r=>[i%50,r,i/50%50]}/>
+  )}
+</Render>
+```
+
+</td></tr><tr><td>
+
+__Boxes__
+
+</td><td>
+
+```tsx
+<Render max={10**3}>
+  <boxBufferGeometry attach="geometry" />
+  <meshPhongMaterial attach="material" />
+  {Array(1000).fill(0).map((_,i) =>
+    <Box key={i}
+        scale={r=>[r/4,r/4,r/4]}
+        rotation={r=>[0,r*2,r*3]}
+        position={[i%10-5,i/10%10-5,i/100-5]}
+      color={colors[i]}/>
+  )}
+</Render>
+```
+
+</td></tr><tr><td>
+
+__Swarms__
+
+</td></tr><!--***************  ***************--></table>

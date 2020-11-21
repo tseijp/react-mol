@@ -3,7 +3,6 @@ import {Vec3, Props, MolProps} from '../types'
 import {eulerVec3, mergeVec3} from '../utils'
 
 const r = Math.sqrt(2)*2/3
-
 export const calcMol = (props: Props<MolProps>): Props<MolProps> => {
     const {index=0, } = props
     const phi = index* Math.PI* 2/3 + (props.angle || 0)

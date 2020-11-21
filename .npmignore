@@ -2,6 +2,7 @@ node_modules
 *
 **
 !src/*
+!src/**
 !index.js
 !index.d.ts
 !index.cjs.js

@@ -32,15 +32,12 @@ export const App: React.FC = ({children}) => {
             <Canvas
                 style={{position:"absolute", width:'100%', height: '100%', top:0, left:0, zIndex:-1}}
                 pixelRatio={window.devicePixelRatio}
+                onCreated={({ gl }) => gl.setClearColor('lightpink')}
                 gl={{ alpha: true, antialias: false, logarithmicDepthBuffer: true }}
                 camera={{ fov: 75, position: [0, 0, 5] }}>
                 <ambientLight intensity={1} />
                 <pointLight position={[ 100, 100, 100]} intensity={2.2} />
                 <pointLight position={[-100,-100,-100]} intensity={5} color="pink" />
-                <mesh position={[0, 0, -10]}>
-                    <circleBufferGeometry attach="geometry" args={[8, 64]} />
-                    <meshBasicMaterial attach="material" color="lightpink" />
-                </mesh>
                 <OrbitControls />
                 {children}
             </Canvas>

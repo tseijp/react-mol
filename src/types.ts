@@ -21,8 +21,8 @@ export type Props<T extends object={}> = Spread<{
     state: Props<MolProps>,
     depth: number,
     index: number,
-    cutLength?: number,
-    maxLength?: number,
+    cut?: number,
+    max?: number,
     children?: ReactNode|((state:Props<T>)=>ReactNode),
     geometry?: null|Geometry,
     material?: null|Material,
@@ -39,7 +39,13 @@ export type MolProps = {
 }
 export type HelProps = {
 }
-export type FlowProps = {}
+export type FlowProps = {
+    rate: (x:number, y:number, z:number, t:number) => number,
+    position?: (r: number) => Vec3,
+    rotation?: (r: number) => Vec3,
+    scale?: (r: number) => Vec3,
+    color?: (r: number) => string
+}
 
 // ************************* UTILS ************************* //
 type Spread<L extends object, R extends object> = Id<
