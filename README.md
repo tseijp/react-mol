@@ -110,7 +110,11 @@ const Mol =(props)=> (
 </td></td>
 </table>
 
-__What does it look like?__
+<details>
+<summary>
+What does it look like?
+</summary>
+
 
 <table>
 <tr><td>
@@ -165,6 +169,10 @@ ReactDOM.render(
   document.getElementById('root')
 )
 ```
+
+</details>
+
+
 <details>
 <summary>Show Recursion Example</summary>
 
@@ -373,31 +381,6 @@ __ethylene__
 
 <br/><br/><hr/><br/><br/>
 
-__Recipes of Hel (Helix)__
-<table><!--*************** Recipes of Hel ***************--><tr><td><br/>
-
-[![Hel](
-    https://img.shields.io/badge/Hel-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
-
-</td><td><br/>
-
-[![Hierarchy](
-    https://img.shields.io/badge/Hierarchy-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
-
-</td><td><br/>
-
-[![Recurtion](
-    https://img.shields.io/badge/Recurtion-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
-
-
-</td></tr><!--***************  ***************--></table>
-
-
-<br/><br/><hr/><br/><br/>
-
 __Recipes of Flow__
 <table><!--*************** Recipes of Flow ***************--><tr align="center"><td><br/>
 
@@ -410,6 +393,12 @@ __Recipes of Flow__
 [![Code](
     https://img.shields.io/badge/Code-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
+
+</td><td><br/>
+
+[![Results](
+    https://img.shields.io/badge/Results-black.svg)](
+    https://tsei.jp/rmol)
 
 </td></tr><tr><td align="center">
 
@@ -433,6 +422,12 @@ __Points__
 </Render>
 ```
 
+</td><td>
+
+[![Points](
+    https://raw.githubusercontent.com/tseijp/react-mol/master/public/Points.gif)](
+    https://tsei.jp/rmol/f/Points)
+
 </td></tr><tr><td align="center">
 
 __Boxes__
@@ -455,6 +450,12 @@ __Boxes__
   )}
 </Render>
 ```
+
+</td><td>
+
+[![Boxes](
+    https://raw.githubusercontent.com/tseijp/react-mol/master/public/Boxes.gif)](
+    https://tsei.jp/rmol/f/Boxes)
 
 </td></tr><tr><td align="center">
 
@@ -481,6 +482,12 @@ __Spheres__
   )}
 </Render>
 ```
+
+</td><td>
+
+[![Spheres](
+    https://raw.githubusercontent.com/tseijp/react-mol/master/public/Spheres.gif)](
+    https://tsei.jp/rmol/f/Spheres)
 
 </td></tr><tr><td align="center">
 
@@ -509,6 +516,12 @@ __Particles__
 )}
 </Render>
 ```
+
+</td><td>
+
+[![Particles](
+    https://raw.githubusercontent.com/tseijp/react-mol/master/public/Particles.gif)](
+    https://tsei.jp/rmol/f/Particles)
 
 </td></tr><tr><td align="center">
 
@@ -540,4 +553,39 @@ __Dodecas__
 </Render>
 ```
 
+</td><td>
+
+[![Dodecas](
+    https://raw.githubusercontent.com/tseijp/react-mol/master/public/Dodecas.gif)](
+    https://tsei.jp/rmol/f/Dodecas)
+
 </td></tr><!--***************  ***************--></table>
+
+<br/><br/><hr/><br/><br/>
+
+<details>
+
+__Recipes of Hel (Helix)__
+
+<table><!--*************** Recipes of Hel ***************--><tr><td><br/>
+
+[![Hel](
+    https://img.shields.io/badge/Hel-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
+
+</td><td><br/>
+
+[![Hierarchy](
+    https://img.shields.io/badge/Hierarchy-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
+
+</td><td><br/>
+
+[![Recurtion](
+    https://img.shields.io/badge/Recurtion-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
+
+
+</td></tr><!--***************  ***************--></table>
+
+</details>
