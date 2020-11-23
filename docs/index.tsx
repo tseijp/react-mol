@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom'
 import {unregister}  from './utils'
 import {HelmetProvider} from 'react-helmet-async'
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
-import * as HIERARCHY from './MolsHierarchy'
-import * as RECURSION from './MolsRecursion'
+import * as HEL from './Hel'
+import * as Mol from './Mol'
 import * as FLOW from './Flow'
-import * as HELS from './Hels'
+// import * as PLANT from './Plant'
+
 import {App} from './App'
 import {Basic} from './Basic'
 const About =()=> <></>
@@ -15,17 +16,15 @@ const Root  =()=> (
     <HelmetProvider>
         <BrowserRouter>
             <Switch>
-                {Object.entries(HIERARCHY).map(([k, V]) =>
-                <Route path={"/rmol/"+k}   component={()=><App><V/></App>} key={k}/> )}
-                {Object.entries(RECURSION).map(([k, V]) =>
-                <Route path={"/rmol/m/"+k} component={()=><App><V/></App>} key={k}/> )}
-                {Object.entries(HELS).map(([k, V]) =>
+                {Object.entries(Mol).map(([k, V]) =>
+                <Route path={"/rmol/m/"+k}   component={()=><App><V/></App>} key={k}/> )}
+                {Object.entries(HEL).map(([k, V]) =>
                 <Route path={"/rmol/h/"+k} component={()=><App><V/></App>} key={k}/> )}
                 {Object.entries(FLOW).map(([k, V]) =>
                 <Route path={"/rmol/f/"+k} component={()=><App><V/></App>} key={k}/> )}
-                <Route path="/rmol/"       component={()=><App><HIERARCHY.Random/></App>} exact/>
-                <Route path="/rmol/m/"     component={()=><App><RECURSION.Random/></App>} exact/>
-                <Route path="/rmol/h/"     component={()=><App><HELS.Archimedes/></App>} exact/>
+                <Route path="/rmol/"       component={()=><App><Basic/></App>} exact/>
+                <Route path="/rmol/m/"     component={()=><App><Mol.Random/></App>} exact/>
+                <Route path="/rmol/h/"     component={()=><App><HEL.Archimedes/></App>} exact/>
                 <Route path="/rmol/f/"     component={()=><App><FLOW.Points/></App>} exact/>
                 <Route path="/rmol/about"  component={()=><App><About/></App>} exact/>
                 <Route path="/rmol/basic"  component={()=><App><Basic/></App>} exact/>

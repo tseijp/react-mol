@@ -1,29 +1,34 @@
-import React from 'react'
-import {Render, Sph, Box} from '../src'
+import React, {useRef, useMemo} from 'react'
+import {Render, Flow, Vec3} from '../src'
 import niceColors from 'nice-color-palettes'
 import {useFrame} from 'react-three-fiber'
+import {useMove} from 'react-use-gesture'
+// utils
+const {sin,cos,max} = Math
+const rand=(m=1,a=0)=>m*Math.random()+a
 
-export const Points =()=> {
-    const colors = React.useMemo(() => new Array(2500).fill(0).map(() =>
+export const Points =({count:c=50})=> {
+    const colors = useMemo(() => new Array(c**2).fill(0).map(() =>
         niceColors[17][Math.floor(Math.random()*5)]
-    ), [])
+    ), [c])
     return (
-        <Render position={[-12.5,0,-25]} max={2500}>
+        <Render position={[-c/4,-1,-c/4]} max={2500}>
             <sphereBufferGeometry attach="geometry" args={[1,32,32]}/>
             <meshPhongMaterial    attach="material" />
-            {Array(2500).fill(0).map((_,i) =>
-                <Sph key={i}
+            {Array(c**2).fill(0).map((_,i) =>
+                <Flow key={i}
+                    args={(t,x,_,z) => [sin((x+t)/3)+sin((z+t)/2)]}
+                    position={r=>[i%c,r,i/c%c]}
                     scale={r=>[r/3,r/3,r/3]}
-                    position={r=>[i%50,r,i/50%50]}
                     color={colors[i]}/>
             )}
         </Render>
     )
 }
 export const Boxes =()=> {
-    const ref = React.useRef<any>(null)
-    const now = React.useRef<number>(0)
-    const colors = React.useMemo(() => new Array(1000).fill(0).map(() =>
+    const ref = useRef<any>(null)
+    const now = useRef<number>(0)
+    const colors = useMemo(() => new Array(1000).fill(0).map(() =>
         niceColors[17][~~(Math.random()*5)]
     ), [])
     useFrame((_, delta) => {
@@ -36,44 +41,94 @@ export const Boxes =()=> {
             <boxBufferGeometry attach="geometry" />
             <meshPhongMaterial attach="material" />
             {Array(1000).fill(0).map((_,i) =>
-                <Box key={i}
-                    scale={r=>[r/4,r/4,r/4]}
-                    rotation={r=>[0,r*2,r*3]}
+                <Flow key={i}
+                    args={(t,x,y,z) => [sin(x/4+t) +sin(y/4+t)+sin(z/4+t)]}
                     position={[i%10-5,i/10%10-5,i/100-5]}
+                    rotation={r=>[0,r*2,r*3]}
+                    scale={r=>[r/4,r/4,r/4]}
                     color={colors[i]}/>
             )}
         </Render>
     )
 }
-// const Swarm =({speed=0, factor=100, size=50, factors=[0,0,0], mx=0, my=0, ...props}: any)=> {
-//     const ref = React.useRef<any>(null)
-//     const now = React.useRef<number>(0)
-//     useFrame(() => {
-//         // now.current += speed / 2
-//         const t = now.current
-//         const a = Math.cos(t) + Math.sin(t * 1) / 10
-//         const b = Math.sin(t) + Math.cos(t * 2) / 10
-//         const s = Math.max(1.5, Math.cos(t) * size / 10)
-//         // ref.current.scale.set(s, s, s)
-//         // ref.current.position.set(
-//         //     (mx/10)*a + factors.x + Math.cos((t/10)*factor) + Math.sin(t*1)*factor/10,
-//         //     (my/10)*b + factors.y + Math.sin((t/10)*factor) + Math.cos(t*2)*factor/10,
-//         //     (my/10)*b + factors.z + Math.cos((t/10)*factor) + Math.sin(t*3)*factor/10,
-//         // )
-//     })
-//     return <Atom {...props} ref={ref} depth={1} />
-// }
-// export const Swarms =({rand=(m=1,a=0)=>m*Math.random()+a})=> {
-//     return (
-//         <Render max={1000} position={[0,0,-10]}>
-//             <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
-//             <meshPhongMaterial    attach="material" color={0xffffff} />
-//             {Array(2).fill(0).map((_, i) =>
-//                 <Swarm key={i}
-//                     speed ={rand(1/200,1/100)}
-//                     factor={rand(100, 2)}
-//                     factors={Array(3).fill(0).map(()=>rand(40,-20))}/>
-//             )}
-//         </Render>
-//     )
-// }
+export const Spheres =({count:c=1000}: any) => {
+    const xy = useRef<{x: number, y: number}>({x:0, y:0})
+    useMove(({xy: [x, y]}) => {
+        xy.current = {x, y}
+        console.log(xy.current)
+    }, {domTarget: window})
+    const colors = useMemo(() => [...Array(c)].map(() =>
+        niceColors[17][~~rand(5)]
+    ), [c])
+    return (
+        <Render max={c}>
+            <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
+            <meshPhongMaterial    attach="material" color={0xffffff} />
+            {Array(c).fill(0).map((_, i) =>
+                <Flow key={i}
+                    args={[rand(2, 1),...[...Array(3)].map(_=>rand(40, -20))]}
+                    position={(t,s,x,y,z)=>[
+                        x + cos(t*s) + sin(t*s*1),
+                        y + sin(t*s) + cos(t*s*2),
+                        z + cos(t*s) + sin(t*s*3),
+                    ]}
+                    scale={(t,s)=>Array(3).fill(max(.3, cos((t+s*10)*s))*s) as Vec3}
+                    color={colors[i]}/>
+            )}
+        </Render>
+    )
+}
+export const Particles =({count:c=1000}) => {
+    const colors = useMemo(() => [...Array(c)].map(() =>
+        niceColors[17][~~rand(5)]
+    ), [c])
+    return (
+        <Render max={c}>
+            <dodecahedronBufferGeometry args={[0.2, 0]} />
+            <meshPhongMaterial />
+            {Array(c).fill(0).map((_, i) =>
+                <Flow key={i}
+                    args={[
+                        rand( .1, .1),  // s: .01 ~ .02
+                        rand(100, 20),  // f:  20 ~ 120
+                        rand(100,-50),  // x: -50 ~ 50
+                        rand(100,-50),  // y: -50 ~ 50
+                        rand(100,-50),]}// z: -50 ~ 50
+                    position={(t,s,f,x,y,z) => [
+                        x + cos((t*s)*f) + sin(t*s*10)*f/10,
+                        y + sin((t*s)*f) + cos(t*s*20)*f/10,
+                        z + cos((t*s)*f) + sin(t*s*30)*f/10,]}
+                    scale={t => Array(3).fill(Math.cos(t)) as Vec3}
+                    color={colors[i]}/>
+            )}
+        </Render>
+    )
+}
+export const Dodecas =({count:c=1000,size=5}: any) => {
+    const colors = useMemo(() => [...Array(c)].map(() =>
+        niceColors[17][~~rand(5)]
+    ), [c])
+    return (
+        <Render max={c}>
+            <dodecahedronBufferGeometry args={[1,0]} />
+            <meshStandardMaterial />
+            {Array(c).fill(0).map((_,i) =>
+                <Flow key={i}
+                    args={[
+                        rand(.01,.01),  // s: .01 ~ .02
+                        rand(100, 20),  // f:  20 ~ 120
+                        rand(100,-50),  // x: -50 ~ 50
+                        rand(100,-50),  // y: -50 ~ 50
+                        rand(100,-50),]}// z: -50 ~ 50
+                    position={(t,s,f,x,y,z) => [
+                        x + cos((t+1)*s*50)*f + sin(t*s*1)*f/10,
+                        y + sin((t+2)*s*50)*f + cos(t*s*2)*f/10,
+                        z + cos((t+3)*s*50)*f + sin(t*s*3)*f/10
+                    ]}
+                    rotation={(t,s)=>Array(3).fill(cos(t*s*10)*size) as Vec3}
+                    scale={(t,s)=>Array(3).fill(cos(t*s*50)*size) as Vec3}
+                    color={colors[i]}/>
+            )}
+        </Render>
+    )
+}

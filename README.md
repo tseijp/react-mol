@@ -85,7 +85,7 @@ import {calcMol, mergedGeometry} from 'react-mol'
 
 const Mol =(props)=> (
   <Atom {...props} calc={calcMol} geometry={mergedGeometry}>
-    <meshPhongMaterial attach="material" />
+    <meshPhongMaterial  />
     {props.children}
   </Atom>
 )
@@ -143,8 +143,8 @@ function BasicExample () {
 
   return (
     <Atom color="red" position={[1,-2,-10]} rotation={[0,0,Math.PI/3]}>
-      <boxBufferGeometry attach="geometry" />
-      <meshPhongMaterial attach="material" />
+      <boxBufferGeometry />
+      <meshPhongMaterial  />
       <Poly n={10}>
         {next =>
           <Atom color="green" position={[2,0,1]} rotation={[0,0,Math.PI/3]}>
@@ -184,8 +184,8 @@ function BasicExample () {
 
   return (
     <Atom recursion>
-      <boxBufferGeometry attach="geometry" />
-      <meshPhongMaterial attach="material" />
+      <boxBufferGeometry />
+      <meshPhongMaterial  />
       <Atom color="red" position={[1, -2, -10]} rotation={[0,  0,  Math.PI/3]}/>
       {Array(10).fill(0).map((_, i) =>
         <Atom key={i} color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}/>
@@ -399,8 +399,7 @@ __Recipes of Hel (Helix)__
 <br/><br/><hr/><br/><br/>
 
 __Recipes of Flow__
-
-<table><!--*************** Recipes of Hel ***************--><tr><td><br/>
+<table><!--*************** Recipes of Flow ***************--><tr align="center"><td><br/>
 
 [![Flow](
     https://img.shields.io/badge/Flow-black.svg)](
@@ -408,11 +407,11 @@ __Recipes of Flow__
 
 </td><td><br/>
 
-[![Example](
-    https://img.shields.io/badge/Example-black.svg)](
+[![Code](
+    https://img.shields.io/badge/Code-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
 
-</td></tr><tr><td>
+</td></tr><tr><td align="center">
 
 __Points__
 
@@ -420,17 +419,21 @@ __Points__
 
 ```tsx
 <Render position={[-12.5,0,-25]} max={2500}>
-  <sphereBufferGeometry attach="geometry"/>
-  <meshPhongMaterial    attach="material"/>
+  <sphereBufferGeometry/>
+  <meshPhongMaterial   />
   {Array(2500).fill(0).map((_,i) =>
-    <Point key={i} color={colors[i]}
-        scale={r=>[r/3,r/3,r/3]}
-        position={r=>[i%50,r,i/50%50]}/>
+    <Flow key={i}
+      args={(t,x,_,z)=>[
+        sin((x+t)/3)+sin((z+t)/2)
+      ]}
+      position={r=>[i%50,r,i/50%50]}
+      scale={r=>[r/3,r/3,r/3]}
+      color={colors[i]}/>
   )}
 </Render>
 ```
 
-</td></tr><tr><td>
+</td></tr><tr><td align="center">
 
 __Boxes__
 
@@ -438,20 +441,103 @@ __Boxes__
 
 ```tsx
 <Render max={10**3}>
-  <boxBufferGeometry attach="geometry" />
-  <meshPhongMaterial attach="material" />
+  <boxBufferGeometry />
+  <meshPhongMaterial/>
   {Array(1000).fill(0).map((_,i) =>
-    <Box key={i}
-        scale={r=>[r/4,r/4,r/4]}
-        rotation={r=>[0,r*2,r*3]}
-        position={[i%10-5,i/10%10-5,i/100-5]}
+    <Flow key={i}
+      args={(t,x,y,z)=>[
+        sin(x/4+t)+sin(y/4+t)+sin(z/4+t)
+      ]}
+      position={[i%10-5,i/10%10-5,i/100-5]}
+      rotation={r=>[0,r*2,r*3]}
+      scale={r=>[r/4,r/4,r/4]}
       color={colors[i]}/>
   )}
 </Render>
 ```
 
-</td></tr><tr><td>
+</td></tr><tr><td align="center">
 
-__Swarms__
+__Spheres__
+
+</td><td>
+
+```tsx
+<Render max={1000}>
+  <sphereBufferGeometry args={[1,32,32]}/>
+  <meshPhongMaterial color={0xffffff}/>
+  {Array(1000).fill(0).map((_, i) =>
+    <Flow key={i}
+      args={[rand(2, 1),...[...Array(3)]
+                .map(_=>rand(40, -20))]}
+      position={(t,s,x,y,z)=>[
+        x + cos(t*s) + sin(t*s*1),
+        y + sin(t*s) + cos(t*s*2),
+        z + cos(t*s) + sin(t*s*3),
+      ]}
+      scale={(t,s)=>Array(3)
+          .fill(max(.3, cos((t+s*10)*s))*s)}
+        color={colors[i]}/>
+  )}
+</Render>
+```
+
+</td></tr><tr><td align="center">
+
+__Particles__
+
+</td><td>
+
+```tsx
+<Render max={1000}>
+  <dodecahedronBufferGeometry args={[.2,0]}/>
+  <meshPhongMaterial/>
+  {Array(1000).fill(0).map((_, i) =>
+    <Flow key={i}
+      args={[
+        rand( .1, .1),  // s: .01 ~ .02
+        rand(100, 20),  // f:  20 ~ 120
+        rand(100,-50),  // x: -50 ~ 50
+        rand(100,-50),  // y: -50 ~ 50
+        rand(100,-50),]}// z: -50 ~ 50
+      position={(t,s,f,x,y,z) => [
+        x + cos((t*s)*f) + sin(t*s*10)*f,
+        y + sin((t*s)*f) + cos(t*s*20)*f,
+        z + cos((t*s)*f) + sin(t*s*30)*f,]}
+      scale={t => Array(3).fill(Math.cos(t))}
+      color={colors[i]}/>
+)}
+</Render>
+```
+
+</td></tr><tr><td align="center">
+
+__Dodecas__
+
+</td><td>
+
+```tsx
+<Render max={1000}>
+  <dodecahedronBufferGeometry args={[1,0]}/>
+  <meshStandardMaterial/>
+  {Array(1000).fill(0).map((_,i) =>
+    <Flow key={i}
+      args={[
+        rand(.01,.01),  // s: .01 ~ .02
+        rand(100, 20),  // f:  20 ~ 120
+        rand(100,-50),  // x: -50 ~ 50
+        rand(100,-50),  // y: -50 ~ 50
+        rand(100,-50),]}// z: -50 ~ 50
+      position={(t,s,f,x,y,z) => [
+        x + cos((t+1)*s)*f + sin(t*s*1)*f,
+        y + sin((t+2)*s)*f + cos(t*s*2)*f,
+        z + cos((t+3)*s)*f + sin(t*s*3)*f
+      ]}
+      rotation={(t,s)=>Array(3).fill(cos(t*s))}
+      scale={(t,s)=>Array(3).fill(cos(t*s))}
+      color={colors[i]}/>
+  )}
+</Render>
+```
 
 </td></tr><!--***************  ***************--></table>

@@ -17,7 +17,7 @@ export type Props<T extends object={}> = Spread<{
     color: string,
     // BASIC ATOM
     ref: MutableRefObject<any>,
-    calc: (target:Props<T>)=>Props<T>,
+    // calc: (target:Props<T>)=>Props<T>,
     state: Props<MolProps>,
     depth: number,
     index: number,
@@ -40,11 +40,11 @@ export type MolProps = {
 export type HelProps = {
 }
 export type FlowProps = {
-    rate: (x:number, y:number, z:number, t:number) => number,
-    position?: (r: number) => Vec3,
-    rotation?: (r: number) => Vec3,
-    scale?: (r: number) => Vec3,
-    color?: (r: number) => string
+    args?: number[] | ((...args:number[]) => number[]),
+    position?: (...args:number[]) => Vec3,
+    rotation?: (...args:number[]) => Vec3,
+    scale?: (...args:number[]) => Vec3,
+    color?: (...args:number[]) => string
 }
 
 // ************************* UTILS ************************* //

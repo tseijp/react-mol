@@ -13,8 +13,8 @@ export const Hierarchy: Hierarchy = React.forwardRef(({
     const {states} = useContext<States>(render)
     const [index] = useState(() => uuid++)
     const depth = useMemo(() => (props.depth||0)+1, [props.depth])
-    const state = useMemo(() => calc({...props, calc, depth}), [calc, props, depth])
-    const color = useRef<any>(new THREE.Color().set(state.color||"white"))
+    // const state = useMemo(() => calc({...props, calc, depth}), [calc, props, depth])
+    const color = useRef<any>(new THREE.Color().set(props.color||"black"))
     const group = useRef<any>(null)
     React.useEffect(() => {
         group.current.updateMatrixWorld()
@@ -30,14 +30,14 @@ export const Hierarchy: Hierarchy = React.forwardRef(({
         color   : color.current
     }))
     return (
-        <group ref={group} {...state}>
+        <group ref={group} {...props}>
             {children && typeof children[0]==="function"
-                ? children[0]({...state, state, children:null})
-                : React.Children.map(children, (child: any) =>
+                ? children[0]({...props, depth, state:props, children:null})
+                : React.Children.map(children, (child: any, key) =>
                     child && React.cloneElement(child, {
                         //⚠ crash if children isnt assigned null ⚠
-                        ...state, state, children:null,
-                        ...child.props
+                        ...props, state:props, children:null, depth,
+                        ...child.props, index: key
                 })
             )}
         </group>
@@ -70,7 +70,7 @@ export const Atom: Atom = React.forwardRef(({
     if ( geometry &&  material) cut  = 0
     if ( geometry && !material) cut /= 2
     const Atom = props.recursion? Recursion : Hierarchy
-    if (typeof depth==="number" && depth > 0)
+    if (depth)
         return <Atom ref={ref} {...props}>{children?.slice(cut)}</Atom>
     return (
         <Render {...{geometry, material, cut, max}}>
