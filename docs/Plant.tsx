@@ -1,6 +1,8 @@
 import React from 'react'
-export const Plant =()=> {
+import {Plant} from '../src'
+
+export const KochCurve =()=> {
     return (
-        <group />
+        <Plant />
     )
 }

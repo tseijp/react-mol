@@ -100,10 +100,50 @@ const Mol =(props)=> (
     https://tsei.jp/rmol)
 
 </td></tr>
+
 <tr><td>
+
+🍭<strong>`<Flow/>`</strong>
+
 <details><summary>View Code</summary>
 
-~~🧬<strong>`<Hel/>`</strong> is TODO~~
+```tsx
+import { Atom } from 'react-mol'
+import { useFrame } from "react-three-fiber"
+export function Flow (props) {
+    const now = React.useRef(0)
+    const ref = React.useRef(null)
+    const fun = (value) => typeof value==="function"
+    useFrame((_, delta) => {
+        now.current += delta
+        const {args:a, position:p, rotation:r, scale:s, color:c} = props
+        const args = fun(a)
+            ? a(now.current, ...ref.current.position.toArray())
+            : [ now.current, ...(a || []) ]
+        fun(p) && ref.current.position.set(...p(...args))
+        fun(r) && ref.current.rotation.set(...r(...args))
+        fun(s) && ref.current.scale.set(...s(...args))
+        fun(c) && ref.current.scale.set(...c(...args))
+    })
+    return <Atom<FlowProps> {...props} ref={ref} depth={1}/>
+}
+```
+</details>
+
+</td><td>
+
+[![Points](
+    https://raw.githubusercontent.com/tseijp/react-mol/master/public/Points.gif)](
+    https://tsei.jp/rmol/f/Points)
+
+</td></tr>
+<tr><td>
+
+🧬<strong>`<Hel/>`</strong>
+
+<details><summary>View Code</summary>
+
+~~TODO~~
 
 </details>
 
@@ -119,7 +159,7 @@ What does it look like?
 <table>
 <tr><td>
 
-🍡<strong>`<Atom/>`</strong> is TODO
+🪐<strong>`<Atom/>`</strong> is TODO
 (~~[live demo](https://tsei.jp/rmol/basic)~~).
 
 </td><td>
@@ -587,5 +627,60 @@ __Recipes of Hel (Helix)__
 
 
 </td></tr><!--***************  ***************--></table>
+
+</details>
+
+<details>
+
+__Plant__
+
+<table>
+<tr><td>
+
+Koch Curve
+
+```tsx
+<F recursion LR={[90,90]}>
+  <F />
+  <F L/>
+  <F R/>
+  <F L/>
+</F>
+```
+
+</td></tr>
+<tr><td>
+
+Meandering Snake
+
+```tsx
+<F recursion
+   LR={[90,90]}>
+  <F />
+  <F LL/>
+  <F RR/>
+  <F L/>
+  <F R/>
+</F>
+```
+
+</td></tr>
+<tr><td>
+
+Urban Charting
+
+```tsx
+<F recursion
+   LR={[90,90]}>
+  <F/>
+  <F LL/>
+  <F RR/>
+  <F RR/>
+  <F LL/>
+</F>
+```
+
+</table>
+-->
 
 </details>

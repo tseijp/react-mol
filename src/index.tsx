@@ -4,11 +4,10 @@ import {useFrame} from 'react-three-fiber'
 import {Vec3, Props, MolProps, HelProps, FlowProps} from './types'
 import {mergedGeometry} from './utils'
 import {Atom} from './Atom'
-import {eulerVec3, mergeVec3} from './utils'
+import {eulerVec3, calcMolPos} from './utils'
 type MP = Partial<Props<MolProps>>
 type FP = Partial<Props<FlowProps>>
 const sin = Math.sin
-const rad = Math.sqrt(2)*2/3
 //  ************************* REACT-MOL ************************* //
 export {Atom as default, Atom, Hierarchy, Recursion} from './Atom'
 export {Render} from './Render'
@@ -44,19 +43,14 @@ export function Poly ({children,n=0,...props}: any) {
 //  ************************* <Mol /> ************************* //
 //  *************************         ************************* //
 export function Mol (props: MP): null | JSX.Element
-export function Mol ({position, rotation, distance, ...props}: any) {
-    const pos = useMemo<Vec3>(() => {
-        const phi = props.index* Math.PI* 2/3 + (props.angle || 0)
-        const vec = [rad*Math.cos(phi), 1/3, rad*Math.sin(phi)] as Vec3
-        return props.index<3? vec: [0,-1,0]
-    }, [props.index, props.angle])
-    console.log(props.index)
-    const dis = useMemo(() => mergeVec3([-1,1], position||[rad,1/3,0], pos), [position, pos])
-    const rot = useMemo(() => eulerVec3(dis, distance||[0,1,0]), [distance, dis])
+export function Mol (props: any) {
+    const {index: i=0, angle: a=Math.PI/2, double:d=false} = props
+    const position = useMemo<Vec3>(() => calcMolPos(i, a, d), [i, a, d])
+    const rotation = useMemo<Vec3>(() => eulerVec3(position, [0,1,0]), [position])
     return (
         <Atom<MolProps>
             {...props} geometry={mergedGeometry}
-            {...{position: pos, rotation: rot, distance: dis}}>
+            {...{position, rotation}}>
             <meshPhongMaterial attach="material"/>
             {props.children}
         </Atom>
@@ -65,10 +59,8 @@ export function Mol ({position, rotation, distance, ...props}: any) {
 //  *************************         ************************* //
 //  ************************* <Hel /> ************************* //
 //  *************************         ************************* //
-export type Hel = {
-    (props: Partial<Props<HelProps>>): null | JSX.Element;
-}
-export const  Hel: Hel = (props: any) =>  {
+export function Hel (props: Partial<Props<HelProps>>): null | JSX.Element
+export function Hel (props: any) {
     return (
         <Atom<HelProps> {...props}>
             <boxBufferGeometry attach="geometry" args={[1,1,1]} />
@@ -77,9 +69,9 @@ export const  Hel: Hel = (props: any) =>  {
         </Atom>
     )
 }
-//  *************************         ************************* //
+//  *************************          ************************* //
 //  ************************* <Flow /> ************************* //
-//  *************************         ************************* //
+//  *************************          ************************* //
 export function Flow (props: Partial<Props<FlowProps>>): null | JSX.Element
 export function Flow (props: any) {
     const ref = React.useRef<any>(null)
@@ -96,7 +88,17 @@ export function Flow (props: any) {
         fun(s) && ref.current.scale.set(...s(...args))
         fun(c) && ref.current.scale.set(...c(...args))
     })
-    return <Atom<FlowProps> {...props} ref={ref} depth={1}/>
+    return (
+        <Atom<FlowProps> {...props} ref={ref} depth={1}></Atom>
+    )
+}
+//  *************************           ************************* //
+//  ************************* <Plant /> ************************* //
+//  *************************           ************************* //
+export function Plant (props: any) {
+    // const position = []
+    // const rotation = []
+    return <Atom {...props}/>
 }
 // TODO functional Props for Poly
 // export function Poly <T extends object={}>(

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import {Canvas} from 'react-three-fiber'
 import {OrbitControls} from 'drei'
 import {Helmet} from 'react-helmet-async';
@@ -37,7 +37,9 @@ export const App: React.FC = ({children}) => {
                 <pointLight position={[ 100, 100, 100]} intensity={2.2} />
                 <pointLight position={[-100,-100,-100]} intensity={5} color="pink" />
                 <OrbitControls />
-                {children}
+                <Suspense fallback={null}>
+                    {children}
+                </Suspense>
             </Canvas>
             {/**/
             <div style={{position:"absolute", userSelect:"none",fontSize:"1.5rem", display:"inline-block"}}>

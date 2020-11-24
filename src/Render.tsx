@@ -24,7 +24,10 @@ export const Render = React.forwardRef(({
         })
         mesh.current.instanceMatrix.needsUpdate = true
     })
-    React.useImperativeHandle(forwardRef, () => group.current)
+    React.useImperativeHandle(forwardRef, () => ({
+        ...group.current,
+        mesh: mesh.current
+    }))
     return (
         <render.Provider value={value}>
             <group ref={group} {...props}>
@@ -32,6 +35,7 @@ export const Render = React.forwardRef(({
                     {children?.slice(0, cut)}
                 </instancedMesh>
                 {children?.slice(cut)}
+                <axesHelper />
             </group>
         </render.Provider>
     )

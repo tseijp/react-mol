@@ -13,7 +13,6 @@ export const Hierarchy: Hierarchy = React.forwardRef(({
     const {states} = useContext<States>(render)
     const [index] = useState(() => uuid++)
     const depth = useMemo(() => (props.depth||0)+1, [props.depth])
-    // const state = useMemo(() => calc({...props, calc, depth}), [calc, props, depth])
     const color = useRef<any>(new THREE.Color().set(props.color||"black"))
     const group = useRef<any>(null)
     React.useEffect(() => {

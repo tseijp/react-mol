@@ -1,7 +1,7 @@
 import React, {useRef, useMemo} from 'react'
 import {Render, Flow, Vec3} from '../src'
 import niceColors from 'nice-color-palettes'
-import {useFrame} from 'react-three-fiber'
+import {useFrame, } from 'react-three-fiber'
 import {useMove} from 'react-use-gesture'
 // utils
 const {sin,cos,max} = Math
@@ -66,13 +66,13 @@ export const Spheres =({count:c=1000}: any) => {
             <meshPhongMaterial    attach="material" color={0xffffff} />
             {Array(c).fill(0).map((_, i) =>
                 <Flow key={i}
-                    args={[rand(2, 1),...[...Array(3)].map(_=>rand(40, -20))]}
+                    args={[...Array(4)].map(_=>rand())}
                     position={(t,s,x,y,z)=>[
-                        x + cos(t*s) + sin(t*s*1),
-                        y + sin(t*s) + cos(t*s*2),
-                        z + cos(t*s) + sin(t*s*3),
+                        x*40 - 20 + cos(t*s*6) + sin(t*s*2),
+                        y*40 - 20 + sin(t*s*4) + cos(t*s*4),
+                        z*40 - 20 + cos(t*s*2) + sin(t*s*6),
                     ]}
-                    scale={(t,s)=>Array(3).fill(max(.3, cos((t+s*10)*s))*s) as Vec3}
+                    scale={(t,s)=>Array(3).fill(max(.5, 2*cos(t+s*50))) as Vec3}
                     color={colors[i]}/>
             )}
         </Render>
