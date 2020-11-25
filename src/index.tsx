@@ -25,20 +25,6 @@ export const CH3 =(p:MP)=> <C {...p}><H/><H/><H/></C>
 // Flow
 export const Sin =(p:FP)=> <Flow {...p} args={(x,_,z,t) => [sin((x+t)/3)+sin((z+t)/2)]} />
 export const Box =(p:FP)=> <Flow {...p} args={(x,y,z,t) => [sin(x/4+t) +sin(y/4+t)+sin(z/4+t)]} />
-
-//  *************************          ************************* //
-//  ************************* <Poly /> ************************* //
-//  *************************          ************************* //
-export function Poly <T extends object={}>(
-    props: Partial<Props<T>> & Partial<{
-        n: number, children: null|((child:JSX.Element, key:number) => JSX.Element),
-    }>
-): null|JSX.Element
-export function Poly ({children,n=0,...props}: any) {
-    if (n<0) return null
-    const child = children(n>0 && <Poly n={n-1} children={children}/>, n)
-    return React.cloneElement(child, {...props, children:null, ...child.props})
-}
 //  *************************         ************************* //
 //  ************************* <Mol /> ************************* //
 //  *************************         ************************* //
@@ -95,10 +81,35 @@ export function Flow (props: any) {
 //  *************************           ************************* //
 //  ************************* <Plant /> ************************* //
 //  *************************           ************************* //
+export function Plant (props: MP): null | JSX.Element
 export function Plant (props: any) {
-    // const position = []
-    // const rotation = []
-    return <Atom {...props}/>
+    const {index: i=0, angle: a=Math.PI/2, double:d=false} = props
+    const position = useMemo<Vec3>(() => calcMolPos(i, a, d), [i, a, d])
+    const rotation = useMemo<Vec3>(() => eulerVec3(position, [0,1,0]), [position])
+    return (
+        <Atom<MolProps>{...props}  {...{position, rotation}}>
+            <cylinderBufferGeometry args={[.1]}/>
+            <meshPhongMaterial attach="material"/>
+            {props.children}
+        </Atom>
+    )
+}
+//  *************************          ************************* //
+//  ************************* <Poly /> ************************* //
+//  *************************          ************************* //
+export function Poly <T extends object={}>(
+    props: Partial<Props<T>> & Partial<{
+        n: number,
+        children: null | ((
+            child: JSX.Element,
+            key: number
+        ) => JSX.Element),
+    }>
+): null|JSX.Element
+export function Poly ({children,n=0,...props}: any) {
+    if (n<0) return null
+    const child = children(n>0 && <Poly n={n-1} children={children}/>, n)
+    return React.cloneElement(child, {...props, children:null, ...child.props})
 }
 // TODO functional Props for Poly
 // export function Poly <T extends object={}>(
@@ -116,31 +127,4 @@ export function Plant (props: any) {
 //         return <Poly n={n-1} {...nextProps} children={children}/>
 //     }), n)
 //     return React.cloneElement(child, {...props, children: null,...child.props})
-// }
-// TODO CalcPos for Mol
-// export function calcPos (target:Props<MolProps>, parent:Props<MolProps>, key=0): Vec3 {
-//     const phi = key* Math.PI* 2/3 + (parent.angle || 0)
-//     const vec = [sqrt2_3*Math.cos(phi), sqrt1_3, sqrt2_3*Math.sin(phi)]
-//     return mergeVec3(Array(4).fill(1),
-//         calcRelative((key<3? vec: [0,-1,0]) as Vec3, target.rotation, parent.direction),
-//         parent.position || [0,0,0],
-//         target.position || [0,0,0],
-//         target.double
-//             ? calcPos({...target,double:false}, parent,key+(key?2:3))
-//             : [0,0,0]
-//     )
-// }
-// export const calcMol = ({children, ...props}:Props<MolProps>): Props<MolProps> => {
-//     const {position: target=[0,0,0], state} = props
-//     const position = mergeVec3([.5,.5], target, state?.position||[0,-1,0])
-//     const distance = mergeVec3([ 1,-1], target, state?.position||[0,-1,0])
-//     const rotation = eulerVec3(distance)
-//     const clone    = React.Children.map(children, (child:any, key) => {
-//         if (!child) return null
-//         const phi = key* Math.PI* 2/3 + (props.angle || 0)
-//         const vec = [sqrt2_3*Math.cos(phi), sqrt1_3, sqrt2_3*Math.sin(phi)]
-//         const position = (key<3? vec: [0,-1,0]) as Vec3
-//         return React.cloneElement(child, {position})
-//     })
-//     return {...props, children: clone, position, rotation, scale: [1,1,1]}
 // }

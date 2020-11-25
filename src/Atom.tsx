@@ -28,6 +28,7 @@ export const Hierarchy: Hierarchy = React.forwardRef(({
         scale   : group.current.scale,
         color   : color.current
     }))
+    console.log(props.cut)
     return (
         <group ref={group} {...props}>
             {children && typeof children[0]==="function"
@@ -46,7 +47,6 @@ export const Recursion = (props:any) => {
     const [child, ...children] = Children.map(props.children, c=>c)
     if (typeof child!=="object") return null
     const grandren = Children.map(child.props.children, c=>c)
-    console.log(child, children)
     return React.cloneElement(child, {
         ...props, depth: 1, recursion: false, children: [
             ...(grandren || []),//.slice(props.length) // ???
@@ -65,6 +65,7 @@ export const Atom: Atom = React.forwardRef(({
 }: any, ref) => {
     if (typeof children==="function") children = [children]
     if (!(children instanceof Array)) children = Children.map(children, c=>c)
+    if (depth) cut = 0
     if (!geometry &&  material) cut /= 2
     if ( geometry &&  material) cut  = 0
     if ( geometry && !material) cut /= 2

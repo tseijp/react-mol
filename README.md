@@ -27,11 +27,9 @@
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/rmol.mp4.gif) ](
     https://tsei.jp/rmol)
 
-</p>
 <br/>
 <br/>
 <br/>
-<p align="center">️
 
 <!--TODO-->
 
@@ -71,24 +69,63 @@ __Quick started__
 
 # Recipes
 
-__Recipes of Atom__
+<table>
+  <tr valign="top">
+    <td>
+      <strong><a href="#recipes-of-atom">Atom</a></strong>
+      <ul>
+        <li><a href="#Recipes-of-mol">Mol</a></li>
+        <li><a href="#Recipes-of-hel">Hel</a></li>
+        <li><a href="#Recipes-of-flow">Flow</a></li>
+        <li><a href="#Recipes-of-plant">Plant</a></li>
+      </ul>
+    </td>
+    <td>
+      <strong><a href="#recipes-of-mol">Mol</a></strong>
+      <ul>
+        <li><a href="#CH3OH">CH3OH</a></li>
+        <li><a href="#CH3COOH">CH3COOH</a></li>
+        <li><a href="#Polyethylene">Polyethylene</a></li>
+        <li><a href="#Acetil-acid">Acetil Acid</a></li>
+      </ul>
+    </td>
+    <td>
+      <strong><a href="#recipes-of-flow">Flow</a></strong>
+      <ul>
+        <li><a href="#Points">Points</a></li>
+        <li><a href="#Boxes">Boxes</a></li>
+        <li><a href="#Spheres">Spheres</a></li>
+        <li><a href="#Dodecas">Dodecas</a></li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+### Recipes of Atom
 
 <table>
-<tr><td><br/>
+<tr valign="top"><td><br/>
 
 🍡<strong>`<Mol/>`</strong> is a molecular chemistry based simulation component
 that covers most cases of organic molecule simulation.
+([More Recipes](#recipes-of-mol))
+
 <details><summary>View Code</summary>
 
 ```tsx
-import {calcMol, mergedGeometry} from 'react-mol'
-
-const Mol =(props)=> (
-  <Atom {...props} calc={calcMol} geometry={mergedGeometry}>
-    <meshPhongMaterial  />
-    {props.children}
-  </Atom>
-)
+function Mol (props: any) {
+  const {index:i, angle:a, double:d} = props
+  const position = calcMolPos(i,a,d)
+  const rotation = eulerVec3(position, [0,1,0])
+  return (
+    <Atom
+      {...props} geometry={mergedGeometry}
+      {...{position, rotation}}>
+      <meshPhongMaterial attach="material"/>
+      {props.children}
+    </Atom>
+  )
+}
 ```
 
 </details>
@@ -101,31 +138,33 @@ const Mol =(props)=> (
 
 </td></tr>
 
-<tr><td>
+<tr valign="top"><td>
 
 🍭<strong>`<Flow/>`</strong>
+([More Recipes](#recipes-of-flow))
 
 <details><summary>View Code</summary>
 
 ```tsx
 import { Atom } from 'react-mol'
 import { useFrame } from "react-three-fiber"
-export function Flow (props) {
-    const now = React.useRef(0)
-    const ref = React.useRef(null)
-    const fun = (value) => typeof value==="function"
-    useFrame((_, delta) => {
-        now.current += delta
-        const {args:a, position:p, rotation:r, scale:s, color:c} = props
-        const args = fun(a)
-            ? a(now.current, ...ref.current.position.toArray())
-            : [ now.current, ...(a || []) ]
-        fun(p) && ref.current.position.set(...p(...args))
-        fun(r) && ref.current.rotation.set(...r(...args))
-        fun(s) && ref.current.scale.set(...s(...args))
-        fun(c) && ref.current.scale.set(...c(...args))
-    })
-    return <Atom<FlowProps> {...props} ref={ref} depth={1}/>
+function Flow (props) {
+  const now = React.useRef(0)
+  const ref = React.useRef(null)
+  const fun = (value) => typeof value==="function"
+  useFrame((_, delta) => {
+    now.current += delta
+    const { position:p,   rotation:r,
+            args:a, color:c, scale:s } = props;
+    const args = fun(a)
+      ? a(now.current,...ref.current.position.toArray())
+      : [ now.current,...(a || []) ]
+    fun(p) && ref.current.position.set(...p(...args))
+    fun(r) && ref.current.rotation.set(...r(...args))
+    fun(s) && ref.current.scale.set(...s(...args))
+    fun(c) && ref.current.scale.set(...c(...args))
+  })
+  return <Atom<FlowProps> {...props} ref={ref} depth={1}/>
 }
 ```
 </details>
@@ -137,9 +176,10 @@ export function Flow (props) {
     https://tsei.jp/rmol/f/Points)
 
 </td></tr>
-<tr><td>
+<tr valign="top"><td>
 
 🧬<strong>`<Hel/>`</strong>
+([More Recipes](#recipes-of-hel))
 
 <details><summary>View Code</summary>
 
@@ -150,16 +190,13 @@ export function Flow (props) {
 </td></td>
 </table>
 
-<details>
-<summary>
-What does it look like?
-</summary>
+___What does it look like?___
 
 
 <table>
-<tr><td>
+<tr valign="top"><td>
 
-🪐<strong>`<Atom/>`</strong> is TODO
+🪐<strong>`<Atom/>`</strong>
 (~~[live demo](https://tsei.jp/rmol/basic)~~).
 
 </td><td>
@@ -171,31 +208,36 @@ What does it look like?
 ```tsx
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Atom, Poly } from 'react-mol'
+import { Atom } from 'react-mol'
 import { Canvas, useFrame } from 'react-three-fiber'
-
 function BasicExample () {
-  // This reference will give us direct access to the last instance
-  const instance = React.useRef<any>(null)
-
-  // Rotate instance every frame, this is outside of React without overhead
+  const ref = React.useRef<any>(null)
   useFrame(() => {
-    instance.current.rotation.x  =
-    instance.current.rotation.y  =
-    instance.current.rotation.z += 0.025
+    ref.current.rotation.x  =
+    ref.current.rotation.y  =
+    ref.current.rotation.z += 0.025
   })
-
   return (
-    <Atom color="red" position={[1,-2,-10]} rotation={[0,0,Math.PI/3]}>
-      <boxBufferGeometry />
-      <meshPhongMaterial  />
-      <Poly n={10}>
-        {next =>
-          <Atom color="green" position={[2,0,1]} rotation={[0,0,Math.PI/3]}>
-            {next || <Atom color="blue" position={[2,0,0]} ref={instance}/>}
+    <Atom  color="red"
+        position={[1, -2, -5]}
+        rotation={[0,  0,  Math.PI/3]}>
+      <boxBufferGeometry attach="geometry" />
+      <meshPhongMaterial attach="material" />
+      <Atom  color="green"
+          position={[2, 0, 1]}
+          rotation={[0, 0, Math.PI/3]}>
+        <Atom>
+          <Atom>
+            <Atom>
+              <Atom>
+                <Atom ref={ref}
+                  color="blue"
+                  position={[2,0,0]}/>
+              </Atom>
+            </Atom>
           </Atom>
-        }
-      </Poly>
+        </Atom>
+      </Atom>
     </Atom>
   )
 }
@@ -209,8 +251,6 @@ ReactDOM.render(
   document.getElementById('root')
 )
 ```
-
-</details>
 
 
 <details>
@@ -250,7 +290,7 @@ function BasicExample () {
 
 <br/><br/><hr/><br/><br/>
 
-__Recipes of Mol (Molecule)__
+### Recipes of Mol
 
 <table><!--*************** Recipes of Mol ***************--><tr align="center"><td><br/>
 
@@ -278,19 +318,12 @@ __Recipes of Mol (Molecule)__
 
 </td></tr><!--*************** Methyl alchol ***************--><tr><td align="center">
 
-__Methyl__  
-__alcohol__  
-[![H](
-    https://img.shields.io/badge/H-white.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
-[![OH](
-    https://img.shields.io/badge/OH-red.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
-[![C](
-    https://img.shields.io/badge/C-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
+###### Methyl alcohol
 [![CH3](
     https://img.shields.io/badge/CH3-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
+[![OH](
+    https://img.shields.io/badge/OH-red.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
 
 </td><td>
@@ -321,19 +354,12 @@ __alcohol__
 
 </td></tr><!--*************** Acetic acid ***************--><tr><td align="center">
 
-__Acetil__  
-__acid__  
-[![O](
-    https://img.shields.io/badge/O-red.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
-[![OH](
-    https://img.shields.io/badge/OH-red.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
+###### Acetil acid
 [![CH3](
     https://img.shields.io/badge/CH3-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
 [![COOH](
-    https://img.shields.io/badge/COOH-white.svg)](
+    https://img.shields.io/badge/COOH-red.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
 
 </td><td>
@@ -363,19 +389,12 @@ __acid__
 
 </td></tr><!--*************** Polyethylene ***************--><tr><td align="center">
 
-__Poly__  
-__ethylene__  
-[![H](
-    https://img.shields.io/badge/H-white.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
+###### Poly ethylene
 [![Poly](
     https://img.shields.io/badge/Poly-white.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
 [![CH2](
     https://img.shields.io/badge/CH2-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
-[![CH3](
-    https://img.shields.io/badge/CH3-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/index.tsx)  
 
 </td><td>
@@ -421,7 +440,8 @@ __ethylene__
 
 <br/><br/><hr/><br/><br/>
 
-__Recipes of Flow__
+### Recipes of Flow
+
 <table><!--*************** Recipes of Flow ***************--><tr align="center"><td><br/>
 
 [![Flow](
@@ -442,7 +462,7 @@ __Recipes of Flow__
 
 </td></tr><tr><td align="center">
 
-__Points__
+###### Points
 
 </td><td>
 
@@ -451,13 +471,11 @@ __Points__
   <sphereBufferGeometry/>
   <meshPhongMaterial   />
   {Array(2500).fill(0).map((_,i) =>
-    <Flow key={i}
-      args={(t,x,_,z)=>[
-        sin((x+t)/3)+sin((z+t)/2)
-      ]}
-      position={r=>[i%50,r,i/50%50]}
-      scale={r=>[r/3,r/3,r/3]}
-      color={colors[i]}/>
+    <Flow key={i} color={colors[i]}
+      args={(t,x,_,z) => [
+        sin((x+t)/3)+sin((z+t)/2)]}
+      position={r => [i%c,r,i/c%c]}
+      scale={r => [r/3,r/3,r/3]} />
   )}
 </Render>
 ```
@@ -470,7 +488,7 @@ __Points__
 
 </td></tr><tr><td align="center">
 
-__Boxes__
+###### Boxes
 
 </td><td>
 
@@ -479,14 +497,12 @@ __Boxes__
   <boxBufferGeometry />
   <meshPhongMaterial/>
   {Array(1000).fill(0).map((_,i) =>
-    <Flow key={i}
-      args={(t,x,y,z)=>[
-        sin(x/4+t)+sin(y/4+t)+sin(z/4+t)
-      ]}
+    <Flow key={i} color={colors[i]}
+      args={(t,x,y,z) => [
+        sin(x/4+t)+sin(y/4+t)+sin(z/4+t) ]}
       position={[i%10-5,i/10%10-5,i/100-5]}
-      rotation={r=>[0,r*2,r*3]}
-      scale={r=>[r/4,r/4,r/4]}
-      color={colors[i]}/>
+      rotation={r => [0,r*2,r*3]}
+      scale={r => [r/4,r/4,r/4]}/>
   )}
 </Render>
 ```
@@ -499,7 +515,7 @@ __Boxes__
 
 </td></tr><tr><td align="center">
 
-__Spheres__
+###### Spheres
 
 </td><td>
 
@@ -508,17 +524,14 @@ __Spheres__
   <sphereBufferGeometry args={[1,32,32]}/>
   <meshPhongMaterial color={0xffffff}/>
   {Array(1000).fill(0).map((_, i) =>
-    <Flow key={i}
-      args={[rand(2, 1),...[...Array(3)]
-                .map(_=>rand(40, -20))]}
-      position={(t,s,x,y,z)=>[
-        x + cos(t*s) + sin(t*s*1),
-        y + sin(t*s) + cos(t*s*2),
-        z + cos(t*s) + sin(t*s*3),
-      ]}
-      scale={(t,s)=>Array(3)
-          .fill(max(.3, cos((t+s*10)*s))*s)}
-        color={colors[i]}/>
+    <Flow key={i} color={colors[i]}
+      args={[...Array(4)].map(() => rand())}
+      position={(t,s,x,y,z) => [
+        x*40-20 + cos(t*s*6) + sin(t*s*2),
+        y*40-20 + sin(t*s*4) + cos(t*s*4),
+        z*40-20 + cos(t*s*2) + sin(t*s*6),]}
+      scale={(t,s) => Array(3).fill(
+              max(.3, cos((t+s*10)*s))*s)}/>
   )}
 </Render>
 ```
@@ -531,41 +544,7 @@ __Spheres__
 
 </td></tr><tr><td align="center">
 
-__Particles__
-
-</td><td>
-
-```tsx
-<Render max={1000}>
-  <dodecahedronBufferGeometry args={[.2,0]}/>
-  <meshPhongMaterial/>
-  {Array(1000).fill(0).map((_, i) =>
-    <Flow key={i}
-      args={[
-        rand( .1, .1),  // s: .01 ~ .02
-        rand(100, 20),  // f:  20 ~ 120
-        rand(100,-50),  // x: -50 ~ 50
-        rand(100,-50),  // y: -50 ~ 50
-        rand(100,-50),]}// z: -50 ~ 50
-      position={(t,s,f,x,y,z) => [
-        x + cos((t*s)*f) + sin(t*s*10)*f,
-        y + sin((t*s)*f) + cos(t*s*20)*f,
-        z + cos((t*s)*f) + sin(t*s*30)*f,]}
-      scale={t => Array(3).fill(Math.cos(t))}
-      color={colors[i]}/>
-)}
-</Render>
-```
-
-</td><td>
-
-[![Particles](
-    https://raw.githubusercontent.com/tseijp/react-mol/master/public/Particles.gif)](
-    https://tsei.jp/rmol/f/Particles)
-
-</td></tr><tr><td align="center">
-
-__Dodecas__
+###### Dodecas
 
 </td><td>
 
@@ -574,21 +553,14 @@ __Dodecas__
   <dodecahedronBufferGeometry args={[1,0]}/>
   <meshStandardMaterial/>
   {Array(1000).fill(0).map((_,i) =>
-    <Flow key={i}
-      args={[
-        rand(.01,.01),  // s: .01 ~ .02
-        rand(100, 20),  // f:  20 ~ 120
-        rand(100,-50),  // x: -50 ~ 50
-        rand(100,-50),  // y: -50 ~ 50
-        rand(100,-50),]}// z: -50 ~ 50
-      position={(t,s,f,x,y,z) => [
-        x + cos((t+1)*s)*f + sin(t*s*1)*f,
-        y + sin((t+2)*s)*f + cos(t*s*2)*f,
-        z + cos((t+3)*s)*f + sin(t*s*3)*f
-      ]}
+    <Flow key={i} color={colors[i]}
+      args={[...Array(4)].map(_ => rand())}
+      position={(t,s,x,y,z) => [
+        ((x-.5)-cos(t*s+x)-sin(t*s/1))*x*100,
+        ((y-.5)-sin(t*s+y)-cos(t*s/3))*y*100,
+        ((z-.5)-cos(t*s+z)-sin(t*s/5))*z*100,]}
       rotation={(t,s)=>Array(3).fill(cos(t*s))}
-      scale={(t,s)=>Array(3).fill(cos(t*s))}
-      color={colors[i]}/>
+      scale={(t,s)=>Array(3).fill(cos(t*s))}/>
   )}
 </Render>
 ```
@@ -605,7 +577,7 @@ __Dodecas__
 
 <details>
 
-__Recipes of Hel (Helix)__
+### Recipes of Hel
 
 <table><!--*************** Recipes of Hel ***************--><tr><td><br/>
 
@@ -632,12 +604,12 @@ __Recipes of Hel (Helix)__
 
 <details>
 
-__Plant__
+### Recipes of Plant
 
 <table>
 <tr><td>
 
-Koch Curve
+###### Koch Curve
 
 ```tsx
 <F recursion LR={[90,90]}>
@@ -651,7 +623,7 @@ Koch Curve
 </td></tr>
 <tr><td>
 
-Meandering Snake
+###### Meandering Snake
 
 ```tsx
 <F recursion
@@ -667,7 +639,7 @@ Meandering Snake
 </td></tr>
 <tr><td>
 
-Urban Charting
+###### Urban Charting
 
 ```tsx
 <F recursion
@@ -681,6 +653,5 @@ Urban Charting
 ```
 
 </table>
--->
 
 </details>

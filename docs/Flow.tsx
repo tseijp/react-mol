@@ -16,11 +16,10 @@ export const Points =({count:c=50})=> {
             <sphereBufferGeometry attach="geometry" args={[1,32,32]}/>
             <meshPhongMaterial    attach="material" />
             {Array(c**2).fill(0).map((_,i) =>
-                <Flow key={i}
+                <Flow key={i} color={colors[i]}
                     args={(t,x,_,z) => [sin((x+t)/3)+sin((z+t)/2)]}
-                    position={r=>[i%c,r,i/c%c]}
-                    scale={r=>[r/3,r/3,r/3]}
-                    color={colors[i]}/>
+                    position={r => [i%c,r,i/c%c]}
+                    scale={r => [r/3,r/3,r/3]} />
             )}
         </Render>
     )
@@ -41,12 +40,15 @@ export const Boxes =()=> {
             <boxBufferGeometry attach="geometry" />
             <meshPhongMaterial attach="material" />
             {Array(1000).fill(0).map((_,i) =>
-                <Flow key={i}
-                    args={(t,x,y,z) => [sin(x/4+t) +sin(y/4+t)+sin(z/4+t)]}
-                    position={[i%10-5,i/10%10-5,i/100-5]}
-                    rotation={r=>[0,r*2,r*3]}
-                    scale={r=>[r/4,r/4,r/4]}
-                    color={colors[i]}/>
+                <Flow key={i} color={colors[i]}
+                    args={(t,x,y,z) => [
+                        sin(x/4+t)
+                       +sin(y/4+t)
+                       +sin(z/4+t)
+                    ]}
+                    position={[i%10-5, i/10%10-5, i/100-5]}
+                    rotation={r => [0,r*2,r*3]}
+                    scale={r => [r/4,r/4,r/4]}/>
             )}
         </Render>
     )
@@ -65,15 +67,15 @@ export const Spheres =({count:c=1000}: any) => {
             <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
             <meshPhongMaterial    attach="material" color={0xffffff} />
             {Array(c).fill(0).map((_, i) =>
-                <Flow key={i}
-                    args={[...Array(4)].map(_=>rand())}
-                    position={(t,s,x,y,z)=>[
+                <Flow key={i} color={colors[i]}
+                    args={[...Array(4)].map(_ => rand())}
+                    position={(t,s,x,y,z) => [
                         x*40 - 20 + cos(t*s*6) + sin(t*s*2),
                         y*40 - 20 + sin(t*s*4) + cos(t*s*4),
                         z*40 - 20 + cos(t*s*2) + sin(t*s*6),
                     ]}
-                    scale={(t,s)=>Array(3).fill(max(.5, 2*cos(t+s*50))) as Vec3}
-                    color={colors[i]}/>
+                    scale={(t,s) => Array(3).fill(max(.5, 2*cos(t+s*50))) as Vec3}
+                    />
             )}
         </Render>
     )
@@ -87,46 +89,35 @@ export const Particles =({count:c=1000}) => {
             <dodecahedronBufferGeometry args={[0.2, 0]} />
             <meshPhongMaterial />
             {Array(c).fill(0).map((_, i) =>
-                <Flow key={i}
-                    args={[
-                        rand( .1, .1),  // s: .01 ~ .02
-                        rand(100, 20),  // f:  20 ~ 120
-                        rand(100,-50),  // x: -50 ~ 50
-                        rand(100,-50),  // y: -50 ~ 50
-                        rand(100,-50),]}// z: -50 ~ 50
+                <Flow key={i} color={colors[i]}
+                    args={[...Array(5)].map(() => rand(100,-50))}
                     position={(t,s,f,x,y,z) => [
-                        x + cos((t*s)*f) + sin(t*s*10)*f/10,
-                        y + sin((t*s)*f) + cos(t*s*20)*f/10,
-                        z + cos((t*s)*f) + sin(t*s*30)*f/10,]}
-                    scale={t => Array(3).fill(Math.cos(t)) as Vec3}
-                    color={colors[i]}/>
+                        x + cos(t*s*f/50) + sin(t*s/50)*f/10,
+                        y + sin(t*s*f/50) + cos(t*s/50)*f/10,
+                        z + cos(t*s*f/50) + sin(t*s/50)*f/10,]}
+                    scale={t => Array(3).fill(Math.cos(t)) as Vec3}/>
             )}
         </Render>
     )
 }
-export const Dodecas =({count:c=1000,size=5}: any) => {
+export const Dodecas =({count:c=2500,size=5}: any) => {
     const colors = useMemo(() => [...Array(c)].map(() =>
         niceColors[17][~~rand(5)]
     ), [c])
     return (
         <Render max={c}>
-            <dodecahedronBufferGeometry args={[1,0]} />
+            <dodecahedronBufferGeometry args={[1,0]}/>
             <meshStandardMaterial />
             {Array(c).fill(0).map((_,i) =>
                 <Flow key={i}
-                    args={[
-                        rand(.01,.01),  // s: .01 ~ .02
-                        rand(100, 20),  // f:  20 ~ 120
-                        rand(100,-50),  // x: -50 ~ 50
-                        rand(100,-50),  // y: -50 ~ 50
-                        rand(100,-50),]}// z: -50 ~ 50
-                    position={(t,s,f,x,y,z) => [
-                        x + cos((t+1)*s*50)*f + sin(t*s*1)*f/10,
-                        y + sin((t+2)*s*50)*f + cos(t*s*2)*f/10,
-                        z + cos((t+3)*s*50)*f + sin(t*s*3)*f/10
+                    args={[...Array(4)].map(_ => rand())}
+                    position={(t,s,x,y,z) => [
+                        ((x-.5) - cos(t*s+x) - sin(t*s/1))*(x*100+50),
+                        ((y-.5) - sin(t*s+y) - cos(t*s/3))*(y*100+50),
+                        ((z-.5) - cos(t*s+z) - sin(t*s/5))*(z*100+50),
                     ]}
-                    rotation={(t,s)=>Array(3).fill(cos(t*s*10)*size) as Vec3}
-                    scale={(t,s)=>Array(3).fill(cos(t*s*50)*size) as Vec3}
+                    rotation={(t,s)=>Array(3).fill(cos(t*s)*size) as Vec3}
+                    scale={(t,s)=>Array(3).fill(cos(t*s/2)*size) as Vec3}
                     color={colors[i]}/>
             )}
         </Render>
