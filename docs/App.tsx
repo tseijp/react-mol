@@ -47,7 +47,6 @@ export const App: React.FC = ({children}) => {
                 <Button loc="/rmol/m/" alt="Mol" />
                 <Button loc="/rmol/h/" alt="Hel" />
                 <Button loc="/rmol/f/" alt="Flow" />
-                <Button loc="/rmol/s/" alt="Sign" />
                 <Button loc="/rmol/p/" alt="Plant" /><br/>
                 <Button loc="github.com/tseijp/react-mol"     alt="license MIT"/>
                 <Button loc="www.npmjs.com/package/react-mol" alt="npm version"

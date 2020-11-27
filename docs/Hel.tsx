@@ -1,15 +1,8 @@
 import React from 'react'
-import {Poly, Hel} from '../src'
+import {Hel} from '../src'
 
 export const Archimedes =()=> (
     <Hel>
-        <Poly n={100}>
-            {next =>
-                <Hel position={[1,1,1]}>
-                    {next}
-                </Hel>
-            }
-        </Poly>
     </Hel>
 )
 export const Fermat =()=> (

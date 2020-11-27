@@ -17,9 +17,9 @@ export const CH3COOH =()=>
 export const Polyethylene =()=>
     <H>
         <Poly n={2}>
-        {children =>
-            <C angle={rand()}>
-                <C angle={rand()}>
+        {(children, i) =>
+            <C angle={(i%2)*Math.PI/2}>
+                <C angle={(i%2)*Math.PI/2}>
                     {children||<H/>}
                     <H/><H/>
                 </C>
@@ -31,9 +31,9 @@ export const Polyethylene =()=>
 export const Polypropylene =()=>
     <H>
         <Poly n={2}>
-        {children =>
-            <C angle={rand()}>
-                <C angle={rand()}>
+        {(children, i) =>
+            <C angle={(i%2)*Math.PI/2}>
+                <C angle={(i%2)*Math.PI/2}>
                     {children||<H/>}
                     <CH3/>
                     <H/>

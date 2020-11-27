@@ -1,8 +1,9 @@
 <!-- ****************************** ****************************** >
 - REFS
-    - https://threejs.org/examples/#webgl_loader_pdb
-    - https://threejs.org/examples/#css3d_molecules
-    - https://threejs.org/examples/#webgl_skinning_simple
+    - inspiration
+        - https://threejs.org/examples/#webgl_loader_pdb
+        - https://threejs.org/examples/#css3d_molecules
+        - https://threejs.org/examples/#webgl_skinning_simple
     - instancing
         - https://threejs.org/examples/#webgl_buffergeometry_lines
         - https://threejs.org/examples/#webgl_instancing_raycast
@@ -83,8 +84,7 @@ __Quick started__
     <td>
       <strong><a href="#recipes-of-mol">Mol</a></strong>
       <ul>
-        <li><a href="#CH3OH">CH3OH</a></li>
-        <li><a href="#CH3COOH">CH3COOH</a></li>
+        <li><a href="#Methyl alcohol">Methyl alcohol</a></li>
         <li><a href="#Polyethylene">Polyethylene</a></li>
         <li><a href="#Acetil-acid">Acetil Acid</a></li>
       </ul>
@@ -275,7 +275,7 @@ function BasicExample () {
       <boxBufferGeometry />
       <meshPhongMaterial  />
       <Atom color="red" position={[1, -2, -10]} rotation={[0,  0,  Math.PI/3]}/>
-      {Array(10).fill(0).map((_, i) =>
+      {[...Array(10)].map((_, i) =>
         <Atom key={i} color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}/>
       )}
       <Atom ref={ref} color="blue" position={[2,0,0]}/>
@@ -470,7 +470,7 @@ function BasicExample () {
 <Render position={[-12.5,0,-25]} max={2500}>
   <sphereBufferGeometry/>
   <meshPhongMaterial   />
-  {Array(2500).fill(0).map((_,i) =>
+  {[...Array(2500)].map((_,i) =>
     <Flow key={i} color={colors[i]}
       args={(t,x,_,z) => [
         sin((x+t)/3)+sin((z+t)/2)]}
@@ -496,7 +496,7 @@ function BasicExample () {
 <Render max={10**3}>
   <boxBufferGeometry />
   <meshPhongMaterial/>
-  {Array(1000).fill(0).map((_,i) =>
+  {[...Array(1000)].map((_,i) =>
     <Flow key={i} color={colors[i]}
       args={(t,x,y,z) => [
         sin(x/4+t)+sin(y/4+t)+sin(z/4+t) ]}
@@ -523,7 +523,7 @@ function BasicExample () {
 <Render max={1000}>
   <sphereBufferGeometry args={[1,32,32]}/>
   <meshPhongMaterial color={0xffffff}/>
-  {Array(1000).fill(0).map((_, i) =>
+  {[...Array(1000)].map((_, i) =>
     <Flow key={i} color={colors[i]}
       args={[...Array(4)].map(() => rand())}
       position={(t,s,x,y,z) => [
@@ -552,9 +552,9 @@ function BasicExample () {
 <Render max={1000}>
   <dodecahedronBufferGeometry args={[1,0]}/>
   <meshStandardMaterial/>
-  {Array(1000).fill(0).map((_,i) =>
+  {[...Array(1000)].map((_,i) =>
     <Flow key={i} color={colors[i]}
-      args={[...Array(4)].map(_ => rand())}
+      args={[...Array(4)].map(() => rand())}
       position={(t,s,x,y,z) => [
         ((x-.5)-cos(t*s+x)-sin(t*s/1))*x*100,
         ((y-.5)-sin(t*s+y)-cos(t*s/3))*y*100,

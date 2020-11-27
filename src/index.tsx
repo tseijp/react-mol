@@ -1,10 +1,9 @@
-import React, {useMemo} from 'react'
-// import * as THREE from 'three'
+import React, {useRef, useMemo} from 'react'
 import {useFrame} from 'react-three-fiber'
-import {Vec3, Props, MolProps, HelProps, FlowProps} from './types'
-import {mergedGeometry} from './utils'
+import * as THREE from 'three'
+import {Vec3, Props, MolProps, HelProps, FlowProps, SwarmProps} from './types'
+import {mergedGeometry, eulerVec3, calcMolPos} from './utils'
 import {Atom} from './Atom'
-import {eulerVec3, calcMolPos} from './utils'
 type MP = Partial<Props<MolProps>>
 type FP = Partial<Props<FlowProps>>
 const sin = Math.sin
@@ -30,12 +29,12 @@ export const Box =(p:FP)=> <Flow {...p} args={(x,y,z,t) => [sin(x/4+t) +sin(y/4+
 //  *************************         ************************* //
 export function Mol (props: MP): null | JSX.Element
 export function Mol (props: any) {
-    const {index: i=0, angle: a=Math.PI/2, double:d=false} = props
+    const {index: i, angle: a, double:d} = props
     const position = useMemo<Vec3>(() => calcMolPos(i, a, d), [i, a, d])
     const rotation = useMemo<Vec3>(() => eulerVec3(position, [0,1,0]), [position])
     return (
         <Atom<MolProps>
-            {...props} geometry={mergedGeometry}
+            {...props} top geometry={mergedGeometry}
             {...{position, rotation}}>
             <meshPhongMaterial attach="material"/>
             {props.children}
@@ -48,7 +47,7 @@ export function Mol (props: any) {
 export function Hel (props: Partial<Props<HelProps>>): null | JSX.Element
 export function Hel (props: any) {
     return (
-        <Atom<HelProps> {...props}>
+        <Atom<HelProps> top {...props}>
             <boxBufferGeometry attach="geometry" args={[1,1,1]} />
             <meshPhongMaterial attach="material" />
             {props.children}
@@ -60,8 +59,8 @@ export function Hel (props: any) {
 //  *************************          ************************* //
 export function Flow (props: Partial<Props<FlowProps>>): null | JSX.Element
 export function Flow (props: any) {
-    const ref = React.useRef<any>(null)
-    const now = React.useRef<number>(0)
+    const ref = useRef<any>(null)
+    const now = useRef<number>(0)
     const fun = (value: any): value is Function => typeof value==="function"
     useFrame((_, delta) => {
         now.current += delta
@@ -75,7 +74,35 @@ export function Flow (props: any) {
         fun(c) && ref.current.scale.set(...c(...args))
     })
     return (
-        <Atom<FlowProps> {...props} ref={ref} depth={1}></Atom>
+        <Atom<FlowProps> {...props} ref={ref}></Atom>
+    )
+}
+//  *************************           ************************* //
+//  ************************* <Swarm /> ************************* //
+//  *************************           ************************* //
+export function Swarm (props: Partial<Props<SwarmProps>>): null | JSX.Element
+export function Swarm (props: any) {
+    const ref = useRef<any>(null)
+    const now = useRef<number>(0)
+    const acc = useRef<THREE.Vector3>(new THREE.Vector3(0,0,0))
+    const vec = useRef<THREE.Vector3>(new THREE.Vector3(0,0,0))
+    const fun = (value: any): value is Function => typeof value==="function"
+    useFrame((_, delta) => {
+        now.current += delta
+        const { args:a, position:p, rotation:r,
+                force:f, scale:s, color:c} = props
+        const args = fun(a)
+            ? a(now.current, ...ref.current.position.toArray())
+            : [ now.current, ...ref.current.position.toArray() ]
+        fun(f) && acc.current.set(...(f(...args) as Vec3))
+        vec.current.add(acc.current)
+        fun(p) && ref.current.position.set(...p(...args))
+        fun(r) && ref.current.rotation.set(...r(...args))
+        fun(s) && ref.current.scale.set(...s(...args))
+        fun(c) && ref.current.scale.set(...c(...args))
+    })
+    return (
+        <Atom<FlowProps> {...props} ref={ref} ></Atom>
     )
 }
 //  *************************           ************************* //
@@ -87,7 +114,7 @@ export function Plant (props: any) {
     const position = useMemo<Vec3>(() => calcMolPos(i, a, d), [i, a, d])
     const rotation = useMemo<Vec3>(() => eulerVec3(position, [0,1,0]), [position])
     return (
-        <Atom<MolProps>{...props}  {...{position, rotation}}>
+        <Atom<MolProps> top {...props} {...{position, rotation}}>
             <cylinderBufferGeometry args={[.1]}/>
             <meshPhongMaterial attach="material"/>
             {props.children}

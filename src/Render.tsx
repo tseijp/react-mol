@@ -18,7 +18,7 @@ export const Render = React.forwardRef(({
     const states= useRef<State[]>([])
     const value = useMemo<States>(() => ({states}), [])
     useFrame(() => {
-        Object.values(states.current).forEach((state: any, i) => {
+        states.current.forEach((state: any, i) => {
             mesh.current.setColorAt (i, state.color)
             mesh.current.setMatrixAt(i, state.group.matrixWorld)
         })

@@ -9,7 +9,7 @@ export function Basic () {
     ref.current.rotation.z += 0.025
   })
   return (
-    <Atom  color="red"
+    <Atom top color="red"
         position={[1, -2, -5]}
         rotation={[0,  0,  Math.PI/3]}>
       <boxBufferGeometry attach="geometry" />
