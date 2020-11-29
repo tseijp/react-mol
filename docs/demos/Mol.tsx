@@ -1,14 +1,14 @@
 import React from 'react'
-import {C, H, O, CH3, Mol, Poly} from '../src'
+import {C, H, O, CH3, Mol, Poly} from '../../src'
 // utils
 const rand=(mul=Math.PI*2)=>Math.random()*mul
 
-export const CH3OH =()=>
+export const MethylAlcohol =()=>
     <Mol recursion>
         <C><H/><H/><H/></C>
         <O><H/></O>
     </Mol>
-export const CH3COOH =()=>
+export const AcetilAcid =()=>
     <Mol recursion>
         <C><H/><H/><H/></C>
         <C><O double/></C>
@@ -58,3 +58,4 @@ export const Random =()=>
         }
         </Poly>
     </H>
+export default Random

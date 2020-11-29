@@ -1,5 +1,5 @@
 import React from 'react'
-import {Hel} from '../src'
+import {Hel} from '../../src'
 
 export const Archimedes =()=> (
     <Hel>
@@ -13,3 +13,4 @@ export const Power =()=> (
     <Hel>
     </Hel>
 )
+export default Power

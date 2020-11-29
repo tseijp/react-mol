@@ -1,12 +1,11 @@
 import React, {useRef, useMemo} from 'react'
-import {Render, Flow, Vec3} from '../src'
+import {Render, Flow, Vec3} from '../../src'
 import niceColors from 'nice-color-palettes'
 import {useFrame, } from 'react-three-fiber'
 import {useMove} from 'react-use-gesture'
 // utils
 const {sin,cos,max} = Math
 const rand=(m=1,a=0)=>m*Math.random()+a
-
 export const Points =({count:c=50})=> {
     const colors = useMemo(() => new Array(c**2).fill(0).map(() =>
         niceColors[17][Math.floor(Math.random()*5)]
@@ -123,3 +122,5 @@ export const Dodecas =({count:c=2500,size=5}: any) => {
         </Render>
     )
 }
+export default Dodecas
+// ************************* CODES ************************* //

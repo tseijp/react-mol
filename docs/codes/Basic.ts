@@ -1,7 +1,9 @@
+export const Basic = `
 import React from 'react'
-import {useFrame} from 'react-three-fiber'
-import {Atom} from '../src'
-export function Basic () {
+import ReactDOM from 'react-dom'
+import { Atom } from 'react-mol'
+import { Canvas, useFrame } from 'react-three-fiber'
+function BasicExample () {
   const ref = React.useRef<any>(null)
   useFrame(() => {
     ref.current.rotation.x  =
@@ -9,7 +11,7 @@ export function Basic () {
     ref.current.rotation.z += 0.025
   })
   return (
-    <Atom top color="red"
+    <Atom  color="red"
         position={[1, -2, -5]}
         rotation={[0,  0,  Math.PI/3]}>
       <boxBufferGeometry attach="geometry" />
@@ -32,3 +34,13 @@ export function Basic () {
     </Atom>
   )
 }
+
+ReactDOM.render(
+  <Canvas>
+    <pointLight   />
+    <ambientLight />
+    <BasicExample />
+  </Canvas>,
+  document.getElementById('root')
+)
+`
