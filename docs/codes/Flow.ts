@@ -25,7 +25,7 @@ export const Boxes = `
   )}
 </Render>
 `
-export const Shperes = `
+export const Spheres = `
 <Render max={1000}>
   <sphereBufferGeometry args={[1,32,32]}/>
   <meshPhongMaterial color={0xffffff}/>

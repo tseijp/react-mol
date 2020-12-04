@@ -1,4 +1,4 @@
-import React, {Children, useRef, useMemo} from 'react'
+import React, {useRef, useMemo} from 'react'
 import {Props, State, States} from './types'
 import {useFrame} from 'react-three-fiber'
 export const render = React.createContext<States>(null as any)
@@ -10,7 +10,6 @@ export const Render = React.forwardRef(({
     material=null, max=1000,
     children=null, ...props
 }: any, forwardRef) => {
-    if (!(children instanceof Array)) children = Children.map(children, c=>c)
     if (typeof geometry==="function") geometry = geometry()
     if (typeof material==="function") material = material()
     const mesh  = useRef<any>(null)
@@ -28,13 +27,15 @@ export const Render = React.forwardRef(({
           ...group.current,
         mesh: mesh.current
     }))
+    // ERROR if none
+    const child = useRef<any>(children instanceof Array && children.slice(cut))
     return (
         <render.Provider value={value}>
             <group ref={group} {...props}>
                 <instancedMesh ref={mesh} args={[geometry,material,max] as [any,any,number]}>
-                    {children?.slice(0, cut)}
+                    {children instanceof Array && children.slice(0, cut)}
                 </instancedMesh>
-                {children?.slice(cut)}
+                {child.current}
             </group>
         </render.Provider>
     )

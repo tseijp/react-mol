@@ -1,11 +1,12 @@
 import React, {useRef, useMemo} from 'react'
 import {Render, Flow, Vec3} from '../../src'
 import niceColors from 'nice-color-palettes'
-import {useFrame, } from 'react-three-fiber'
-import {useMove} from 'react-use-gesture'
-// utils
+import {useFrame} from 'react-three-fiber'
+// import {useControl} from 'react-three-gui'
+
 const {sin,cos,max} = Math
 const rand=(m=1,a=0)=>m*Math.random()+a
+
 export const Points =({count:c=50})=> {
     const colors = useMemo(() => new Array(c**2).fill(0).map(() =>
         niceColors[17][Math.floor(Math.random()*5)]
@@ -52,12 +53,9 @@ export const Boxes =()=> {
         </Render>
     )
 }
-export const Spheres =({count:c=1000}: any) => {
-    const xy = useRef<{x: number, y: number}>({x:0, y:0})
-    useMove(({xy: [x, y]}) => {
-        xy.current = {x, y}
-        console.log(xy.current)
-    }, {domTarget: window})
+export const Spheres =() => {
+    const c = 1000//useControl("count", {type: "number", value: 1000, min: 0, max: 2500})
+    const r = 20//useControl("range", {type: "number", value: 20, min: 10, max: 30})
     const colors = useMemo(() => [...Array(c)].map(() =>
         niceColors[17][~~rand(5)]
     ), [c])
@@ -69,9 +67,9 @@ export const Spheres =({count:c=1000}: any) => {
                 <Flow key={i} color={colors[i]}
                     args={[...Array(4)].map(_ => rand())}
                     position={(t,s,x,y,z) => [
-                        x*40 - 20 + cos(t*s*6) + sin(t*s*2),
-                        y*40 - 20 + sin(t*s*4) + cos(t*s*4),
-                        z*40 - 20 + cos(t*s*2) + sin(t*s*6),
+                        x*2*r - r + cos(t*s*6) + sin(t*s*2),
+                        y*2*r - r + sin(t*s*4) + cos(t*s*4),
+                        z*2*r - r + cos(t*s*2) + sin(t*s*6),
                     ]}
                     scale={(t,s) => Array(3).fill(max(.5, 2*cos(t+s*50))) as Vec3}
                     />
