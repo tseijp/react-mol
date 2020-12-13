@@ -1,31 +1,30 @@
 {
   "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "removeComments": true,
+    "noImplicitThis": false,
+    "noEmit": true,
+    "pretty": true,
+    "strict": true,
     "watch": true,
-    "target": "es5",
+    "baseUrl": "./",
+    "outDir": "./",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
-    ],
-    "rootDir": ".",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
+    ]
   },
-  "include": [
-    "src",
-    "docs"
-],
-  "exclude": [
-      "node_modules"
-  ]
+  "include": ["./docs", "./src", "./test"],
+  "exclude": ["./node_modules/**/*"]
 }

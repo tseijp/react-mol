@@ -19,7 +19,7 @@ export const AppPage = {
     file: window.location.pathname.split('/').filter(v=>v).find((_,i)=>i===1)||"",
     name: window.location.pathname.split('/').filter(v=>v).find((_,i)=>i===2)||"",
     code: ({file="", name=""}) => get(get(CODES, file) || {}, name||"default")||"No code",
-    Demo: ({file="", name=""}) => get(get(DEMOS, file) || {}, name||"default")||(()=>null),
+    Demo: ({file="", name=""}) => get(get(DEMOS, file) || {}, name||"default")||null,
     keys,
 }
 export * from './Page'

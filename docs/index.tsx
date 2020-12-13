@@ -9,6 +9,9 @@ import {Card, Code, Split, Trees} from '@tsei/core'
 import {unregister, usePage, AppPage}  from './utils'
 import {useGrid} from 'use-grid'
 import './styles.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import "bootstrap-css-only/css/bootstrap.min.css";
+import "mdbreact/dist/css/mdb.css";
 
 const STYLES: {[key:string]:React.CSSProperties} = {
     top : {overflowX:"hidden",minHeight:"100%",},
@@ -62,7 +65,7 @@ function App () {
     )
     return (
         <div style={STYLES.top}>
-            <Split order={[side, -1]} min={.1}>
+            <Split order={page.Demo? [side, -1]: [1, 0]} min={.1}>
                 <HookNote>
                     <HookCard {...{dark,size}}>
                         <HookCtrl/>
