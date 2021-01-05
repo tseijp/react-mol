@@ -39,18 +39,3 @@ export function mergedGeometry () {
     cyl.applyMatrix4(arr);
     return BufferGeometryUtils.mergeBufferGeometries([cyl, sph])
 }
-// export function calcRelative (position:Vec3=[0,0,0], rotation:Vec3=[0,0,0], distance:Vec3=[0,1,0]) {
-//     base.set(0,1,0)
-//     axis.set (...distance).normalize() // TODO use group.updateMatrix()
-//     euler.set(...rotation)
-//     quat1.setFromUnitVectors(base, axis)
-//     quat2.setFromEuler(euler)
-//     return  vec3.set(...position)
-//                 .normalize()
-//                 .applyQuaternion(quat1.multiply(quat2))
-//                 .setLength(1)
-//                 .toArray() as Vec3
-// }
-// TODO use parent: CH3OH = (H)-(O)-(CH3)
-// - now  calcAtom: (H: parent)-(O: me)-(CH3: calc child): using O and CH3
-// - next calcAtom: (H: parent)-(O: calc me)-(CH3: not using child): using H and O

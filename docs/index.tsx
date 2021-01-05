@@ -5,9 +5,10 @@ import {Helmet} from 'react-helmet-async';
 import {OrbitControls} from 'drei'
 import {HelmetProvider} from 'react-helmet-async'
 import {Controls, ControlsProvider} from 'react-three-gui';
-import {Card, Code, Split, Trees} from '@tsei/core'
 import {unregister, usePage, AppPage}  from './utils'
+import {Card, Split, Trees} from '@tsei/core'
 import {useGrid} from 'use-grid'
+import {Code} from '@tsei/mdmd'
 import './styles.css'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "bootstrap-css-only/css/bootstrap.min.css";
@@ -21,10 +22,10 @@ const STYLES: {[key:string]:React.CSSProperties} = {
 }
 // ************************* COMPONENTS ************************* //
 const HookNote = (props:any) => <div {...props} style={STYLES.note}/>
-const HookCard = (props:any) => <Card {...props}min={-1} style={STYLES.card} rate={.1} />
+const HookCard = (props:any) => <Card {...props} min={-1} style={STYLES.card} rate={.1} />
 const HookCode = (props:any) => props.code && <Code {...props}/>
 const HookCtrl = (props:any) => <Controls {...props} anchor='top_left' style={STYLES.ctrl} collapsed={true}/>
-const HookTree = ({children}: any) => <Trees style={{fontSize:15}}>{children}</Trees>
+const HookTree = ({children}: any) => <Trees>{children}</Trees>
 const HookCanvas = ({children}: any) => (
     <Canvas pixelRatio={window.devicePixelRatio}
             onCreated={({gl}) => gl.setClearColor('lightpink')}
@@ -36,7 +37,7 @@ const HookCanvas = ({children}: any) => (
         <pointLight position={[-100,-100,-100]} intensity={5} color="pink" />
         <OrbitControls />
         <React.Suspense fallback={null}>
-            {children}
+            {React.useMemo(() => children, [children])}
         </React.Suspense>
     </Canvas>
 )
@@ -48,7 +49,7 @@ function App () {
     const [side] = useGrid({xs:0,lg:89/233})
     const [page, setPage] = usePage<any>(AppPage)
     const trees = React.useMemo(() => page.keys.map((file:string[], i="") =>
-        <span key={i}>
+        <span key={i} style={{fontSize:"1rem"}}>
             {file.map(name => name && name!=="default" &&
             <span key={name} onClick={() => setPage({file:file[0], name})}>{name}</span>
             )}
@@ -67,15 +68,9 @@ function App () {
         <div style={STYLES.top}>
             <Split order={page.Demo? [side, -1]: [1, 0]} min={.1}>
                 <HookNote>
-                    <HookCard {...{dark,size}}>
-                        <HookCtrl/>
-                    </HookCard>
-                    <HookCard {...{dark,size}}>
-                        <HookTree>{trees}</HookTree>
-                    </HookCard>
-                    <HookCard {...{dark,size}}>
-                        <HookCode code={page.code}/>
-                    </HookCard>
+                    <HookCard {...{dark,size}}><HookCtrl/></HookCard>
+                    <HookCard {...{dark,size}}><HookTree>{trees}</HookTree></HookCard>
+                    <HookCard {...{dark,size}}><HookCode code={page.code}/></HookCard>
                     <button onClick={()=>set(p=>p+1)}>Render</button>
                 </HookNote>
                 <HookNote>

@@ -5,7 +5,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 module.exports = {
     paths: function(paths, env) {
         paths.appSrc     = resolveApp('.');
-        paths.appBuild   = resolveApp('build/grid');
+        paths.appBuild   = resolveApp('build/rmol');
         paths.appIndexJs = resolveApp('docs/index.tsx');
         paths.appTypeDeclarations = resolveApp('docs/react-app-env.d.ts');
         return paths;

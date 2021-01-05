@@ -11,9 +11,21 @@
 - TODO
     - multi threading using Work
     - ISSUE
+rmol branch: feature/Shader
+    <Shader uniforms={uniforms}>
+        <boxBufferGeometry/>
+        <phongBasicMaterial/>
+        {Array(100000).map((_,i) => <Atom shader/> )}
+    </Shader>
+    <GPUComputationRenderer dataType={THREE.HalFloatTime}>
+        <texture2D repeatWrapping uniform={{time: 0, delta: 0}}/>
+        <texture2D repeatWrapping uniform={{time: 0, delta: 0}}/>
+    </GPUComputationRenderer>
 - ISSUE
+    - args: broken when rerender if function
+    - rerener <Render/> and cant delete array elements
     - Recursion cant get children as array if child is redefined as <OH/>
-    ― functional props
+    - functional props
         - Atom position={[t => [t, t, t]]}
         if (typeof c==="function") c = c(time.current)
         if (typeof p==="function") c = c(time.current)
