@@ -3,11 +3,11 @@ import {Color, Group, Matrix4, Geometry, Material} from 'three'
 
 export type Vec3<T=number> = [T,T,T]
 export type Fun<T=Vec3,U=number> = T | ((...args:U[]) => T)
-export type State = {
-    group: Group
+export type State = Group | {
+    group: Group,
     color: Color
 }
-export type States = {states:MutableRefObject<State[]>}
+export type States = {states: MutableRefObject<State[]>}
 export type Props<T extends object={}> = Spread<{
     // BASIC THREE
     position: Vec3,
