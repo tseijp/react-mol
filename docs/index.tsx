@@ -24,8 +24,8 @@ const STYLES: {[key:string]:React.CSSProperties} = {
 const HookNote = (props:any) => <div {...props} style={STYLES.note}/>
 const HookCard = (props:any) => <Card {...props} min={-1} style={STYLES.card} rate={.1} />
 const HookCode = (props:any) => props.code && <Code {...props}/>
-const HookCtrl = (props:any) => <Controls {...props} anchor='top_left' style={STYLES.ctrl} collapsed={true}/>
-const HookTree = ({children}: any) => <Trees>{children}</Trees>
+const HookCtrl = (props:any) => <Controls {...props} anchor='top_left' style={STYLES.ctrl}/>
+const HookTree = ({children}: any) => <Trees size={.5}>{children}</Trees>
 const HookCanvas = ({children}: any) => (
     <Canvas pixelRatio={window.devicePixelRatio}
             onCreated={({gl}) => gl.setClearColor('lightpink')}
@@ -48,6 +48,7 @@ function App () {
     const [size] = useGrid<number>({init:0, md:1, lg:1.5})
     const [side] = useGrid({xs:0,lg:89/233})
     const [page, setPage] = usePage<any>(AppPage)
+    const order = React.useMemo(() => page.Demo? [side, -1]: [1, 0], [page.Demo, side])
     const trees = React.useMemo(() => page.keys.map((file:string[], i="") =>
         <span key={i} style={{fontSize:"1rem"}}>
             {file.map(name => name && name!=="default" &&
@@ -66,7 +67,7 @@ function App () {
     )
     return (
         <div style={STYLES.top}>
-            <Split order={page.Demo? [side, -1]: [1, 0]} min={.1}>
+            <Split order={order} min={.1}>
                 <HookNote>
                     <HookCard {...{dark,size}}><HookCtrl/></HookCard>
                     <HookCard {...{dark,size}}><HookTree>{trees}</HookTree></HookCard>

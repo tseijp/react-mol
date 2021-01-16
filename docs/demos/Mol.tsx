@@ -1,34 +1,43 @@
 import React from 'react'
-import {C, H, O, CH3, Mol, Poly} from '../../src'
+import {C, H, O, CH3, Poly} from '../../src'
+import {Render, Recursion, mergedGeometry as molGeometry} from '../../src'
 // utils
 const rand=(mul=Math.PI*2)=>Math.random()*mul
 
 export const MethylAlcohol =()=>
-    <Mol recursion>
-        <C><H/><H/><H/></C>
-        <O><H/></O>
-    </Mol>
+    <Render geometry={molGeometry}>
+        <meshPhongMaterial attach="material"/>
+        <C><H/><H/><H/><O><H/></O></C>
+    </Render>
 export const AcetilAcid =()=>
-    <Mol recursion>
-        <C><H/><H/><H/></C>
-        <C><O double/></C>
-        <O><H/></O>
-    </Mol>
+    <Render geometry={molGeometry}>
+        <meshPhongMaterial attach="material"/>
+        <Recursion>
+            <C><H/><H/><H/></C>
+            <C><O double/></C>
+            <O><H/></O>
+        </Recursion>
+    </Render>
 export const Polyethylene =()=>
-    <H>
-        <Poly n={2}>
-        {(children, i) =>
-            <C angle={(i%2)*Math.PI/2}>
+    <Render geometry={molGeometry}>
+        <meshPhongMaterial attach="material"/>
+        <H>
+            <Poly n={2}>
+            {(children, i) =>
                 <C angle={(i%2)*Math.PI/2}>
-                    {children||<H/>}
+                    <C angle={(i%2)*Math.PI/2}>
+                        {children||<H/>}
+                        <H/><H/>
+                    </C>
                     <H/><H/>
                 </C>
-                <H/><H/>
-            </C>
-        }
-        </Poly>
-    </H>
+            }
+            </Poly>
+        </H>
+    </Render>
 export const Polypropylene =()=>
+<Render geometry={molGeometry}>
+    <meshPhongMaterial attach="material"/>
     <H>
         <Poly n={2}>
         {(children, i) =>
@@ -43,19 +52,23 @@ export const Polypropylene =()=>
         }
         </Poly>
     </H>
+</Render>
 export const Random =()=>
-    <H max={2000}>
-        <Poly n={200}>
-        {children =>
-            <C angle={rand()}>
+    <Render geometry={molGeometry}>
+        <meshPhongMaterial attach="material"/>
+        <H max={2000}>
+            <Poly n={200}>
+            {children =>
                 <C angle={rand()}>
-                    {children||<H/>}
-                    <H/>
-                    <C><H/><H/><H/></C>
+                    <C angle={rand()}>
+                        {children||<H/>}
+                        <H/>
+                        <C><H/><H/><H/></C>
+                    </C>
+                    <H/><H/>
                 </C>
-                <H/><H/>
-            </C>
-        }
-        </Poly>
-    </H>
+            }
+            </Poly>
+        </H>
+    </Render>
 export default Random

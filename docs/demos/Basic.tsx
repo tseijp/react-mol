@@ -19,6 +19,14 @@ export function Add () {
     </Render>
   )
 }
+export function Hierarchy () {
+    return (
+        <Render>
+            <boxBufferGeometry attach="geometry"/>
+            <meshPhongMaterial attach="material"/>
+        </Render>
+    )
+}
 export function Basic () {
   const ref = React.useRef<any>(null)
   const top = React.useMemo(() => [1,-2,-10], [])

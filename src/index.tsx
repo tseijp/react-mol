@@ -16,6 +16,7 @@ export * from './types'
 export const H =(p:MP)=> <Mol {...p} element={1} color="white"/>
 export const C =(p:MP)=> <Mol {...p} element={6} color="black"/>
 export const O =(p:MP)=> <Mol {...p} element={8} color="red"/>
+export const N =(p:MP)=> <Mol {...p} element={7} color="blue"/>
 export const OH =(p:MP)=> <O {...p}><H/></O>
 export const CO =(p:MP)=> <C {...p}><O double/></C>
 export const CH =(p:MP)=> <C {...p}><H/></C>
@@ -36,8 +37,9 @@ export function Mol (props: any) {
         <Atom<MolProps>
             {...props} top geometry={mergedGeometry}
             {...{position, rotation}}>
-            <meshPhongMaterial attach="material"/>
-            {props.children}
+            {useMemo(() => React.Children.map(props.children, (child :any, index) =>
+                React.cloneElement(child, {index})
+            ), [props.children])}
         </Atom>
     )
 }
@@ -46,13 +48,7 @@ export function Mol (props: any) {
 //  *************************         ************************* //
 export function Hel (props: Partial<Props<HelProps>>): null | JSX.Element
 export function Hel (props: any) {
-    return (
-        <Atom<HelProps> top {...props}>
-            <boxBufferGeometry attach="geometry" args={[1,1,1]} />
-            <meshPhongMaterial attach="material" />
-            {props.children}
-        </Atom>
-    )
+    return  <Atom<HelProps> top {...props}></Atom>
 }
 //  *************************          ************************* //
 //  ************************* <Flow /> ************************* //

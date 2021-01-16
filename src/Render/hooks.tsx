@@ -7,7 +7,7 @@ export function useRender <T extends object={}>(): any
 export function useRender () {
     const mesh = useRef<any>(null)
     const [atoms] = useAtom(atomsAtom)
-    console.log(atoms)
+    // console.log(atoms)
     useFrame(() => {
         if (!mesh.current) return
         atoms.forEach((state: any, i) => {

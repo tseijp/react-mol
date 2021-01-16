@@ -32,6 +32,5 @@ export const Render = React.forwardRef((props: any, ref: any) => {
         <Provider>
             <Group ref={ref} {...props}/>
         </Provider>
-
     )
 })
