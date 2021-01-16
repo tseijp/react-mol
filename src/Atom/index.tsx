@@ -1,6 +1,7 @@
 import React, {Children} from 'react'
 import {Props} from '../types'
 import {useHierarchy} from './hooks'
+export * from './hooks'
 
 export type Hierarchy = {
     <T extends object={}>(props: unknown & Partial<Props<T>>): null | JSX.Element
