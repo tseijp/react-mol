@@ -2,6 +2,8 @@ import React from 'react'
 import {useFrame} from 'react-three-fiber'
 import {Atom, Render} from '../../src'
 import {useControl as _} from 'react-three-gui'
+import * as THREE from 'three'
+
 const {random} = Math
 
 export function Add () {
@@ -22,7 +24,7 @@ export function Add () {
 
 export function Basic () {
   // This reference will give us direct access to the last instance
-  const ref = React.useRef<any>(null)
+  const ref = React.useRef<THREE.Group>(null)
 
   // Rotate instance every frame, this is outside of React without overhead
   useFrame(() => {

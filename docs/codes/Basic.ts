@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import { Atom } from 'react-mol'
 import { Canvas, useFrame } from 'react-three-fiber'
 function BasicExample () {
-  const ref = React.useRef<any>(null)
+  const ref = React.useRef(null)
   useFrame(() => {
     ref.current.rotation.x  =
     ref.current.rotation.y  =

@@ -1,39 +1,39 @@
 import {ReactNode, MutableRefObject} from 'react'
-import {Matrix4, Geometry, Material} from 'three'
+import * as THREE from 'three'
 
 export type Vec3<T=number> = [T,T,T]
 export type Fun<T=Vec3,U=number> = T | ((...args:U[]) => T)
+export type Atom = Spread<THREE.Group, {
+    id: number,
+    group: THREE.Group,
+    color: THREE.Color
+}>
 export type Props<T extends object={}> = Spread<{
-    // BASIC THREE
+    // FOR THREE
+    matrix: THREE.Matrix4,
     position: Vec3,
     rotation: Vec3,
-    matrix: Matrix4,
     scale: Vec3,
     color: string,
-    // BASIC ATOM
-    ref: MutableRefObject<any>,
-    // calc: (target:Props<T>)=>Props<T>,
-    state: Props<MolProps>,
-    top: boolean,
-    index: number,
+    // FOR ATOM
+    ref: MutableRefObject<Atom>,
     cut?: number,
     max?: number,
+    geometry?: null | Fun<THREE.Geometry>,
+    material?: null | Fun<THREE.Material>,
     children?: ReactNode|((state:Props<T>)=>ReactNode),
-    geometry?: null|Geometry|{():Geometry},
-    material?: null|Material|{():Geometry},
 }, T>
 export type MolProps = {
     distance: Vec3,
     element: number,
-    matrix: Matrix4,
+    matrix: THREE.Matrix4,
     index: number,
     angle: number,
     ring?: boolean,
     double?: boolean,
     recursion?: boolean
 }
-export type HelProps = {
-}
+export type HelProps = {}
 export type FlowProps = {
     args?: Fun<number[]>,
     position?: Fun,

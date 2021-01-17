@@ -1,10 +1,5 @@
-import * as THREE from 'three'
 import {atom} from 'jotai'
-export type Atom = THREE.Group | {
-    id: number,
-    group: THREE.Group,
-    color: THREE.Color
-}
+import {Atom} from './types'
 export const atomsAtom = atom<Atom[]>([])
 
 export const addAtom = atom(null, (get, set, newAtom: Atom) => {

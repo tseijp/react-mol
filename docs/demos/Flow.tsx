@@ -25,7 +25,7 @@ export const Points =({count:c=50})=> {
     )
 }
 export const Boxes =()=> {
-    const ref = useRef<any>(null)
+    const ref = useRef<THREE.Group>(null)
     const now = useRef<number>(0)
     const colors = useMemo(() => new Array(1000).fill(0).map(() =>
         niceColors[17][~~(Math.random()*5)]
@@ -98,7 +98,7 @@ export const Particles =({count:c=1000}) => {
         </Render>
     )
 }
-export const Dodecas =({count:c=2500,size=5}: any) => {
+export const Dodecas =({count:c=2500,size=5}) => {
     const colors = useMemo(() => [...Array(c)].map(() =>
         niceColors[17][~~rand(5)]
     ), [c])

@@ -2,9 +2,14 @@ import React, {useRef, useState} from 'react'
 import {Color, Group} from 'three'
 import {useAtom} from 'jotai'
 import {addAtom, delAtom} from '../atoms'
+import {Props, Atom} from '../types'
 
 let uuid = 0
-export function useHierarchy (props: any, ref: any): any
+export function useHierarchy <T extends object={}>(
+    props:  unknown & Partial<Props<T>>,
+    ref:  null | React.Ref<unknown>
+):  unknown & Partial<Props<T>>
+
 export function useHierarchy (props: any, ref: any) {
     const [id] = useState(() => uuid++)
     const [, add] = useAtom(addAtom)
@@ -26,7 +31,7 @@ export function useHierarchy (props: any, ref: any) {
             id, ...group.current,
             group: group.current,
             color: color.current
-        })
+        } as Atom)
         return () => void del(id)
     }, [add, del, id])
 
