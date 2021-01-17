@@ -30,18 +30,24 @@ export const Box =(p:FP)=> <Flow {...p} args={(x,y,z,t) => [sin(x/4+t) +sin(y/4+
 //  *************************         ************************* //
 export function Mol (props: MP): null | JSX.Element
 export function Mol (props: any) {
-    const {index: i, angle: a, double:d} = props
-    const position = useMemo<Vec3>(() => calcMolPos(i, a, d), [i, a, d])
-    const rotation = useMemo<Vec3>(() => eulerVec3(position, [0,1,0]), [position])
-    return (
-        <Atom<MolProps>
-            {...props} top geometry={mergedGeometry}
-            {...{position, rotation}}>
-            {useMemo(() => React.Children.map(props.children, (child :any, index) =>
-                React.cloneElement(child, {index})
-            ), [props.children])}
-        </Atom>
-    )
+  const {index: i, angle: a, double:d} = props
+  const state = useMemo(() => {
+    const position = calcMolPos(i, a, d)
+    const rotation = eulerVec3(position, [0,1,0])
+    return {position, rotation}
+  }, [i, a, d])
+
+  const children = useMemo(() =>
+    React.Children.map(props.children, (child :any, index) =>
+      React.cloneElement(child, {index})
+  ), [props.children])
+
+  return (
+    <Atom<MolProps> {...props} {...state}
+        geometry={mergedGeometry}
+        children={children} top>
+    </Atom>
+  )
 }
 //  *************************         ************************* //
 //  ************************* <Hel /> ************************* //
@@ -59,19 +65,19 @@ export function Flow (props: any) {
     const now = useRef<number>(0)
     const fun = (value: any): value is Function => typeof value==="function"
     useFrame((_, delta) => {
+        if (!ref.current) return
         now.current += delta
-        const {args:a, position:p, rotation:r, scale:s, color:c} = props
+        const { position: p, scale: s, args: a,
+                rotation: r, color: c} = props
         const args = fun(a)
             ? a(now.current, ...ref.current.position.toArray())
             : [ now.current, ...(a || []) ]
-        fun(p) && ref.current.position.set(...p(...args))
-        fun(r) && ref.current.rotation.set(...r(...args))
-        fun(s) && ref.current.scale.set(...s(...args))
-        fun(c) && ref.current.scale.set(...c(...args))
+        p && ref.current.position.set(...(fun(p)? p(...args): p))
+        r && ref.current.rotation.set(...(fun(r)? r(...args): r))
+        s && ref.current.scale.set(...(fun(s)? s(...args): s))
+        c && ref.current.color.set(fun(c)? c(...args): c)
     })
-    return (
-        <Atom<FlowProps> {...props} ref={ref}></Atom>
-    )
+    return <Atom<FlowProps> ref={ref}></Atom>
 }
 //  *************************           ************************* //
 //  ************************* <Swarm /> ************************* //
@@ -95,10 +101,10 @@ export function Swarm (props: any) {
         fun(p) && ref.current.position.set(...p(...args))
         fun(r) && ref.current.rotation.set(...r(...args))
         fun(s) && ref.current.scale.set(...s(...args))
-        fun(c) && ref.current.scale.set(...c(...args))
+        fun(c) && ref.current.color.set(...c(...args))
     })
     return (
-        <Atom<FlowProps> {...props} ref={ref} ></Atom>
+        <Atom<FlowProps> ref={ref}></Atom>
     )
 }
 //  *************************           ************************* //

@@ -31,6 +31,7 @@ export const Boxes =()=> {
         niceColors[17][~~(Math.random()*5)]
     ), [])
     useFrame((_, delta) => {
+        if (!ref.current) return
         ref.current.rotation.x = Math.sin(now.current / 4)
         ref.current.rotation.y = Math.sin(now.current / 2)
         now.current += delta

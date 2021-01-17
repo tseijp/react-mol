@@ -25,6 +25,6 @@ export type Atom = {
 }
 export const Atom: Atom = React.forwardRef((props: any, ref) => {
     const {recursion: r} = props
-    const Atom = React.useMemo(() => r? Recursion: Hierarchy, [r])
-    return <Atom ref={ref} {...props} />
+    const Memo = React.useMemo(() => r? Recursion: Hierarchy, [r])
+    return <Memo ref={ref} {...props} />
 })

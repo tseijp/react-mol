@@ -19,48 +19,30 @@ export function Add () {
     </Render>
   )
 }
-export function Hierarchy () {
-    return (
-        <Render>
-            <boxBufferGeometry attach="geometry"/>
-            <meshPhongMaterial attach="material"/>
-        </Render>
-    )
-}
+
 export function Basic () {
+  // This reference will give us direct access to the last instance
   const ref = React.useRef<any>(null)
-  const top = React.useMemo(() => [1,-2,-10], [])
-  const pos = React.useMemo(() => [2, 0, 1], [])
-  const rot = React.useMemo(() => [0, 0, Math.PI/3], [])
+
+  // Rotate instance every frame, this is outside of React without overhead
   useFrame(() => {
     if (!ref.current) return
     ref.current.rotation.x  =
     ref.current.rotation.y  =
     ref.current.rotation.z += 0.025
   })
+
   return (
     <Render>
-      <boxBufferGeometry attach="geometry"/>
-      <meshPhongMaterial attach="material"/>
-      <Atom color="red" position={top} rotation={rot}>
-        <Atom color="green" position={pos} rotation={rot}>
-          <Atom color="green" position={pos} rotation={rot}>
-            <Atom color="green" position={pos} rotation={rot}>
-              <Atom color="green" position={pos} rotation={rot}>
-                <Atom color="green" position={pos} rotation={rot}>
-                  <Atom color="green" position={pos} rotation={rot}>
-                    <Atom color="green" position={pos} rotation={rot}>
-                      <Atom color="green" position={pos} rotation={rot}>
-                        <Atom color="green" position={pos} rotation={rot}>
-                          <Atom color="green" position={pos} rotation={rot}>
-                            <Atom color="green" position={pos} rotation={rot}>
-                              <Atom color="blue" position={[2,0,0]} ref={ref}/>
-                            </Atom>
-                          </Atom>
-                        </Atom>
-                      </Atom>
-                    </Atom>
-                  </Atom>
+      <boxBufferGeometry attach="geometry" />
+      <meshPhongMaterial attach="material" />
+      <Atom color="red" position={[1, -2, -5]} rotation={[0, 0, Math.PI/3]}>
+        <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+          <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+            <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+              <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+                <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+                  <Atom color="blue" position={[2, 0, 0]} ref={ref}/>
                 </Atom>
               </Atom>
             </Atom>

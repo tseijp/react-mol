@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useRef} from 'react'
 import {Props} from '../types'
 import {useRender} from './hooks'
 import {Provider} from 'jotai'
@@ -12,11 +12,15 @@ export const Group = React.forwardRef(({
     material=null, max=1000,
     children=null, ...props
 }: any, ref: any) => {
+    if (geometry) cut = -1
+    if (material) cut = -1
+    const group = useRef(null)
+    const mesh  = useRender(group, ref)
     return (
-        <group ref={ref} {...props}>
+        <group ref={group} {...props}>
             <instancedMesh
-                ref={useRender()}
-                args={useMemo<[any,any,number]>(() => [
+                ref={mesh}
+                args={useMemo<[any, any, number]>(() => [
                     typeof geometry==="function"? geometry(): geometry,
                     typeof material==="function"? material(): material,
                     max], [geometry, material, max])}>
