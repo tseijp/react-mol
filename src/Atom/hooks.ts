@@ -2,13 +2,13 @@ import React, {useRef, useState} from 'react'
 import {Color, Group} from 'three'
 import {useAtom} from 'jotai'
 import {addAtom, delAtom} from '../atoms'
-import {Props, Atom} from '../types'
+import {AtomProps, Atom} from '../types'
 
 let uuid = 0
 export function useHierarchy <T extends object={}>(
-    props:  unknown & Partial<Props<T>>,
+    props:  unknown & Partial<AtomProps<T>>,
     ref:  null | React.Ref<unknown>
-):  unknown & Partial<Props<T>>
+):  unknown & Partial<AtomProps<T>>
 
 export function useHierarchy (props: any, ref: any) {
     const [id] = useState(() => uuid++)
@@ -17,13 +17,13 @@ export function useHierarchy (props: any, ref: any) {
     const color = useRef<Color>(new Color().set(props.color||"black"))
     const group = useRef<Group>(null)
 
-    // change color
+    // change color //
     React.useEffect(() => {
         if (!props.color) return
         color.current?.set(props.color||"black")
     }, [props.color])
 
-    // change matrix
+    // change matrix //
     React.useEffect(() => {
         if (!group.current) return
         group.current.updateMatrixWorld()

@@ -1,14 +1,14 @@
-import React, {useRef, useMemo} from 'react'
+import React, {Children, useRef, useMemo} from 'react'
 import {useFrame} from 'react-three-fiber'
 import * as THREE from 'three'
-import {Vec3, Props, MolProps, HelProps, FlowProps, SwarmProps} from './types'
-import {mergedGeometry, eulerVec3, calcMolPos} from './utils'
+import {Vec3, AtomProps, MolProps, HelProps, FlowProps, SwarmProps} from './types'
+import {eulerVec3, calcMolPos} from './utils'
 import {Atom} from './Atom'
-type MP = Partial<Props<MolProps>>
-type FP = Partial<Props<FlowProps>>
+type MP = Partial<AtomProps<MolProps>>
+type FP = Partial<AtomProps<FlowProps>>
 const sin = Math.sin
 //  ************************* REACT-MOL ************************* //
-export {Atom as default, Atom, Hierarchy, Recursion} from './Atom'
+export {Atom as default, Atom} from './Atom'
 export {Render} from './Render'
 export * from './utils'
 export * from './types'
@@ -25,6 +25,22 @@ export const CH3 =(p:MP)=> <C {...p}><H/><H/><H/></C>
 // Flow
 export const Sin =(p:FP)=> <Flow {...p} args={(x,_,z,t) => [sin((x+t)/3)+sin((z+t)/2)]} />
 export const Box =(p:FP)=> <Flow {...p} args={(x,y,z,t) => [sin(x/4+t) +sin(y/4+t)+sin(z/4+t)]} />
+
+//  *************************         ************************* //
+//  ************************* <Mol /> ************************* //
+//  *************************         ************************* //
+export const Recursion = (props: any) => {
+    const [child, ...children] = Children.map(props.children, c=>c)
+    if (typeof child!=="object") return null
+    const grand = Children.map(child.props.children, c=>c)
+    return React.cloneElement(child, {
+        ...props, recursion: false, children: [
+            ...(grand || []),//.slice(props.length) // ???
+            children.length && <Recursion key={grand.length} {...{children}}/>
+        ]
+    })
+}
+
 //  *************************         ************************* //
 //  ************************* <Mol /> ************************* //
 //  *************************         ************************* //
@@ -42,24 +58,19 @@ export function Mol (props: any) {
       React.cloneElement(child, {index})
   ), [props.children])
 
-  return (
-    <Atom<MolProps> {...props} {...state}
-        geometry={mergedGeometry}
-        children={children} top>
-    </Atom>
-  )
+  return <Atom {...props} {...state} children={children}></Atom>
 }
 //  *************************         ************************* //
 //  ************************* <Hel /> ************************* //
 //  *************************         ************************* //
-export function Hel (props: Partial<Props<HelProps>>): null | JSX.Element
+export function Hel (props: Partial<AtomProps<HelProps>>): null | JSX.Element
 export function Hel (props: any) {
-    return  <Atom<HelProps> top {...props}></Atom>
+    return  <Atom {...props}></Atom>
 }
 //  *************************          ************************* //
 //  ************************* <Flow /> ************************* //
 //  *************************          ************************* //
-export function Flow (props: Partial<Props<FlowProps>>): null | JSX.Element
+export function Flow (props: Partial<AtomProps<FlowProps>>): null | JSX.Element
 export function Flow (props: any) {
     const ref = useRef<any>(null)
     const now = useRef<number>(0)
@@ -77,12 +88,12 @@ export function Flow (props: any) {
         s && ref.current.scale.set(...(fun(s)? s(...args): s))
         c && ref.current.color.set(fun(c)? c(...args): c)
     })
-    return <Atom<FlowProps> ref={ref}></Atom>
+    return <Atom ref={ref}></Atom>
 }
 //  *************************           ************************* //
 //  ************************* <Swarm /> ************************* //
 //  *************************           ************************* //
-export function Swarm (props: Partial<Props<SwarmProps>>): null | JSX.Element
+export function Swarm (props: Partial<AtomProps<SwarmProps>>): null | JSX.Element
 export function Swarm (props: any) {
     const ref = useRef<any>(null)
     const now = useRef<number>(0)
@@ -104,7 +115,7 @@ export function Swarm (props: any) {
         fun(c) && ref.current.color.set(...c(...args))
     })
     return (
-        <Atom<FlowProps> ref={ref}></Atom>
+        <Atom ref={ref}></Atom>
     )
 }
 //  *************************           ************************* //
@@ -116,7 +127,7 @@ export function Plant (props: any) {
     const position = useMemo<Vec3>(() => calcMolPos(i, a, d), [i, a, d])
     const rotation = useMemo<Vec3>(() => eulerVec3(position, [0,1,0]), [position])
     return (
-        <Atom<MolProps> top {...props} {...{position, rotation}}>
+        <Atom top {...props} {...{position, rotation}}>
             <cylinderBufferGeometry args={[.1]}/>
             <meshPhongMaterial attach="material"/>
             {props.children}
@@ -127,7 +138,7 @@ export function Plant (props: any) {
 //  ************************* <Poly /> ************************* //
 //  *************************          ************************* //
 export function Poly <T extends object={}>(
-    props: Partial<Props<T>> & Partial<{
+    props: Partial<AtomProps<T>> & Partial<{
         n: number,
         children: null | ((
             child: JSX.Element,

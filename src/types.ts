@@ -8,20 +8,22 @@ export type Atom = Spread<THREE.Group, {
     group: THREE.Group,
     color: THREE.Color
 }>
-export type Props<T extends object={}> = Spread<{
+export type RenderProps<T extends object={}> = Spread<{
+    ref: MutableRefObject<Atom>,
+    count?: number,
+    geometry?: null | Fun<THREE.Geometry>,
+    material?: null | Fun<THREE.Material>,
+    children?: ReactNode|((state:RenderProps<T>)=>ReactNode),
+}, T>
+export type AtomProps<T extends object={}> = Spread<{
     // FOR THREE
     matrix: THREE.Matrix4,
     position: Vec3,
     rotation: Vec3,
     scale: Vec3,
     color: string,
-    // FOR ATOM
-    ref: MutableRefObject<Atom>,
-    cut?: number,
-    max?: number,
-    geometry?: null | Fun<THREE.Geometry>,
-    material?: null | Fun<THREE.Material>,
-    children?: ReactNode|((state:Props<T>)=>ReactNode),
+    ref?: MutableRefObject<Atom>,
+    children?: ReactNode|((state:AtomProps<T>)=>ReactNode),
 }, T>
 export type MolProps = {
     distance: Vec3,

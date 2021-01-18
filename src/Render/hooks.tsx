@@ -6,13 +6,20 @@ import {Atom} from '../types'
 import * as THREE from 'three'
 
 export function useRender <T extends object={}>(
-    group: null | React.RefObject<THREE.Group>,
+    props: any,
     ref  : null | React.Ref<unknown>
-): React.MutableRefObject<THREE.InstancedMesh>
+): any//React.MutableRefObject<THREE.InstancedMesh>
 
-export function useRender (group: any, ref: any) {
-    const mesh = React.useRef<THREE.InstancedMesh>(null)
+export function useRender ({
+    geometry=null,
+    material=null, max=1000, ...props
+}: any, ref: any) {
     const [atoms] = useAtom(atomsAtom)
+    const mesh = React.useRef<THREE.InstancedMesh>(null)
+    const args = React.useMemo<[THREE.Geometry, THREE.Material, number]>(() => [
+        typeof geometry==="function"? geometry(): geometry,
+        typeof material==="function"? material(): material,
+    max], [geometry, material, max])
 
     useFrame(() => {
         if (!mesh.current) return
@@ -24,10 +31,6 @@ export function useRender (group: any, ref: any) {
         // mesh.current.instanceColor.needsUpdate = true //r124 is not suported
     })
 
-    React.useImperativeHandle(ref, () => !group.current? undefined: {
-        ...group.current,
-        group: group.current,
-        mesh: mesh.current,
-    })
-    return mesh
+    React.useImperativeHandle(ref, () => mesh.current)
+    return {ref: mesh, args, ...props}
 }
