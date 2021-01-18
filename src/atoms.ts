@@ -1,8 +1,9 @@
 import {atom} from 'jotai'
-import {Atom} from './types'
-export const atomsAtom = atom<Atom[]>([])
+import {AtomObject} from './types'
 
-export const addAtom = atom(null, (get, set, newAtom: Atom) => {
+export const atomsAtom = atom<AtomObject[]>([])
+
+export const addAtom = atom(null, (get, set, newAtom: AtomObject) => {
     set(atomsAtom, [...get(atomsAtom), newAtom])
 })
 export const delAtom = atom(null, (get, set, id: number) => {

@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react'
 import {Color, Group} from 'three'
 import {useAtom as useJotai} from 'jotai'
 import {addAtom, delAtom} from '../atoms'
-import {AtomProps, Atom} from '../types'
+import {AtomProps, AtomObject} from '../types'
 
 let uuid = 0
 export function useAtom <T extends object={}>(
@@ -31,7 +31,7 @@ export function useAtom (props: any, ref: any) {
             id, ...group.current,
             group: group.current,
             color: color.current
-        } as Atom)
+        } as AtomObject)
         return () => void del(id)
     }, [add, del, id])
 

@@ -1,4 +1,4 @@
-import React, {Children, useRef, useMemo} from 'react'
+import React, {forwardRef, useRef, useMemo} from 'react'
 import {useFrame} from 'react-three-fiber'
 import * as THREE from 'three'
 import {Vec3, AtomProps, MolProps, HelProps, FlowProps, SwarmProps} from './types'
@@ -8,20 +8,21 @@ type MP = Partial<AtomProps<MolProps>>
 type FP = Partial<AtomProps<FlowProps>>
 const sin = Math.sin
 //  ************************* REACT-MOL ************************* //
-export {Atom as default, Atom, Render} from './components'
+export {Atom as default} from './components'
+export * from './components'
 export * from './hooks'
 export * from './utils'
 export * from './types'
 // Mol
-export const H =(p:MP)=> <Mol {...p} element={1} color="white"/>
-export const C =(p:MP)=> <Mol {...p} element={6} color="black"/>
-export const O =(p:MP)=> <Mol {...p} element={8} color="red"/>
-export const N =(p:MP)=> <Mol {...p} element={7} color="blue"/>
-export const OH =(p:MP)=> <O {...p}><H/></O>
-export const CO =(p:MP)=> <C {...p}><O double/></C>
-export const CH =(p:MP)=> <C {...p}><H/></C>
-export const CH2 =(p:MP)=> <C {...p}><H/><H/></C>
-export const CH3 =(p:MP)=> <C {...p}><H/><H/><H/></C>
+export const H = forwardRef((p:MP, ref) => <Mol {...p} ref={ref} element={1} color="white"/>)
+export const C = forwardRef((p:MP, ref) => <Mol {...p} ref={ref} element={6} color="black"/>)
+export const O = forwardRef((p:MP, ref) => <Mol {...p} ref={ref} element={8} color="red"/>)
+export const N = forwardRef((p:MP, ref) => <Mol {...p} ref={ref} element={7} color="blue"/>)
+export const OH = (p:MP) => <O {...p}><H/></O>
+export const CO = (p:MP) => <C {...p}><O double/></C>
+export const CH = (p:MP) => <C {...p}><H/></C>
+export const CH2 = (p:MP) => <C {...p}><H/><H/></C>
+export const CH3 = (p:MP) => <C {...p}><H/><H/><H/></C>
 // Flow
 export const Sin =(p:FP)=> <Flow {...p} args={(x,_,z,t) => [sin((x+t)/3)+sin((z+t)/2)]} />
 export const Box =(p:FP)=> <Flow {...p} args={(x,y,z,t) => [sin(x/4+t) +sin(y/4+t)+sin(z/4+t)]} />
@@ -29,23 +30,8 @@ export const Box =(p:FP)=> <Flow {...p} args={(x,y,z,t) => [sin(x/4+t) +sin(y/4+
 //  *************************         ************************* //
 //  ************************* <Mol /> ************************* //
 //  *************************         ************************* //
-export const Recursion = (props: any) => {
-    const [child, ...children] = Children.map(props.children, c=>c)
-    if (typeof child!=="object") return null
-    const grand = Children.map(child.props.children, c=>c)
-    return React.cloneElement(child, {
-        ...props, recursion: false, children: [
-            ...(grand || []),//.slice(props.length) // ???
-            children.length && <Recursion key={grand.length} {...{children}}/>
-        ]
-    })
-}
-
-//  *************************         ************************* //
-//  ************************* <Mol /> ************************* //
-//  *************************         ************************* //
-export function Mol (props: MP): null | JSX.Element
-export function Mol (props: any) {
+export type Mol = {(props: MP): null | JSX.Element}
+export const Mol = forwardRef((props: any, ref) => {
   const {index: i, angle: a, double:d} = props
   const state = useMemo(() => {
     const position = calcMolPos(i, a, d)
@@ -58,8 +44,8 @@ export function Mol (props: any) {
       React.cloneElement(child, {index})
   ), [props.children])
 
-  return <Atom {...props} {...state} children={children}></Atom>
-}
+  return <Atom {...props} {...state} ref={ref} children={children}></Atom>
+})
 //  *************************         ************************* //
 //  ************************* <Hel /> ************************* //
 //  *************************         ************************* //
@@ -72,23 +58,23 @@ export function Hel (props: any) {
 //  *************************          ************************* //
 export function Flow (props: Partial<AtomProps<FlowProps>>): null | JSX.Element
 export function Flow (props: any) {
-    const ref = useRef<any>(null)
-    const now = useRef<number>(0)
-    const fun = (value: any): value is Function => typeof value==="function"
-    useFrame((_, delta) => {
-        if (!ref.current) return
-        now.current += delta
-        const { position: p, scale: s, args: a,
-                rotation: r, color: c} = props
-        const args = fun(a)
-            ? a(now.current, ...ref.current.position.toArray())
-            : [ now.current, ...(a || []) ]
-        p && ref.current.position.set(...(fun(p)? p(...args): p))
-        r && ref.current.rotation.set(...(fun(r)? r(...args): r))
-        s && ref.current.scale.set(...(fun(s)? s(...args): s))
-        c && ref.current.color.set(fun(c)? c(...args): c)
-    })
-    return <Atom ref={ref}></Atom>
+  const ref = useRef<any>(null)
+  const now = useRef<number>(0)
+  const fun = (value: any): value is Function => typeof value==="function"
+  useFrame((_, delta) => {
+    if (!ref.current) return
+    now.current += delta
+    const { position: p, scale: s, args: a,
+            rotation: r, color: c } = props
+    const args = fun(a)
+        ? a(now.current, ...ref.current.position.toArray())
+        : [ now.current, ...(a || []) ]
+    p && ref.current.position.set(...(fun(p)? p(...args): p))
+    r && ref.current.rotation.set(...(fun(r)? r(...args): r))
+    s && ref.current.scale.set(...(fun(s)? s(...args): s))
+    c && ref.current.color.set(fun(c)? c(...args): c)
+  })
+  return <Atom ref={ref}></Atom>
 }
 //  *************************           ************************* //
 //  ************************* <Swarm /> ************************* //
@@ -134,37 +120,3 @@ export function Plant (props: any) {
         </Atom>
     )
 }
-//  *************************          ************************* //
-//  ************************* <Poly /> ************************* //
-//  *************************          ************************* //
-export function Poly <T extends object={}>(
-    props: Partial<AtomProps<T>> & Partial<{
-        n: number,
-        children: null | ((
-            child: JSX.Element,
-            key: number
-        ) => JSX.Element),
-    }>
-): null|JSX.Element
-export function Poly ({children,n=0,...props}: any) {
-    if (n<0) return null
-    const child = children(n>0 && <Poly n={n-1} children={children}/>, n)
-    return React.cloneElement(child, {...props, children:null, ...child.props})
-}
-// TODO functional Props for Poly
-// export function Poly <T extends object={}>(
-//     props: Partial<Props<T> & {
-//         n: number,
-//     children: null | ((
-//         next: ((nextProps?:Partial<Props<T>>) => JSX.Element),
-//         key : number
-//     ) => JSX.Element),
-//     }>
-// ): null|JSX.Element
-// export function Poly ({children,n=0,...props}: any) {
-//     if (n<0) return null
-//     const child = children(n>0 && ((nextProps: any={}) => {
-//         return <Poly n={n-1} {...nextProps} children={children}/>
-//     }), n)
-//     return React.cloneElement(child, {...props, children: null,...child.props})
-// }

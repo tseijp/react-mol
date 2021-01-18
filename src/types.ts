@@ -1,14 +1,14 @@
 import {ReactNode, MutableRefObject} from 'react'
 import * as THREE from 'three'
 
-export type Atom = Spread<THREE.Group, {
+export type AtomObject = Spread<THREE.Group, {
     id: number,
     group: THREE.Group,
     color: THREE.Color
 }>
 
 export type RenderProps<T extends object={}> = Spread<{
-    ref: MutableRefObject<Atom>,
+    ref: MutableRefObject<AtomObject>,
     geometry?: null | Fun<THREE.Geometry>,
     material?: null | Fun<THREE.Material>,
     count   ?: null | Fun<number>,
@@ -22,7 +22,7 @@ export type AtomProps<T extends object={}> = Spread<{
     rotation: Vec3,
     scale: Vec3,
     color: string,
-    ref?: MutableRefObject<Atom>,
+    ref?: MutableRefObject<AtomObject>,
     children?: ReactNode|((state:AtomProps<T>)=>ReactNode),
 }, T>
 
