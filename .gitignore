@@ -1,8 +1,8 @@
 react-app-env.d.ts
 coverage
-./index.js
-./index.d.ts
-./index.cjs.js
+index.js
+index.d.ts
+index.cjs.js
 
 # Created by https://www.toptal.com/developers/gitignore/api/code,django,git,jupyternotebooks,react,redis,python,typings,unity
 # Edit at https://www.toptal.com/developers/gitignore?templates=code,django,git,jupyternotebooks,react,redis,python,typings,unity

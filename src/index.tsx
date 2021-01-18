@@ -8,7 +8,6 @@ type MP = Partial<AtomProps<MolProps>>
 type FP = Partial<AtomProps<FlowProps>>
 const sin = Math.sin
 //  ************************* REACT-MOL ************************* //
-export {Atom as default} from './components'
 export * from './components'
 export * from './hooks'
 export * from './utils'

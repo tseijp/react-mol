@@ -1,17 +1,14 @@
 <!-- ****************************** ****************************** >
 - REFS
     - inspiration
-        - https://threejs.org/examples/#webgl_loader_pdb
         - https://threejs.org/examples/#css3d_molecules
+        - https://threejs.org/examples/#webgl_loader_pdb
         - https://threejs.org/examples/#webgl_skinning_simple
     - instancing
         - https://threejs.org/examples/#webgl_buffergeometry_lines
         - https://threejs.org/examples/#webgl_instancing_raycast
         - https://threejs.org/examples/#webgl_postprocessing_sao
-- TODO
-    - multi threading using Work
-    - ISSUE
-rmol branch: feature/Shader
+- TODO rmol branch: feature/Shader
     <Shader uniforms={uniforms}>
         <boxBufferGeometry/>
         <phongBasicMaterial/>
@@ -21,18 +18,6 @@ rmol branch: feature/Shader
         <texture2D repeatWrapping uniform={{time: 0, delta: 0}}/>
         <texture2D repeatWrapping uniform={{time: 0, delta: 0}}/>
     </GPUComputationRenderer>
-- ISSUE
-    - args: broken when rerender if function
-    - rerener <Render/> and cant delete array elements
-    - Recursion cant get children as array if child is redefined as <OH/>
-    - functional props
-        - Atom position={[t => [t, t, t]]}
-        if (typeof c==="function") c = c(time.current)
-        if (typeof p==="function") c = c(time.current)
-        if (typeof r==="function") c = c(time.current)
-        if (typeof s==="function") c = c(time.current)
-    - count instaned length in Render.tsx
-          - const count = Object.keys(instances.current).length
 <!   ****************************** ****************************** -->
 <p align="center">
 
@@ -40,11 +25,8 @@ rmol branch: feature/Shader
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/rmol.mp4.gif) ](
     https://tsei.jp/rmol)
 
-<br/>
-<br/>
-<br/>
-
-<!--TODO-->
+</p>
+<br/><br/><hr/><br/><br/>
 
 [![build-✔](
     https://img.shields.io/badge/build-✔-green.svg)](
@@ -64,8 +46,6 @@ rmol branch: feature/Shader
 [![tweet](
     https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Ftseijp)](
     https://twitter.com/intent/tweet?url=https://tsei.jp/rmol/&text=🍡A+molecular+chemistry+based+simulation+library)
-
-</p>
 
 __Installation__
 - `npm i three react-three-fiber react-mol`
@@ -125,19 +105,25 @@ that covers most cases of organic molecule simulation.
 <details><summary>View Code</summary>
 
 ```tsx
-function Mol (props: any) {
-  const {index:i, angle:a, double:d} = props
-  const position = calcMolPos(i,a,d)
-  const rotation = eulerVec3(position, [0,1,0])
-  return (
-    <Atom
-      {...props} geometry={mergedGeometry}
-      {...{position, rotation}}>
-      <meshPhongMaterial attach="material"/>
-      {props.children}
-    </Atom>
-  )
-}
+import React from 'react'
+import { Atom } from 'react-mol'
+
+export const Mol = React.forwardRef((props, ref) => {
+  const {index: i, angle: a, double:d} = props
+  const state = React.useMemo(() => {
+    const position = calcMolPos(i, a, d)
+    const rotation = eulerVec3(position, [0,1,0])
+    return {position, rotation}
+  }, [i, a, d])
+
+  const children = React.useMemo(() =>
+    React.Children.map(props.children, (child, index) =>
+      React.cloneElement(child, {index})
+    ), [props.children])
+
+  return <Atom {...props} ref={ref}
+               {...state} children={children}/>
+})
 ```
 
 </details>
@@ -158,26 +144,29 @@ function Mol (props: any) {
 <details><summary>View Code</summary>
 
 ```tsx
+import React from 'react'
 import { Atom } from 'react-mol'
 import { useFrame } from "react-three-fiber"
-function Flow (props) {
+
+export const Flow = React.forwardRef((props, forwardRef) => {
   const now = React.useRef(0)
   const ref = React.useRef(null)
   const fun = (value) => typeof value==="function"
   useFrame((_, delta) => {
+    if (!ref.current) return
     now.current += delta
-    const { position:p,   rotation:r,
-            args:a, color:c, scale:s } = props;
+    const { position: p, scale: s, args: a,
+            rotation: r, color: c } = props
     const args = fun(a)
       ? a(now.current,...ref.current.position.toArray())
       : [ now.current,...(a || []) ]
-    fun(p) && ref.current.position.set(...p(...args))
-    fun(r) && ref.current.rotation.set(...r(...args))
-    fun(s) && ref.current.scale.set(...s(...args))
-    fun(c) && ref.current.scale.set(...c(...args))
+    p && ref.current.position.set(...(fun(p)? p(...args): p))
+    r && ref.current.rotation.set(...(fun(r)? r(...args): r))
+    s && ref.current.scale.set(...(fun(s)? s(...args): s))
+    c && ref.current.color.set(fun(c)? c(...args): c)
   })
-  return <Atom<FlowProps> {...props} ref={ref} depth={1}/>
-}
+  return <Atom ref={ref}/>
+})
 ```
 </details>
 
@@ -185,7 +174,7 @@ function Flow (props) {
 
 [![Points](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Points.gif)](
-    https://tsei.jp/rmol/f/Points)
+    https://tsei.jp/rmol/Flow/Points)
 
 </td></tr>
 <tr valign="top"><td>
@@ -209,10 +198,10 @@ ___What does it look like?___
 <tr valign="top"><td>
 
 🪐<strong>`<Atom/>`</strong>
-(~~[live demo](https://tsei.jp/rmol/basic)~~).
+(~~[live demo](https://tsei.jp/rmol/Basic/Basic)~~).
 
 </td><td>
-    <a href="https://tsei.jp/rmol/basic"><img
+    <a href="https://tsei.jp/rmol/Basic/Basic"><img
         src="" /></a>
 </td></tr>
 </table>
@@ -222,35 +211,36 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Atom } from 'react-mol'
 import { Canvas, useFrame } from 'react-three-fiber'
-function BasicExample () {
-  const ref = React.useRef<any>(null)
+
+function Basic () {
+  // This reference will give us direct access to the last instance
+  const ref = React.useRef(null)
+
+  // Rotate instance every frame, this is outside of React without overhead
   useFrame(() => {
     ref.current.rotation.x  =
     ref.current.rotation.y  =
     ref.current.rotation.z += 0.025
   })
+
   return (
-    <Atom  color="red"
-        position={[1, -2, -5]}
-        rotation={[0,  0,  Math.PI/3]}>
+    <Render>
       <boxBufferGeometry attach="geometry" />
       <meshPhongMaterial attach="material" />
-      <Atom  color="green"
-          position={[2, 0, 1]}
-          rotation={[0, 0, Math.PI/3]}>
-        <Atom>
-          <Atom>
-            <Atom>
-              <Atom>
-                <Atom ref={ref}
-                  color="blue"
-                  position={[2,0,0]}/>
+      <Atom color="red" position={[1, -2, -5]} rotation={[0, 0, Math.PI/3]}>
+        <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+          <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+            <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+              <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+                <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
+                  <Atom color="blue" position={[2, 0, 0]} ref={ref}/>
+                </Atom>
               </Atom>
             </Atom>
           </Atom>
         </Atom>
       </Atom>
-    </Atom>
+    </Render>
   )
 }
 
@@ -258,7 +248,7 @@ ReactDOM.render(
   <Canvas>
     <pointLight   />
     <ambientLight />
-    <BasicExample />
+    <Basic />
   </Canvas>,
   document.getElementById('root')
 )
@@ -269,33 +259,45 @@ ReactDOM.render(
 <summary>Show Recursion Example</summary>
 
 ```tsx
-/* ~~same~~ */
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Atom } from 'react-mol'
+import { Canvas, useFrame } from 'react-three-fiber'
 
-function BasicExample () {
+function Basic () {
   // This reference will give us direct access to the last instance
-  const instance = React.useRef<any>(null)
+  const ref = React.useRef(null)
 
   // Rotate instance every frame, this is outside of React without overhead
   useFrame(() => {
-    instance.current.rotation.x  =
-    instance.current.rotation.y  =
-    instance.current.rotation.z += 0.025
+    ref.current.rotation.x  =
+    ref.current.rotation.y  =
+    ref.current.rotation.z += 0.025
   })
 
   return (
-    <Atom recursion>
-      <boxBufferGeometry />
-      <meshPhongMaterial  />
-      <Atom color="red" position={[1, -2, -10]} rotation={[0,  0,  Math.PI/3]}/>
-      {[...Array(10)].map((_, i) =>
-        <Atom key={i} color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}/>
-      )}
-      <Atom ref={ref} color="blue" position={[2,0,0]}/>
-    </Atom>
+    <Render>
+      <Recursion>
+        <boxBufferGeometry/>
+        <meshPhongMaterial/>
+        <Atom color="red" position={[1, -2, -5]} rotation={[0, 0, Math.PI/3]}/>
+        {[...Array(5)].map((_, i) =>
+          <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]} key={i}/>
+        )}
+        <Atom color="blue" position={[2, 0, 0]} ref={ref}/>
+      </Recursion>
+    </Render>
   )
 }
 
-/* ~~same~~ */
+ReactDOM.render(
+  <Canvas>
+    <pointLight/>
+    <ambientLight/>
+    <Basic/>
+  </Canvas>,
+  document.getElementById('root')
+)
 ```
 
 </details>
@@ -352,17 +354,17 @@ function BasicExample () {
 </td><td>
 
 ```tsx
-<Mol recursion>
+<Recursion>
   <CH3/>
   <OH/>
-</Mol>
+</Recursion>
 ```
 
 </td><td>
 
 [![CH3OH](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/CH3OH.png)](
-    https://tsei.jp/rmol/CH3OH)
+    https://tsei.jp/rmol/Mol/CH3OH)
 
 </td></tr><!--*************** Acetic acid ***************--><tr><td align="center">
 
@@ -387,17 +389,17 @@ function BasicExample () {
 </td><td>
 
 ```tsx
-<Mol recursion>
+<Recursion>
   <CH3/>
   <COOH/>
-</Mol>
+</Recursion>
 ```
 
 </td><td>
 
 [![CH3COOH](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/CH3COOH.png)](
-    https://tsei.jp/rmol/CH3COOH)
+    https://tsei.jp/rmol/Mol/CH3COOH)
 
 </td></tr><!--*************** Polyethylene ***************--><tr><td align="center">
 
@@ -428,7 +430,7 @@ function BasicExample () {
 </td><td>
 
 ```tsx
-<Mol recursion>
+<Recursion>
   <H/>
   {Array(200)
   .fill(0)
@@ -439,14 +441,14 @@ function BasicExample () {
     </C>
   )}
   <H/>
-</Mol>
+</Recursion>
 ```
 
 </td><td>
 
 [![Polyethylene](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/CnH2n2.png)](
-    https://tsei.jp/rmol/Polyethylene)
+    https://tsei.jp/rmol/Mol/Polyethylene)
 
 </td></tr><!--***************  ***************--></table>
 
@@ -479,7 +481,7 @@ function BasicExample () {
 </td><td>
 
 ```tsx
-<Render position={[-12.5,0,-25]} max={2500}>
+<Render position={[-12.5,0,-25]} count={2500}>
   <sphereBufferGeometry/>
   <meshPhongMaterial   />
   {[...Array(2500)].map((_,i) =>
@@ -496,7 +498,7 @@ function BasicExample () {
 
 [![Points](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Points.gif)](
-    https://tsei.jp/rmol/f/Points)
+    https://tsei.jp/rmol/Flow/Points)
 
 </td></tr><tr><td align="center">
 
@@ -505,7 +507,7 @@ function BasicExample () {
 </td><td>
 
 ```tsx
-<Render max={10**3}>
+<Render count={10**3}>
   <boxBufferGeometry />
   <meshPhongMaterial/>
   {[...Array(1000)].map((_,i) =>
@@ -523,7 +525,7 @@ function BasicExample () {
 
 [![Boxes](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Boxes.gif)](
-    https://tsei.jp/rmol/f/Boxes)
+    https://tsei.jp/rmol/Flow/Boxes)
 
 </td></tr><tr><td align="center">
 
@@ -532,7 +534,7 @@ function BasicExample () {
 </td><td>
 
 ```tsx
-<Render max={1000}>
+<Render count={1000}>
   <sphereBufferGeometry args={[1,32,32]}/>
   <meshPhongMaterial color={0xffffff}/>
   {[...Array(1000)].map((_, i) =>
@@ -552,7 +554,7 @@ function BasicExample () {
 
 [![Spheres](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Spheres.gif)](
-    https://tsei.jp/rmol/f/Spheres)
+    https://tsei.jp/rmol/Flow/Spheres)
 
 </td></tr><tr><td align="center">
 
@@ -561,7 +563,7 @@ function BasicExample () {
 </td><td>
 
 ```tsx
-<Render max={1000}>
+<Render count={1000}>
   <dodecahedronBufferGeometry args={[1,0]}/>
   <meshStandardMaterial/>
   {[...Array(1000)].map((_,i) =>
@@ -581,15 +583,20 @@ function BasicExample () {
 
 [![Dodecas](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Dodecas.gif)](
-    https://tsei.jp/rmol/f/Dodecas)
+    https://tsei.jp/rmol/Flow/Dodecas)
 
 </td></tr><!--***************  ***************--></table>
 
 <br/><br/><hr/><br/><br/>
 
 <details>
+<summary>
 
 ### Recipes of Hel
+
+</summary>
+
+__TODO__
 
 <table><!--*************** Recipes of Hel ***************--><tr><td><br/>
 
@@ -615,8 +622,13 @@ function BasicExample () {
 </details>
 
 <details>
+<summary>
 
 ### Recipes of Plant
+
+</summary>
+
+__TODO__
 
 <table>
 <tr><td>
