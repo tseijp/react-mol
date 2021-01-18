@@ -2,24 +2,24 @@ import React from 'react'
 import {useAtom} from 'jotai'
 import {useFrame} from 'react-three-fiber'
 import {atomsAtom} from '../atoms'
-import {Atom} from '../types'
+import {Atom, RenderProps} from '../types'
 import * as THREE from 'three'
 
 export function useRender <T extends object={}>(
-    props: any,
-    ref  : null | React.Ref<unknown>
-): any//React.MutableRefObject<THREE.InstancedMesh>
+    props: unknown & Partial<RenderProps<T>>,
+    ref: null | React.Ref<unknown>
+):  unknown & Partial<RenderProps<T>>
 
 export function useRender ({
-    geometry=null,
-    material=null, max=1000, ...props
+    geometry=null, material=null, count=1000, ...props
 }: any, ref: any) {
     const [atoms] = useAtom(atomsAtom)
     const mesh = React.useRef<THREE.InstancedMesh>(null)
     const args = React.useMemo<[THREE.Geometry, THREE.Material, number]>(() => [
         typeof geometry==="function"? geometry(): geometry,
         typeof material==="function"? material(): material,
-    max], [geometry, material, max])
+        typeof count==="function"? count(): count,
+    ], [geometry, material, count])
 
     useFrame(() => {
         if (!mesh.current) return

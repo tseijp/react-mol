@@ -56,7 +56,7 @@ export const Polypropylene =()=>
 export const Random =()=>
     <Render geometry={molGeometry}>
         <meshPhongMaterial attach="material"/>
-        <H max={2000}>
+        <H>
             <Poly n={200}>
             {children =>
                 <C angle={rand()}>

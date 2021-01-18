@@ -1,20 +1,20 @@
 import {ReactNode, MutableRefObject} from 'react'
 import * as THREE from 'three'
 
-export type Vec3<T=number> = [T,T,T]
-export type Fun<T=Vec3,U=number> = T | ((...args:U[]) => T)
 export type Atom = Spread<THREE.Group, {
     id: number,
     group: THREE.Group,
     color: THREE.Color
 }>
+
 export type RenderProps<T extends object={}> = Spread<{
     ref: MutableRefObject<Atom>,
-    count?: number,
     geometry?: null | Fun<THREE.Geometry>,
     material?: null | Fun<THREE.Material>,
+    count   ?: null | Fun<number>,
     children?: ReactNode|((state:RenderProps<T>)=>ReactNode),
 }, T>
+
 export type AtomProps<T extends object={}> = Spread<{
     // FOR THREE
     matrix: THREE.Matrix4,
@@ -25,6 +25,7 @@ export type AtomProps<T extends object={}> = Spread<{
     ref?: MutableRefObject<Atom>,
     children?: ReactNode|((state:AtomProps<T>)=>ReactNode),
 }, T>
+
 export type MolProps = {
     distance: Vec3,
     element: number,
@@ -35,7 +36,9 @@ export type MolProps = {
     double?: boolean,
     recursion?: boolean
 }
+
 export type HelProps = {}
+
 export type FlowProps = {
     args?: Fun<number[]>,
     position?: Fun,
@@ -43,6 +46,7 @@ export type FlowProps = {
     scale?: Fun,
     color?: Fun<string>
 }
+
 export type SwarmProps = {
     args?: Fun<number[]>,
     force?: Fun,
@@ -52,12 +56,17 @@ export type SwarmProps = {
     scale?: Fun,
     color?: Fun<string>
 }
+
 // ************************* UTILS ************************* //
-type Spread<L extends object, R extends object> = Id<
+export type Vec3<T=number> = [T,T,T]
+export type Fun<T=Vec3,U=number> = T | ((...args:U[]) => T)
+
+export type Spread<L extends object, R extends object> = Id<
     & Partial<{ [P in keyof (L & R)]: SpreadProp<L, R, P> }>
     & Pick<L, Exclude<keyof L, keyof R>>
     & Pick<R, RequiredProps<R>>
 >
+
 type SpreadProp<
     L extends object,
     R extends object,
@@ -65,7 +74,9 @@ type SpreadProp<
 > = K extends keyof R
     ? (undefined extends R[K] ? L[Extract<K, keyof L>] | R[K] : R[K])
     : L[Extract<K, keyof L>]
+
 type RequiredProps<T extends object> = {
     [P in keyof T]-?: undefined extends T[P] ? never : P
 }[keyof T]
+
 type Id<T> = { [P in keyof T]: T[P] }

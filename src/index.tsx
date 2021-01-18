@@ -3,13 +3,13 @@ import {useFrame} from 'react-three-fiber'
 import * as THREE from 'three'
 import {Vec3, AtomProps, MolProps, HelProps, FlowProps, SwarmProps} from './types'
 import {eulerVec3, calcMolPos} from './utils'
-import {Atom} from './Atom'
+import {Atom} from './components'
 type MP = Partial<AtomProps<MolProps>>
 type FP = Partial<AtomProps<FlowProps>>
 const sin = Math.sin
 //  ************************* REACT-MOL ************************* //
-export {Atom as default, Atom} from './Atom'
-export {Render} from './Render'
+export {Atom as default, Atom, Render} from './components'
+export * from './hooks'
 export * from './utils'
 export * from './types'
 // Mol
