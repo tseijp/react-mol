@@ -25,9 +25,9 @@ export function useRender ({
 
     useFrame(() => {
         if (!mesh.current) return
-        atoms.forEach((state: AtomObject, i) => {
-            mesh.current?.setColorAt (i, state.color)
-            mesh.current?.setMatrixAt(i, state.matrixWorld)
+        atoms.forEach(({color: c, matrixWorld: m}: AtomObject, i) => {
+            if (c) mesh.current?.setColorAt (i, c)
+            if (m) mesh.current?.setMatrixAt(i, m)
         })
         mesh.current.instanceMatrix.needsUpdate = true
         // mesh.current.instanceColor.needsUpdate = true //r124 is not suported

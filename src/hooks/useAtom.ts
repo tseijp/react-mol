@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react'
 import {Color, Group} from 'three'
-import {useAtom as useJotai} from 'jotai'
+import {useUpdateAtom} from 'jotai/utils'
 import {addAtom, delAtom} from '../atoms'
 import {AtomProps, AtomObject} from '../types'
 
@@ -10,36 +10,37 @@ export function useAtom <T extends object={}>(
     ref:  null | React.Ref<unknown>
 ):  unknown & Partial<AtomProps<T>>
 
-export function useAtom (props: any, ref: any) {
-    const [id] = useState(() => uuid++)
-    const [, add] = useJotai(addAtom)
-    const [, del] = useJotai(delAtom)
-    const color = useRef<Color>(new Color().set(props.color||"black"))
-    const group = useRef<Group>(null)
+export function useAtom ({color, ...props}: any, forwardRef: any) {
+    const [id]= useState(() => uuid++)
+    const add = useUpdateAtom(addAtom)
+    const del = useUpdateAtom(delAtom)
+    const col = useRef<Color>(new Color(color))
+    const ref = useRef<Group>(null)
 
     // change color //
     React.useEffect(() => {
-        if (!props.color) return
-        color.current?.set(props.color||"black")
-    }, [props.color])
+        if (color)
+            col.current?.set(color)
+    }, [color])
 
     // change matrix //
     React.useEffect(() => {
-        if (!group.current) return
-        group.current.updateMatrixWorld()
+        if (!ref.current) return
+        ref.current.updateMatrixWorld()
+        console.log(color, col.current)
         add({
-            id, ...group.current,
-            group: group.current,
-            color: color.current
+            id, ...ref.current,
+            group: ref.current,
+            color: col.current
         } as AtomObject)
         return () => void del(id)
-    }, [add, del, id])
+    }, [color, add, del, id])
 
-    React.useImperativeHandle(ref, () => group.current && ({
-        id, ...group.current,
-        group: group.current,
-        color: color.current
+    React.useImperativeHandle(forwardRef, () => ref.current && ({
+        id, ...ref.current,
+        group: ref.current,
+        color: col.current
     }))
 
-    return {...props, ref: group}
+    return {...props, ref}
 }

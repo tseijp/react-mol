@@ -71,8 +71,10 @@ export function Flow (props: any) {
     p && ref.current.position.set(...(fun(p)? p(...args): p))
     r && ref.current.rotation.set(...(fun(r)? r(...args): r))
     s && ref.current.scale.set(...(fun(s)? s(...args): s))
-    c && ref.current.color.set(fun(c)? c(...args): c)
+    if (c && ref.current.color)
+        ref.current.color.set(fun(c)? c(...args): c)
   })
+  console.log(ref.current.color)
   return <Atom ref={ref}></Atom>
 }
 //  *************************           ************************* //
