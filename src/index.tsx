@@ -74,7 +74,6 @@ export function Flow (props: any) {
     if (c && ref.current.color)
         ref.current.color.set(fun(c)? c(...args): c)
   })
-  console.log(ref.current.color)
   return <Atom ref={ref}></Atom>
 }
 //  *************************           ************************* //

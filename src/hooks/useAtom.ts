@@ -27,7 +27,6 @@ export function useAtom ({color, ...props}: any, forwardRef: any) {
     React.useEffect(() => {
         if (!ref.current) return
         ref.current.updateMatrixWorld()
-        console.log(color, col.current)
         add({
             id, ...ref.current,
             group: ref.current,
