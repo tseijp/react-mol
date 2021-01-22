@@ -5,7 +5,7 @@ import {Helmet} from 'react-helmet-async';
 import {OrbitControls} from 'drei'
 import {HelmetProvider} from 'react-helmet-async'
 import {Controls, ControlsProvider} from 'react-three-gui';
-import {unregister, usePage, AppPage}  from './utils'
+import {unregister, usePage, AppPage, STYLES, COLORS}  from './utils'
 import {Card, Split, Trees} from '@tsei/core'
 import {useGrid} from 'use-grid'
 import {Code} from '@tsei/mdmd'
@@ -14,12 +14,6 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 
-const STYLES: {[key:string]:React.CSSProperties} = {
-    top : {overflowX:"hidden",minHeight:"100%",},
-    card: {width:"100%",height:"100%"},
-    ctrl: {position:"relative",width:"100%",top:0,left:0,margin:0,padding:0},
-    note: {width:"100%", height:"100%", display:"block", padding:"1rem",}
-}
 // ************************* COMPONENTS ************************* //
 const HookNote = (props:any) => <div {...props} style={STYLES.note}/>
 const HookCard = (props:any) => <Card {...props} min={-1} style={STYLES.card} rate={.1} />
@@ -28,7 +22,7 @@ const HookCtrl = (props:any) => <Controls {...props} anchor='top_left' style={ST
 const HookTree = ({children}: any) => <Trees size={.5}>{children}</Trees>
 const HookCanvas = ({children}: any) => (
     <Canvas pixelRatio={window.devicePixelRatio}
-            onCreated={({gl}) => gl.setClearColor('lightpink')}
+            onCreated={({gl}) => gl.setClearColor(COLORS[~~(Math.random()*COLORS.length)])}
             camera={{fov: 75, position: [0, 0, 5]}}
             style={{width: '100%', height: 'calc(100vh - 2rem)'}}
             gl={{alpha: true, antialias: false, logarithmicDepthBuffer: true}}>
