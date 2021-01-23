@@ -13,20 +13,24 @@ import {Render, Atom as _Atom} from '../../../src'
 
 const Atom = animated(_Atom)
 
-const switch0To1 = async (next: (args: any) => any) => {
-    while (1) {
-        await next({ x: 1 })
-        await next({ x: 0 })
-    }
-}
-
+const delay = (time=0) => new Promise(resolve => {
+    setTimeout(() => {
+        resolve()
+    }, time)
+})
 
 export const Rings = ({count=100}) => {
     const ref = React.useRef<any>();
     const [springs] = useSprings(count, i => ({
         ref,
         from: { x: 0 },
-        to: switch0To1,
+        to: async (next: (args: any) => any) => {
+            while (1) {
+                await next({ x: 1 })
+                await next({ x: 0 })
+                await delay(50 * count)
+            }
+        },
         config: {
             mass: 2.2,
             tension: 138,
