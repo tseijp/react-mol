@@ -1,7 +1,7 @@
 {
     "name": "react-mol",
     "homepage": "/",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "module": "index.js",
     "types": "index.d.ts",
     "main": "index.cjs.js",
@@ -81,7 +81,7 @@
         "react-spring": "^9.0.0-rc.3",
         "react-test-renderer": "^17.0.1",
         "react-three-fiber": "^5.1.4",
-        "react-three-gui": "^0.3.1",
+        "react-three-gui": "^0.4.2",
         "rollup": "^2.29.0",
         "three": "^0.124.0",
         "ts-jest": "^26.4.1",

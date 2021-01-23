@@ -44,10 +44,10 @@ export const Recursion = ({children}: any) => {
 }
 
 export function Poly <T extends object={}>(
-    props: Partial<AtomProps<T>> & Partial<{
+    props: Partial<AtomProps<T & {
         n: number,
         children: null | {(child: JSX.Element, key: number): JSX.Element},
-    }>
+    }>>
 ): null|JSX.Element
 
 export function Poly ({children, n=0}: any) {

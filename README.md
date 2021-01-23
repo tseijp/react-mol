@@ -68,9 +68,9 @@ __Quick started__
       <strong><a href="#recipes-of-atom">Atom</a></strong>
       <ul>
         <li><a href="#Recipes-of-mol">Mol</a></li>
-        <li><a href="#Recipes-of-hel">Hel</a></li>
         <li><a href="#Recipes-of-flow">Flow</a></li>
-        <li><a href="#Recipes-of-plant">Plant</a></li>
+        <li><a href="#Recipes-of-brick">Brick</a></li>
+        <li><a href="#Recipes-of-spring">Spring</a></li>
       </ul>
     </td>
     <td>
@@ -88,6 +88,19 @@ __Quick started__
         <li><a href="#Boxes">Boxes</a></li>
         <li><a href="#Spheres">Spheres</a></li>
         <li><a href="#Dodecas">Dodecas</a></li>
+      </ul>
+    </td>
+    <td>
+      <strong><a href="#recipes-of-brick">Brick</a></strong>
+      <ul>
+        <li><a href="#Basic">Basic</a></li>
+      </ul>
+    </td>
+    <td>
+      <strong><a href="#recipes-of-spring">Spring</a></strong>
+      <ul>
+        <li><a href="#Bounds">Bounds</a></li>
+        <li><a href="#Rings">Rings</a></li>
       </ul>
     </td>
   </tr>
@@ -450,7 +463,7 @@ ReactDOM.render(
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/CnH2n2.png)](
     https://tsei.jp/rmol/Mol/Polyethylene)
 
-</td></tr><!--***************  ***************--></table>
+</td></tr></table>
 
 <br/><br/><hr/><br/><br/>
 
@@ -585,41 +598,48 @@ ReactDOM.render(
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Dodecas.gif)](
     https://tsei.jp/rmol/Flow/Dodecas)
 
-</td></tr><!--***************  ***************--></table>
+</td></tr></table>
 
 <br/><br/><hr/><br/><br/>
 
-<details>
-<summary>
+### Recipes of Brick
 
-### Recipes of Hel
+<table><!--*************** Recipes of Brick ***************--><tr><td><br/>
 
-</summary>
-
-__TODO__
-
-<table><!--*************** Recipes of Hel ***************--><tr><td><br/>
-
-[![Hel](
-    https://img.shields.io/badge/Hel-black.svg)](
+[![Brick](
+    https://img.shields.io/badge/Brick-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
 
 </td><td><br/>
 
-[![Hierarchy](
-    https://img.shields.io/badge/Hierarchy-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
+[![Code](
+    https://img.shields.io/badge/Code-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
+
+</td></tr></table>
+
+<br/><br/><hr/><br/><br/>
+
+### Recipes of Spring
+
+<table><!--*************** Recipes of Spring ***************--><tr><td><br/>
+
+[![Spring](
+    https://img.shields.io/badge/Spring-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
 
 </td><td><br/>
 
-[![Recurtion](
-    https://img.shields.io/badge/Recurtion-black.svg)](
+[![Code](
+    https://img.shields.io/badge/Code-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
 
+</td></tr></table>
 
-</td></tr><!--***************  ***************--></table>
 
-</details>
+<!--******************************      ******************************-->
+<!--****************************** TODO ******************************-->
+<!--******************************      ******************************-->
 
 <details>
 <summary>
