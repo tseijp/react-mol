@@ -2,6 +2,7 @@ import React from 'react'
 import {Atom, Poly, Render} from '../../src'
 
 const {random} = Math
+
 export const Bricks = () => {
     const heights = [1, 3, 2, 2, 1, 2]
     return (
