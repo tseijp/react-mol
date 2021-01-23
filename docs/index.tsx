@@ -1,10 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Canvas} from 'react-three-fiber'
 import {Helmet} from 'react-helmet-async';
 import {OrbitControls} from 'drei'
 import {HelmetProvider} from 'react-helmet-async'
-import {Controls, ControlsProvider} from 'react-three-gui';
+import {Controls} from 'react-three-gui';
 import {unregister, usePage, AppPage, STYLES, COLORS}  from './utils'
 import {Card, Split, Trees} from '@tsei/core'
 import {useGrid} from 'use-grid'
@@ -21,19 +20,20 @@ const HookCode = (props:any) => props.code && <Code {...props}/>
 const HookCtrl = (props:any) => <Controls {...props} anchor='top_left' style={STYLES.ctrl}/>
 const HookTree = ({children}: any) => <Trees size={.5}>{children}</Trees>
 const HookCanvas = ({children}: any) => (
-    <Canvas pixelRatio={window.devicePixelRatio}
-            onCreated={({gl}) => gl.setClearColor(COLORS[~~(Math.random()*COLORS.length)])}
+    <Controls.Canvas pixelRatio={window.devicePixelRatio}
+            onCreated={({gl}: any) => gl.setClearColor(COLORS[~~(Math.random()*COLORS.length)])}
             camera={{fov: 75, position: [0, 0, 5]}}
             style={{width: '100%', height: 'calc(100vh - 2rem)'}}
             gl={{alpha: true, antialias: false, logarithmicDepthBuffer: true}}>
         <ambientLight intensity={.3} />
-        <pointLight position={[ 100, 100, 100]} intensity={2.2} />
-        <pointLight position={[-100,-100,-100]} intensity={5} color="pink" />
+        <pointLight position={[ 100, 100,-100]} intensity={1} />
+        <pointLight position={[ 100, 100, 100]} intensity={2.5} />
+        <pointLight position={[-100,-100, 100]} intensity={5} color="pink" />
         <OrbitControls />
         <React.Suspense fallback={null}>
             {React.useMemo(() => children, [children])}
         </React.Suspense>
-    </Canvas>
+    </Controls.Canvas>
 )
 // ************************* APP ************************* //
 function App () {
@@ -86,9 +86,9 @@ function App () {
 
 ReactDOM.render(
   <HelmetProvider>
-    <ControlsProvider>
+    <Controls.Provider>
       <App/>
-    </ControlsProvider>
+    </Controls.Provider>
   </HelmetProvider>
 , document.getElementById('root'));
 unregister();
