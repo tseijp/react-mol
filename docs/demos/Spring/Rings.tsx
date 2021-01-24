@@ -4,12 +4,9 @@
 // const Atom = React.forwardRef((props: any, ref) => {
 //     return <animated.group {...useAtom(props, ref)}/>
 // })
-
 import React from 'react'
 import {animated, useSprings} from 'react-spring/three'
 import {Render, Atom as _Atom} from '../../../src'
-// import * as THREE from 'three'
-// import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
 
 const Atom = animated(_Atom)
 
@@ -20,11 +17,9 @@ const delay = (time=0) => new Promise(resolve => {
 })
 
 export const Rings = ({count=100}) => {
-    const ref = React.useRef<any>();
     const [springs] = useSprings(count, i => ({
-        ref,
         from: { x: 0 },
-        to: async (next: (args: any) => any) => {
+        to: async (next) => {
             while (1) {
                 await next({ x: 1 })
                 await next({ x: 0 })
@@ -38,8 +33,6 @@ export const Rings = ({count=100}) => {
         },
         delay: 50 * i
     }));
-
-    React.useEffect(() => void (ref.current.start()));
 
     return (
         <Render>

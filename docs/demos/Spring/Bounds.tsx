@@ -1,7 +1,3 @@
-// ref:
-//     - r3f-ARC-demo - CodeSandbox
-//     - https://codesandbox.io/s/r3f-arc-demo-utyio
-
 import React from 'react'
 import {animated, useSprings} from 'react-spring/three'
 import {Render, Atom as _Atom} from '../../../src'
@@ -17,7 +13,7 @@ export const Bounds = ({count:c=30, delay:d=75}) => {
 
     const [springs] = useSprings(c**2, (i) => ({
         from: { x: 0 },
-        to: async (next: (args: any) => any) => {
+        to: async (next) => {
             while (1) {
                 await next({ x: 1 })
                 await next({ x: 0 })
