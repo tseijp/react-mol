@@ -1,4 +1,5 @@
 export * from './Bounds'
+export * from './Pieces'
 export * from './Pipes'
 export * from './Rings'
 export {Rings as default} from './Rings'

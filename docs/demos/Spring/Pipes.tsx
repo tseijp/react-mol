@@ -10,6 +10,7 @@ export const Pipes = ({count:c=100, layer: l=10, freq:f=1}) => {
     const r = _('radius', {type: 'number', value: 1, min: 0, max: 5})
     const s = _( 'stick', {type: 'number', value: 1, min: 0, max: 5})
     const d = React.useMemo(() => 10 * Math.PI * r / c, [r, c])
+
     const [springs] = useSprings(c * l, (i) => ({
         from: { x: 0 },
         to: async (next) => {
