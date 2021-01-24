@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useCallback, useState} from 'react'
 import {Color, Group} from 'three'
 import {useUpdateAtom} from 'jotai/utils'
 import {addAtom, delAtom} from '../atoms'
@@ -17,29 +17,20 @@ export function useAtom ({color, ...props}: any, forwardRef: any) {
     const col = useRef<Color>(new Color(color))
     const ref = useRef<Group>(null)
 
-    // change color //
-    React.useEffect(() => {
-        if (color)
-            col.current?.set(color)
-    }, [color])
-
-    // change matrix //
-    React.useEffect(() => {
-        if (!ref.current) return
-        ref.current.updateMatrixWorld()
-        add({
-            id, ...ref.current,
-            group: ref.current,
-            color: col.current
-        } as AtomObject)
-        return () => void del(id)
-    }, [color, add, del, id])
-
-    React.useImperativeHandle(forwardRef, () => ref.current && ({
+    const handle = useCallback(() => ({
         id, ...ref.current,
         group: ref.current,
         color: col.current
-    }))
+    } as AtomObject), [id])
+
+    React.useImperativeHandle(forwardRef, handle)
+
+    React.useEffect(() => {
+        col.current?.set(color)
+        ref.current?.updateMatrixWorld()
+        ref.current && add(handle())
+        return () => void del(id)
+    }, [color, handle, add, del, id])
 
     return {...props, ref}
 }
