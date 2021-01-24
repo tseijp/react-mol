@@ -6,8 +6,8 @@ import * as THREE from 'three'
 
 const Atom = animated(_Atom)
 
-export const Pieces = ({layer: l=18||25}) => {
-    const r = _('radius', {type: 'number', value: 2, min: 0, max: 5})
+export const Pieces = ({layer: l=24}) => {
+    const r = _('radius', {type: 'number', value: 2.5, min: 0, max: 5})
 
     const line = React.useMemo(() => {
         const v1 = new THREE.Vector3(0, 0, -r)
@@ -18,18 +18,19 @@ export const Pieces = ({layer: l=18||25}) => {
     const counts = React.useMemo(() =>
         [...Array(2 * l)]
             .map((_, i) => i - l)
-            .map((i) => ~~Math.sqrt(l**2 - i**2) * 2)
+            .map((i) => ~~Math.sqrt(l**2 - i**2))
     , [l])
 
-    const [springs] = useSprings(2 * l, () => ({
+    const [springs] = useSprings(2 * l, (i) => ({
         from: { x: 0 },
         to: async (next) => {
-            while (1) {
+            while (true) {
                 await next({ x: 1 })
                 await next({ x: 0 })
             }
         },
-        config: {mass: 7.5, tension: 750, friction: 25},
+        config: {mass: 10, tension: 700, friction: 30},
+        delay: 250 * (i / l)
     }))
 
     return (
@@ -49,7 +50,6 @@ export const Pieces = ({layer: l=18||25}) => {
                     )
                 )}
             </group>
-            <axesHelper />
         </Render>
     )
 }
