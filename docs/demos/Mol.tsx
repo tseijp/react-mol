@@ -7,12 +7,13 @@ import * as THREE from 'three'
 const rand=(mul=Math.PI*2)=>Math.random()*mul
 
 export const MethylAlcohol =()=>
-    <Render geometry={molGeometry}>
+    <Render geometry={molGeometry()}>
         <meshPhongMaterial attach="material"/>
         <C><H/><H/><H/><O><H/></O></C>
     </Render>
+
 export const AcetilAcid =()=>
-    <Render geometry={molGeometry}>
+    <Render geometry={molGeometry()}>
         <meshPhongMaterial attach="material"/>
         <Recursion>
             <C><H/><H/><H/></C>
@@ -20,8 +21,9 @@ export const AcetilAcid =()=>
             <O><H/></O>
         </Recursion>
     </Render>
+
 export const Polyethylene =()=>
-    <Render geometry={molGeometry}>
+    <Render geometry={molGeometry()}>
         <meshPhongMaterial attach="material"/>
         <H>
             <Poly n={2}>
@@ -37,24 +39,26 @@ export const Polyethylene =()=>
             </Poly>
         </H>
     </Render>
+
 export const Polypropylene =()=>
-<Render geometry={molGeometry}>
-    <meshPhongMaterial attach="material"/>
-    <H>
-        <Poly n={2}>
-        {(children, i) =>
-            <C angle={(i%2)*Math.PI/2}>
+    <Render geometry={molGeometry()}>
+        <meshPhongMaterial attach="material"/>
+        <H>
+            <Poly n={2}>
+            {(children, i) =>
                 <C angle={(i%2)*Math.PI/2}>
-                    {children||<H/>}
-                    <CH3/>
-                    <H/>
+                    <C angle={(i%2)*Math.PI/2}>
+                        {children||<H/>}
+                        <CH3/>
+                        <H/>
+                    </C>
+                    <H/><H/>
                 </C>
-                <H/><H/>
-            </C>
-        }
-        </Poly>
-    </H>
-</Render>
+            }
+            </Poly>
+        </H>
+    </Render>
+
 export const Random =()=> {
     const top = React.useRef<any>(null)
     const end = React.useRef<any>(null)
@@ -70,7 +74,7 @@ export const Random =()=> {
     })
 
     return (
-        <Render ref={mesh} geometry={molGeometry}>
+        <Render ref={mesh} geometry={molGeometry()}>
             <meshPhongMaterial attach="material"/>
             <H ref={top}>
                 <Poly n={200}>

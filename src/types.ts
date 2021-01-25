@@ -9,9 +9,9 @@ export type AtomObject = Spread<THREE.Group, {
 
 export type RenderProps<T extends object={}> = Spread<{
     ref: MutableRefObject<AtomObject>,
-    geometry?: null | Fun<THREE.Geometry>,
-    material?: null | Fun<THREE.Material>,
-    count   ?: null | Fun<number>,
+    geometry?: null | THREE.Geometry,
+    material?: null | THREE.Material,
+    count   ?: null | number,
     children?: ReactNode|((state:RenderProps<T>)=>ReactNode),
 }, T>
 

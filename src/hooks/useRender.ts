@@ -2,7 +2,7 @@ import React from 'react'
 import {useAtom} from 'jotai'
 import {useFrame} from 'react-three-fiber'
 import {atomsAtom} from '../atoms'
-import {AtomObject, RenderProps} from '../types'
+import {RenderProps} from '../types'
 import * as THREE from 'three'
 
 var uuid = 0
@@ -12,20 +12,17 @@ export function useRender <T extends object={}>(
 ):  unknown & Partial<RenderProps<T>>
 
 export function useRender ({
-    geometry=null, material=null, count=1000, ...props
+    geometry:g=null, count:c=1000,
+    material:m=null, ...props
 }: any, ref: any) {
     const [atoms] = useAtom(atomsAtom)
     const [id] = React.useState(() => uuid++)
     const mesh = React.useRef<THREE.InstancedMesh>(null)
-    const args = React.useMemo<[THREE.Geometry, THREE.Material, number]>(() => [
-        typeof geometry==="function"? geometry(): geometry,
-        typeof material==="function"? material(): material,
-        typeof count==="function"? count(): count,
-    ], [geometry, material, count])
+    const args = React.useMemo(() => [g, m, c], [g, m, c])
 
     useFrame(() => {
         if (!mesh.current) return
-        atoms.forEach(({color: c, matrixWorld: m}: AtomObject, i) => {
+        atoms.forEach(({color: c, group: {matrixWorld: m}}, i) => {
             if (c) mesh.current?.setColorAt (i, c)
             if (m) mesh.current?.setMatrixAt(i, m)
         })
@@ -33,10 +30,9 @@ export function useRender ({
         // mesh.current.instanceColor.needsUpdate = true //r124 is not suported
     })
 
-    React.useImperativeHandle(ref, () => mesh.current && {
-        id, ...mesh.current,
+    React.useImperativeHandle(ref, () => ({
+        id, atoms, ...mesh.current,
         mesh: mesh.current,
-        atoms: atoms
-    })
+    }))
     return {ref: mesh, args, ...props}
 }
