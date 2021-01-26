@@ -1,3 +1,4 @@
 export * from './Bricks'
 export * from './Books'
-export {Bricks as defalut} from './Bricks'
+export * from './Tubes'
+export {Bricks as default} from './Bricks'
