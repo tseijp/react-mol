@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {Atom, Poly, Render} from '../../../src'
 import {useLoader} from 'react-three-fiber'
 import * as THREE from 'three'
@@ -12,43 +12,43 @@ const Plane = (props: any) => {
     return (
         <mesh ref={ref} receiveShadow>
           <planeBufferGeometry attach="geometry" args={[5, 5]} />
-          <shadowMaterial attach="material" color="#171717" opacity={0.5} />
+          <meshPhongMaterial attach="material" color="#171717" opacity={0.5} />
         </mesh>
     )
 }
+
 const Book = React.forwardRef(({
-    children,
-    position=[0, 0, 0],
-    scale=[1, 1, 1],
-    ...props
-}: any) => {
+    position: [x, y, z]=[0, 0, 0],
+    scale: [dx, dy, dz]=[1, 1, 1],
+    children, ...props
+}: any, forwardRef) => {
     const [ref] = useBox(() => ({
         mass: 1,
-        args: scale || [1, 1, 1]
+        args: [dx, dy / 2, dz],
     }))
-    return (
-        <>
-            <Atom ref={ref} rotation-x={Math.PI/2} scale={scale} {...props} />
-            <group position-y={position[2] + scale[2]}>
-                {children}
-            </group>
-        </>
+    return (//z + dz / 2
+        <group ref={forwardRef} position={[x, y + dy / 2, z]} {...props}>
+            <Atom ref={ref} scale={[dx, dy, dz]} />
+            {children}
+        </group>
     )
 })
 
-export const Books = ({count:c=100}) => {
-    const widths = React.useMemo(() => [...Array(c)].map(() =>
-        random() * 1 + 3
-    ), [c])
-    const heights = React.useMemo(() => [...Array(c)].map(() =>
-        random() / c + 1 / c
-    ), [c])
+    // <group ref={ref}
+    //     scale={[dx, dy, dz]}
+    //     position-y={dz / 2}
+    //     rotation-x={Math.PI/2}>
+    //     <Atom {...props}/>
+    // </group>
+    // <group position-y={z + dz / 2}>
+    //     {children}
+    // </group>
 
-    const geometry = React.useRef<THREE.Geometry>()
-    React.useEffect(() => void geometry.current?.translate(0, 0, -.5), [])
+export const Books = ({count:c=10}) => {
+    const ws = useMemo(() => [...Array(c)].map(() => 2 - random()), [c])
+    const hs = useMemo(() => [...Array(c)].map(() => random() / c + 1 / c), [c])
 
     const texture = useLoader(THREE.TextureLoader, bookURL)
-    // const normMap = useLoader(THREE.TextureLoader, bookURL)
     const aspect = React.useMemo(() => texture.image.height / texture.image.width, [texture])
     const [TextureMaterial, PaperMaterial] = React.useMemo(() => [
             (p: any) => <meshPhongMaterial map={texture} {...p}/>,
@@ -58,22 +58,27 @@ export const Books = ({count:c=100}) => {
         <Physics>
             <Plane rotation={[-PI / 2, 0, 0]}/>
             <Render>
-                <boxBufferGeometry attach="geometry" args={[1, 1]} ref={geometry}/>
-                <TextureMaterial attachArray="material" />
-                <PaperMaterial attachArray="material" />
-                <PaperMaterial attachArray="material" />
+                <boxBufferGeometry attach="geometry" args={[1, 1, 1]}/>
                 <PaperMaterial attachArray="material" />
                 <TextureMaterial attachArray="material" />
                 <TextureMaterial attachArray="material" />
-                <Poly n={heights.length - 1}>
+                <TextureMaterial attachArray="material" />
+                <PaperMaterial attachArray="material" />
+                <PaperMaterial attachArray="material" />
+                <Poly n={c - 1}>
                 {(children, i) =>
-                    <Book
-                        key={i}
-                        children={children}
-                        scale={[1*widths[i], aspect*widths[i], heights[i]]}/>
+                    <Book key={i} children={children}
+                        scale={[1*ws[i], hs[i], aspect*ws[i]]}/>
                 }
                 </Poly>
             </Render>
         </Physics>
     )
 }
+
+//     _______(6)
+//    /  3   /|
+// 2 /______/ |  1
+//   |  5   | /
+//   |______|/
+//       4

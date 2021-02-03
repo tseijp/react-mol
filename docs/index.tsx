@@ -26,7 +26,6 @@ const HookCanvas = ({children}: any) => (
             style={{width: '100%', height: 'calc(100vh - 2rem)'}}
             gl={{alpha: true, antialias: false, logarithmicDepthBuffer: true}}>
         <ambientLight intensity={.3} />
-        <pointLight position={[ 100, 100,-100]} intensity={1} />
         <pointLight position={[ 100, 100, 100]} intensity={2.5} />
         <pointLight position={[-100,-100, 100]} intensity={5} color="pink" />
         <OrbitControls />
