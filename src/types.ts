@@ -37,8 +37,6 @@ export type MolProps = {
     recursion?: boolean
 }
 
-export type HelProps = {}
-
 export type FlowProps = {
     args?: Fun<number[]>,
     position?: Fun,

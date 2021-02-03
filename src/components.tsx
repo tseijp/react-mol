@@ -1,7 +1,11 @@
-import React, {Children, useMemo} from 'react'
+import React from 'react'
 import {AtomProps, RenderProps} from './types'
 import {useAtom, useRender} from './hooks'
 import {Provider} from 'jotai'
+import {useFrame} from 'react-three-fiber'
+import {eulerVec3, calcMolPos} from './utils'
+import {MolProps, FlowProps} from './types'
+
 
 export type Atom = {
     <T extends object={}>(props: unknown & Partial<AtomProps<T>>): null | JSX.Element
@@ -30,10 +34,10 @@ export const Render = React.forwardRef((props: any, ref: any) => {
 })
 
 export const Recursion = ({children}: any) => {
-    return useMemo(() => {
-        const [topChild, ...otherChild] = Children.map(children, c=>c)
+    return React.useMemo(() => {
+        const [topChild, ...otherChild] = React.Children.map(children, c=>c)
         if (typeof topChild!=="object") return null
-        const grand = Children.map(topChild.props.children, c=>c)
+        const grand = React.Children.map(topChild.props.children, c=>c)
         return React.cloneElement(topChild, {
             recursion: false, children: [
                 ...(grand || []),
@@ -51,7 +55,7 @@ export function Poly <T extends object={}>(
 ): null|JSX.Element
 
 export function Poly ({children, n=0}: any) {
-    return useMemo(() => {
+    return React.useMemo(() => {
         if (n<0) return null
         const child = children(n>0 && <Poly n={n-1} children={children}/>, n)
         return React.cloneElement(child, {children:null, ...child.props})
@@ -74,3 +78,49 @@ export function Poly ({children, n=0}: any) {
 //     }), n)
 //     return React.cloneElement(child, {...props, children: null,...child.props})
 // }
+
+
+//  *************************         ************************* //
+//  ************************* <Mol /> ************************* //
+//  *************************         ************************* //
+export type Mol = {(props: MolProps): null | JSX.Element}
+export const Mol = React.forwardRef((props: any, ref) => {
+  const {index: i, angle: a, double:d} = props
+  const state = React.useMemo(() => {
+    const position = calcMolPos(i, a, d)
+    const rotation = eulerVec3(position, [0,1,0])
+    return {position, rotation}
+  }, [i, a, d])
+
+  const children = React.useMemo(() =>
+    React.Children.map(props.children, (child :any, index) =>
+      React.cloneElement(child, {index})
+  ), [props.children])
+
+  return <Atom {...props} {...state} ref={ref} children={children}></Atom>
+})
+
+//  *************************          ************************* //
+//  ************************* <Flow /> ************************* //
+//  *************************          ************************* //
+export function Flow (props: Partial<AtomProps<FlowProps>>): null | JSX.Element
+export function Flow (props: any) {
+  const ref = React.useRef<any>(null)
+  const now = React.useRef<number>(0)
+  const fun = (value: any): value is Function => typeof value==="function"
+  useFrame((_, delta) => {
+    if (!ref.current) return
+    now.current += delta
+    const { position: p, scale: s, args: a,
+            rotation: r, color: c } = props
+    const args = fun(a)
+        ? a(now.current, ...ref.current.position.toArray())
+        : [ now.current, ...(a || []) ]
+    p && ref.current.position.set(...(fun(p)? p(...args): p))
+    r && ref.current.rotation.set(...(fun(r)? r(...args): r))
+    s && ref.current.scale.set(...(fun(s)? s(...args): s))
+    if (c && ref.current.color)
+        ref.current.color.set(fun(c)? c(...args): c)
+  })
+  return <Atom ref={ref}></Atom>
+}
