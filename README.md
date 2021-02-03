@@ -99,8 +99,9 @@ __Quick started__
     <td>
       <strong><a href="#recipes-of-spring">Spring</a></strong>
       <ul>
+        <li><a href="#Pieces">Pieces</a></li>
         <li><a href="#Bounds">Bounds</a></li>
-        <li><a href="#Rings">Rings</a></li>
+        <li><a href="#Pipes">Pipes</a></li>
       </ul>
     </td>
   </tr>
@@ -622,7 +623,7 @@ ReactDOM.render(
 
 ### Recipes of Spring
 
-<table><!--*************** Recipes of Spring ***************--><tr><td><br/>
+<table><!--*************** Recipes of Spring ***************--><tr align="center"><td><br/>
 
 [![Spring](
     https://img.shields.io/badge/Spring-black.svg)](
@@ -630,38 +631,32 @@ ReactDOM.render(
 
 </td><td><br/>
 
-[![Code](
-    https://img.shields.io/badge/Code-black.svg)](
+[![Results](
+    https://img.shields.io/badge/Results-black.svg)](
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
 
 </td></tr><tr><td>
     
-```tsx
-TODO
-```
+###### Pieces
 
 </td><td>
 
 [![Pieces](
-    https://i.imgur.com/52034gg.gif)](
+    https://i.imgur.com/Ca8Ps7B.gif)](
     https://tsei.jp/rmol/Spring/Pieces)
 </td></tr><tr><td>
 
-```tsx
-TODO
-```
+###### Bounds
 
 </td><td>
 
 [![Bounds](
-    https://i.imgur.com/eghFZfT.gif)](
+    https://i.imgur.com/tRWK59i.gif)](
     https://tsei.jp/rmol/Spring/Bounds)
 
 </td></tr><tr><td>
     
-```tsx
-TODO
-```
+###### Pipes
 
 </td><td>
 
