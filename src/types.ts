@@ -1,6 +1,12 @@
 import {ReactNode, MutableRefObject} from 'react'
 import * as THREE from 'three'
 
+export type instancedArgs = [
+    null | THREE.Geometry,
+    null | THREE.Material,
+    number
+]
+
 export type AtomObject = Spread<THREE.Group, {
     id: number,
     group: THREE.Group,
@@ -13,6 +19,8 @@ export type RenderProps<T extends object={}> = Spread<{
     material?: null | THREE.Material,
     count   ?: null | number,
     children?: ReactNode|((state:RenderProps<T>)=>ReactNode),
+    argsArray?: instancedArgs[],
+    args?: instancedArgs
 }, T>
 
 export type AtomProps<T extends object={}> = Spread<{
@@ -24,6 +32,7 @@ export type AtomProps<T extends object={}> = Spread<{
     color: string,
     ref?: MutableRefObject<AtomObject>,
     children?: ReactNode|((state:AtomProps<T>)=>ReactNode),
+    update: [any, any]
 }, T>
 
 export type MolProps = {

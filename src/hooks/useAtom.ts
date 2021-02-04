@@ -10,7 +10,11 @@ export function useAtom <T extends object={}>(
     ref:  null | React.Ref<unknown>
 ):  unknown & Partial<AtomProps<T>>
 
-export function useAtom ({color, ...props}: any, forwardRef: any) {
+export function useAtom ({
+    color,
+    args: [_add=null, _del=null],
+    ...props
+}: any, forwardRef: any) {
     const [id]= useState(() => uuid++)
     const add = useUpdateAtom(addAtom)
     const del = useUpdateAtom(delAtom)
@@ -26,11 +30,11 @@ export function useAtom ({color, ...props}: any, forwardRef: any) {
     React.useImperativeHandle(forwardRef, handle)
 
     React.useEffect(() => {
-        col.current?.set(color)
-        ref.current?.updateMatrixWorld()
-        ref.current && add(handle())
-        return () => void del(id)
-    }, [color, handle, add, del, id])
+        col.current?.set(color);
+        ref.current?.updateMatrixWorld();
+        ref.current && void (_add || add)(handle());
+        return () => void (_del || del)(id)
+    }, [color, handle, _add, _del, add, del, id])
 
     return {...props, ref}
 }

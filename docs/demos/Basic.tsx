@@ -1,6 +1,6 @@
 import React from 'react'
 import {useFrame} from 'react-three-fiber'
-import {Atom, Render} from '../../src'
+import {Atom, Render, useRender} from '../../src'
 import {useControl as _} from 'react-three-gui'
 import * as THREE from 'three'
 
@@ -54,4 +54,32 @@ export function Basic () {
     </Render>
   )
 }
+
+const cylinderArgs = [
+    new THREE.CylinderBufferGeometry(.1,.1,1,10),
+    new THREE.MeshPhongMaterial(),
+    1000
+]
+const sphereArgs = [
+    new THREE.SphereBufferGeometry(.3, 32, 32),
+    new THREE.MeshPhongMaterial(),
+    1000
+]
+export function Multi () {
+  const [args1, ...cylinder] = useRender(() => ({args: cylinderArgs}))
+  const [args2, ...sphere] = useRender(() => ({args: sphereArgs}))
+
+  return (
+    <Render argsArray={[args1, args2]}>
+      <Atom update={cylinder} position-x={1}>
+        <Atom update={cylinder} position-x={1}>
+          <Atom update={cylinder} position-x={1}>
+            <Atom update={sphere} position-x={-1}/>
+          </Atom>
+        </Atom>
+      </Atom>
+    </Render>
+  )
+}
+
 export default Basic

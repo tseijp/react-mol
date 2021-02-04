@@ -1,19 +1,20 @@
 import React from 'react'
 import {useFrame} from 'react-three-fiber'
 import {C, H, O, CH3, Poly} from '../../src'
-import {Render, Recursion, mergedGeometry as molGeometry} from '../../src'
+import {Render, Recursion, mergedGeometry} from '../../src'
 import * as THREE from 'three'
 // utils
-const rand=(mul=Math.PI*2)=>Math.random()*mul
+const rand = (mul=Math.PI*2)=>Math.random()*mul
+const args = [mergedGeometry(), null, null]
 
 export const MethylAlcohol =()=>
-    <Render geometry={molGeometry()}>
+    <Render args={args}>
         <meshPhongMaterial attach="material"/>
         <C><H/><H/><H/><O><H/></O></C>
     </Render>
 
 export const AcetilAcid =()=>
-    <Render geometry={molGeometry()}>
+    <Render args={args}>
         <meshPhongMaterial attach="material"/>
         <Recursion>
             <C><H/><H/><H/></C>
@@ -23,7 +24,7 @@ export const AcetilAcid =()=>
     </Render>
 
 export const Polyethylene =()=>
-    <Render geometry={molGeometry()}>
+    <Render args={args}>
         <meshPhongMaterial attach="material"/>
         <H>
             <Poly n={2}>
@@ -41,7 +42,7 @@ export const Polyethylene =()=>
     </Render>
 
 export const Polypropylene =()=>
-    <Render geometry={molGeometry()}>
+    <Render args={args}>
         <meshPhongMaterial attach="material"/>
         <H>
             <Poly n={2}>
@@ -74,7 +75,7 @@ export const Random =()=> {
     })
 
     return (
-        <Render ref={mesh} geometry={molGeometry()}>
+        <Render ref={mesh} args={args}>
             <meshPhongMaterial attach="material"/>
             <H ref={top}>
                 <Poly n={200}>

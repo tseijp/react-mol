@@ -23,11 +23,19 @@ export const Instanced = React.forwardRef((props: any, ref) => {
     return <instancedMesh {...useRender(props, ref)} />
 })
 
-export const Render = React.forwardRef((props: any, ref: any) => {
+export const Render = React.forwardRef(({
+    argsArray=[null, null, 1000],
+    ...props
+}: any, ref: any) => {
     return (
         <React.Suspense fallback={null}>
             <Provider>
-                <Instanced ref={ref} {...props}/>
+                {!(argsArray instanceof Array)
+                 ?  <Instanced ref={ref} {...props}/>
+                 :  <group>
+                        {argsArray.map((arg: any) => <Instanced {...props} {...arg}/>)}
+                    </group>
+                }
             </Provider>
         </React.Suspense>
     )

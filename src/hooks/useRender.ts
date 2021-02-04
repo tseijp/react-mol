@@ -1,24 +1,34 @@
 import React from 'react'
 import {useAtom} from 'jotai'
+import {useUpdateAtom} from 'jotai/utils'
 import {useFrame} from 'react-three-fiber'
-import {atomsAtom} from '../atoms'
+import {atomsAtom, addAtom, delAtom} from '../atoms'
 import {RenderProps} from '../types'
 import * as THREE from 'three'
 
 var uuid = 0
+
 export function useRender <T extends object={}>(
     props: unknown & Partial<RenderProps<T>>,
-    ref: null | React.Ref<unknown>
+    ref?: null | React.Ref<unknown>
 ):  unknown & Partial<RenderProps<T>>
 
-export function useRender ({
-    geometry:g=null, count:c=1000,
-    material:m=null, ...props
-}: any, ref: any) {
+export function useRender <T extends object={}>(
+    props: () => unknown & Partial<RenderProps<T>>,
+    ref?: null | React.Ref<unknown>
+): [unknown & Partial<RenderProps<T>>, any, any]
+
+// export function useRender ({
+//     geometry:g=null, count:c=1000,
+//     material:m=null, ...props
+// }: any, ref: any) {
+export function useRender (props: any, ref: any) {
     const [atoms] = useAtom(atomsAtom)
+    const add = useUpdateAtom(addAtom)
+    const del = useUpdateAtom(delAtom)
     const [id] = React.useState(() => uuid++)
     const mesh = React.useRef<THREE.InstancedMesh>(null)
-    const args = React.useMemo(() => [g, m, c], [g, m, c])
+    // const args = React.useMemo(() => [g, m, c], [g, m, c])
 
     useFrame(() => {
         if (!mesh.current) return
@@ -34,5 +44,7 @@ export function useRender ({
         id, atoms, ...mesh.current,
         mesh: mesh.current,
     }))
-    return {ref: mesh, args, ...props}
+    return typeof props ==="function"
+        ? [{...props(), ref: mesh}, add, del]
+        : {...props, ref: mesh}
 }
