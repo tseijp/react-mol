@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import {Atom, Poly, Render} from '../../../src'
+import {Brick, Poly, Render} from '../../../src'
 import {useLoader} from 'react-three-fiber'
 import * as THREE from 'three'
 import { Physics, usePlane, useBox } from 'use-cannon'
@@ -7,42 +7,18 @@ import { Physics, usePlane, useBox } from 'use-cannon'
 const {PI, random} = Math
 const bookURL = "http://images-jp.amazon.com/images/P/4041315220.09.MZZZZZZZ"
 
-const Plane = (props: any) => {
-    const [ref] = usePlane(() => ({ mass: 0, ...props }))
-    return (
-        <mesh ref={ref} receiveShadow>
-          <planeBufferGeometry attach="geometry" args={[5, 5]} />
-          <meshPhongMaterial attach="material" color="#171717" opacity={0.5} />
-        </mesh>
-    )
-}
+const Plane = (props: any) => (
+    <mesh ref={usePlane(() => ({ mass: 0, ...props }))[0]} receiveShadow>
+        <planeBufferGeometry attach="geometry" args={[5, 5]} />
+        <meshPhongMaterial attach="material" color="#171717" opacity={0.5} />
+    </mesh>
+)
 
-const Book = React.forwardRef(({
-    position: [x, y, z]=[0, 0, 0],
-    scale: [dx, dy, dz]=[1, 1, 1],
-    children, ...props
-}: any, forwardRef) => {
-    const [ref] = useBox(() => ({
-        mass: 1,
-        args: [dx, dy / 2, dz],
-    }))
-    return (//z + dz / 2
-        <group ref={forwardRef} position={[x, y + dy / 2, z]} {...props}>
-            <Atom ref={ref} scale={[dx, dy, dz]} />
-            {children}
-        </group>
-    )
-})
-
-    // <group ref={ref}
-    //     scale={[dx, dy, dz]}
-    //     position-y={dz / 2}
-    //     rotation-x={Math.PI/2}>
-    //     <Atom {...props}/>
-    // </group>
-    // <group position-y={z + dz / 2}>
-    //     {children}
-    // </group>
+const Book = ({scale: [dx, dy, dz], ...props}: any) => (
+    <Brick {...props}
+        scale={[dx, dy, dz]}
+        ref={useBox(() => ({mass: 1, args: [dx, dy / 2, dz]}))[0]}/>
+)
 
 export const Books = ({count:c=10}) => {
     const ws = useMemo(() => [...Array(c)].map(() => 2 - random()), [c])
@@ -75,7 +51,7 @@ export const Books = ({count:c=10}) => {
         </Physics>
     )
 }
-
+// [x, -x, y, -y, z, -z]
 //     _______(6)
 //    /  3   /|
 // 2 /______/ |  1

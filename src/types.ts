@@ -45,15 +45,7 @@ export type FlowProps = {
     color?: Fun<string>
 }
 
-export type SwarmProps = {
-    args?: Fun<number[]>,
-    force?: Fun,
-    vector?: Fun,
-    position?: Fun,
-    rotation?: Fun,
-    scale?: Fun,
-    color?: Fun<string>
-}
+export type BrickProps = {}
 
 // ************************* UTILS ************************* //
 export type Vec3<T=number> = [T,T,T]

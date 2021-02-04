@@ -1,34 +1,25 @@
 import React, {useMemo} from 'react'
-import {Atom, Poly, Render} from '../../../src'
+import {Brick, Poly, Render} from '../../../src'
 // import * as THREE from 'three'
 // import {useLoader} from 'react-three-fiber'
 import palettes from 'nice-color-palettes'
 import { Physics, usePlane, useBox } from 'use-cannon'
 const {PI, random} = Math
 
-const Plane = (props: any) => {
-    const [ref] = usePlane(() => ({ mass: 0, ...props }))
-    return (
-        <mesh ref={ref} receiveShadow>
-          <planeBufferGeometry attach="geometry" args={[5, 5]} />
-          <meshPhongMaterial attach="material" color="#171717" opacity={0.5} />
-        </mesh>
-    )
-}
+const Plane = (props: any) =>  (
+    <mesh ref={usePlane(() => ({ mass: 0, ...props }))[0]} receiveShadow>
+        <planeBufferGeometry attach="geometry" args={[5, 5]} />
+        <meshPhongMaterial attach="material" color="#171717" opacity={0.5} />
+    </mesh>
+)
 
-const Brick = React.forwardRef(({
-    position: [x, y, z]=[0, 0, 0],
-    scale: [dx, dy, dz]=[1, 1, 1],
-    children, ...props
-}: any, forwardRef) => {
-    const [ref] = useBox(() => ({mass: .1, args: [dx, dy / 2, dz]}))
-    return (
-        <group ref={forwardRef} position={[x, y + dy / 2, z]} {...props}>
-            <Atom ref={ref} scale={[dx, dy, dz]}/>
-            {children}
-        </group>
-    )
-})
+const Box = ({scale: [dx, dy, dz]=[1, 1, 1], ...props}: any) => (
+    <Brick {...props}
+        ref={useBox(() => ({mass: 1, args: [dx, dy / 2, dz]}))[0]}
+        scale={[dx, dy, dz]}
+        />
+)
+
 
 export const Bricks = ({count:c=100}) => {
     const cs = useMemo(() => [...Array(c)].map(() => palettes[17][~~(Math.random()*5)]), [c])
@@ -47,7 +38,7 @@ export const Bricks = ({count:c=100}) => {
                 <axesHelper scale={[2, 2, 2]}/>
                 <Poly n={c-1}>
                     {(children, i) =>
-                        <Brick
+                        <Box
                             key={i}
                             color={cs[i]}
                             children={children}

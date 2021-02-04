@@ -4,7 +4,7 @@ import {useAtom, useRender} from './hooks'
 import {Provider} from 'jotai'
 import {useFrame} from 'react-three-fiber'
 import {eulerVec3, calcMolPos} from './utils'
-import {MolProps, FlowProps} from './types'
+import {MolProps, FlowProps, BrickProps} from './types'
 
 
 export type Atom = {
@@ -79,10 +79,6 @@ export function Poly ({children, n=0}: any) {
 //     return React.cloneElement(child, {...props, children: null,...child.props})
 // }
 
-
-//  *************************         ************************* //
-//  ************************* <Mol /> ************************* //
-//  *************************         ************************* //
 export type Mol = {(props: MolProps): null | JSX.Element}
 export const Mol = React.forwardRef((props: any, ref) => {
   const {index: i, angle: a, double:d} = props
@@ -100,9 +96,6 @@ export const Mol = React.forwardRef((props: any, ref) => {
   return <Atom {...props} {...state} ref={ref} children={children}></Atom>
 })
 
-//  *************************          ************************* //
-//  ************************* <Flow /> ************************* //
-//  *************************          ************************* //
 export function Flow (props: Partial<AtomProps<FlowProps>>): null | JSX.Element
 export function Flow (props: any) {
   const ref = React.useRef<any>(null)
@@ -124,3 +117,17 @@ export function Flow (props: any) {
   })
   return <Atom ref={ref}></Atom>
 }
+
+export type Brick = {(props: BrickProps): null | JSX.Element}
+export const Brick = React.forwardRef(({
+  position: [x, y, z]=[0, 0, 0],
+  scale: [dx, dy, dz]=[1, 1, 1],
+  children, ...props
+}: any, forwardRef) => {
+  return (
+    <group position={[x, y + dy / 2, z]} {...props}>
+      <Atom ref={forwardRef} scale={[dx, dy, dz]}/>
+      {children}
+    </group>
+  )
+})
