@@ -6,6 +6,7 @@ import {Vector3, LineCurve3} from 'three'
 
 const Atom = animated(_Atom);
 const {PI, exp, cos, sin, sqrt} = Math;
+const type = "number"
 const from = { x: 0 };
 const to = async (next: any) => {
     while (1) {
@@ -17,10 +18,10 @@ const to = async (next: any) => {
 export const Bounds = ({
     count: c=30,
     delay: d=75,
-    amp: a=_("amp", {type: "number", value: 1, min: 0, max: 5}),
-    space: s=_("space", {type: "number", value: 1, min: 0, max: 5}),
-    width: w=_("width", {type: "number", value: 10, min: 0, max: 50}),
-    hieght: h=_("height", {type: "number", value: 10, min: 0, max: 50}),
+    amp: a=_("amp", {type, value: 1, min: 0, max: 5}),
+    space: s=_("space", {type, value: 1, min: 0, max: 5}),
+    width: w=_("width", {type, value: 10, min: 0, max: 50}),
+    hieght: h=_("height", {type, value: 10, min: 0, max: 50}),
     config={mass: 10, tension: 750, friction: 25},
 }) => (
     <Render count={c**2}>
@@ -52,7 +53,7 @@ export const Bounds = ({
 
 export const Pieces = ({
     layer: l=24,
-    radius: r=_('radius', {type: 'number', value: 2.5, min: 0, max: 5}),
+    radius: r=_('radius', {type, value: 2.5, min: 0, max: 5}),
     config={mass: 10, tension: 700, friction: 30},
 }) => {
     const line = useMemo(() => {
@@ -92,8 +93,8 @@ export const Pipes = ({
     freq: f=1,
     count: c=100,
     layer: l=10,
-    stick: s=_('stick', {type: 'number', value: 1, min: 0, max: 5}),
-    radius: r=_('radius', {type: 'number', value: 1, min: 0, max: 5}),
+    stick: s=_('stick', {type, value: 1, min: 0, max: 5}),
+    radius: r=_('radius', {type, value: 1, min: 0, max: 5}),
     config={mass: 10, tension: 750, friction: 25},
 }) => (
     <Render>
