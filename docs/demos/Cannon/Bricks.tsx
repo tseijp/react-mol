@@ -16,17 +16,17 @@ const Plane = (props: any) =>  (
 // const Brick = (props: any) => <Atom {...props} ref={useBox(() => ({mass: 1, args: props.scale}))[0]}/>
 
 export const Bricks = ({
-    count:c=50,
+    count:c=75,
     element: e=4,
     width: w=_('width', {type: 'number', value: 2.1, min: 0, max: 4}),
     depth: d=_('depth', {type: 'number', value: 1, min: 0, max: 2}),
     height: h=_('height', {type: 'number', value: .6, min: 0, max: 1}),
-    lap=_('lap', {type: 'number', value: .5, min: 0, max: 1}),
+    lap=_('lap', {type: 'number', value: 1, min: 0, max: 2}),
     dist=_('dist', {type: 'number', value: 1, min: 0, max: 2})
 }) => (
     <Physics>
         <Plane scale={[10, 10, 10]} rotation={[-PI / 2, 0, 0]}/>
-        <Render position-y={-c * h / 4}>
+        <Render scale={Array(3).fill(40 / c * h)} position-y={-2}>
             <boxBufferGeometry attach="geometry" args={[1, 1, 1]}/>
             <meshPhongMaterial attach="material" color="firebrick" shininess={0}/>
             <axesHelper scale={[2, 2, 2]}/>
@@ -42,7 +42,7 @@ export const Bricks = ({
                                 <Atom scale={[w, h, d]} position-x={-w - .1}/>
                                 <Atom scale={[w, h, d]} position-x={w + .1} />
                                 <group
-                                    position-x={(i%2)? -dist: dist}
+                                    position-x={((i+j) % 2)? -dist: dist}
                                     position-y={h}
                                     rotation-y={2 * Math.PI * lap / c}
                                     children={children}/>
