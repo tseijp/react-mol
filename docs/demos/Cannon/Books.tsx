@@ -1,5 +1,12 @@
+// [x, -x, y, -y, z, -z]
+//     _______(6)
+//    /  3   /|
+// 2 /______/ |  1
+//   |  5   | /
+//   |______|/
+//       4
 import React, {useMemo} from 'react'
-import {Brick, Poly, Render} from '../../../src'
+import {Atom, Poly, Render} from '../../../src'
 import {useLoader} from 'react-three-fiber'
 import * as THREE from 'three'
 import { Physics, usePlane, useBox } from 'use-cannon'
@@ -15,7 +22,7 @@ const Plane = (props: any) => (
 )
 
 const Book = ({scale: [dx, dy, dz], ...props}: any) => (
-    <Brick {...props}
+    <Atom {...props}
         scale={[dx, dy, dz]}
         ref={useBox(() => ({mass: 1, args: [dx, dy / 2, dz]}))[0]}/>
 )
@@ -41,20 +48,15 @@ export const Books = ({count:c=10}) => {
                 <TextureMaterial attachArray="material" />
                 <PaperMaterial attachArray="material" />
                 <PaperMaterial attachArray="material" />
-                <Poly n={c - 1}>
+                <Poly n={c}>
                 {(children, i) =>
-                    <Book key={i} children={children}
-                        scale={[1*ws[i], hs[i], aspect*ws[i]]}/>
+                    <React.Fragment key={`${i}`}>
+                        <Book scale={[1*ws[i], hs[i], aspect*ws[i]]}/>
+                        <group position-y={hs[i]} children={children}/>
+                    </React.Fragment>
                 }
                 </Poly>
             </Render>
         </Physics>
     )
 }
-// [x, -x, y, -y, z, -z]
-//     _______(6)
-//    /  3   /|
-// 2 /______/ |  1
-//   |  5   | /
-//   |______|/
-//       4

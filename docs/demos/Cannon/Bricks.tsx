@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {Atom, Poly, Render} from '../../../src'
 // import * as THREE from 'three'
 // import {useLoader} from 'react-three-fiber'
@@ -13,8 +13,6 @@ const Plane = (props: any) =>  (
     </mesh>
 )
 
-// const Brick = (props: any) => <Atom {...props} ref={useBox(() => ({mass: 1, args: props.scale}))[0]}/>
-
 export const Bricks = ({
     count:c=75,
     element: e=4,
@@ -26,30 +24,30 @@ export const Bricks = ({
 }) => (
     <Physics>
         <Plane scale={[10, 10, 10]} rotation={[-PI / 2, 0, 0]}/>
-        <Render scale={Array(3).fill(40 / c * h)} position-y={-2}>
+        <Render scale={Array(3).fill(20 / c / h)} position-y={-2}>
             <boxBufferGeometry attach="geometry" args={[1, 1, 1]}/>
             <meshPhongMaterial attach="material" color="firebrick" shininess={0}/>
             <axesHelper scale={[2, 2, 2]}/>
             {[...Array(e).keys()].map(j => 2 * PI * j / e).map((ry, j) =>
-                <group key={`${j}`}
-                    rotation-y={ry}
-                    position-x={(w * 3 + dist) / 2 * cos(ry)}
-                    position-z={-(w * 3 + dist) / 2 * sin(ry)}>
-                    <Poly n={c-1}>
-                        {(children, i) =>
-                            <React.Fragment key={`${j}+${i}`}>
-                                <Atom scale={[w, h, d]}/>
-                                <Atom scale={[w, h, d]} position-x={-w - .1}/>
-                                <Atom scale={[w, h, d]} position-x={w + .1} />
-                                <group
-                                    position-x={((i+j) % 2)? -dist: dist}
-                                    position-y={h}
-                                    rotation-y={2 * Math.PI * lap / c}
-                                    children={children}/>
-                            </React.Fragment>
-                        }
-                    </Poly>
-                </group>
+            <group key={`${j}`}
+                rotation-y={ry}
+                position-x={(w * 3 + dist) / 2 * cos(ry)}
+                position-z={-(w * 3 + dist) / 2 * sin(ry)}>
+                <Poly n={c}>
+                    {(children, i) =>
+                    <Fragment key={`${j}+${i}`}>
+                        <Atom scale={[w, h, d]}/>
+                        <Atom scale={[w, h, d]} position-x={-w - .1}/>
+                        <Atom scale={[w, h, d]} position-x={w + .1} />
+                        <group
+                            position-x={((i+j) % 2)? -dist: dist}
+                            position-y={h}
+                            rotation-y={2 * Math.PI * lap / c}
+                            children={children}/>
+                    </Fragment>
+                    }
+                </Poly>
+            </group>
             )}
         </Render>
     </Physics>
