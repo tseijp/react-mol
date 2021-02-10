@@ -3,9 +3,8 @@ import {AtomProps, RenderProps} from './types'
 import {useAtom, useRender} from './hooks'
 import {Provider} from 'jotai'
 import {useFrame} from 'react-three-fiber'
-import {eulerVec3, calcMolPos} from './utils'
-import {MolProps, FlowProps, BrickProps} from './types'
-
+import {eulerVec3, calcMolPos, functionalProps} from './utils'
+import {MolProps, FlowProps} from './types'
 
 export type Atom = {
     <T extends object={}>(props: unknown & Partial<AtomProps<T>>): null | JSX.Element
@@ -46,38 +45,43 @@ export const Recursion = ({children}: any) => {
         })
     }, [children])
 }
-
 export function Poly <T extends object={}>(
     props: Partial<AtomProps<T & {
         n: number,
-        children: null | {(child: JSX.Element, key: number): JSX.Element},
+        children: (children: JSX.Element, index: number) => JSX.Element,
     }>>
 ): null|JSX.Element
 
 export function Poly ({children, n=0}: any) {
     return React.useMemo(() => {
-        if (n<0) return null
-        const child = children(n>0 && <Poly n={n-1} children={children}/>, n)
+        if (n <= 0) return null
+        const child = children(n > 0 && <Poly n={n-1} children={children}/>, n)
         return React.cloneElement(child, {children:null, ...child.props})
     }, [children, n])
 }
-// TODO functional Props for Poly
-// export function Poly <T extends object={}>(
-//     props: Partial<Props<T> & {
-//         n: number,
-//     children: null | ((
-//         next: ((nextProps?:Partial<Props<T>>) => JSX.Element),
-//         key : number
-//     ) => JSX.Element),
-//     }>
-// ): null|JSX.Element
-// export function Poly ({children,n=0,...props}: any) {
-//     if (n<0) return null
-//     const child = children(n>0 && ((nextProps: any={}) => {
-//         return <Poly n={n-1} {...nextProps} children={children}/>
-//     }), n)
-//     return React.cloneElement(child, {...props, children: null,...child.props})
-// }
+
+export function Brick <Item=number, Key=number>(
+  props: {
+    [key: string]: any| ((item: Item, key: Key) => any),
+    items: Item[],
+    keys?: Key[],
+    children: ((item: Item, index: number) => JSX.Element) | JSX.Element
+}): null | JSX.Element
+
+export function Brick ({items=[], keys=[], children, ...props}: any) {
+  return (
+    <Poly n={items.length}>
+      {(child, i) =>
+      <React.Fragment key={keys[i] || i}>
+        {typeof children ==="function"
+            ? children(items[i], keys[i] || i)
+            : children}
+        <group children={child} {...functionalProps(props, items[i], keys[i])}/>
+      </React.Fragment>
+      }
+    </Poly>
+  )
+}
 
 export type Mol = {(props: MolProps): null | JSX.Element}
 export const Mol = React.forwardRef((props: any, ref) => {
@@ -118,16 +122,20 @@ export function Flow (props: any) {
   return <Atom ref={ref}></Atom>
 }
 
-export type Brick = {(props: BrickProps): null | JSX.Element}
-export const Brick = React.forwardRef(({
-  position: [x, y, z]=[0, 0, 0],
-  scale: [dx, dy, dz]=[1, 1, 1],
-  children, ...props
-}: any, forwardRef) => {
-  return (
-    <group position={[x, y + dy / 2, z]} {...props}>
-      <Atom ref={forwardRef} scale={[dx, dy, dz]}/>
-      {children}
-    </group>
-  )
-})
+// TODO functional Props for Poly
+// export function Poly <T extends object={}>(
+//     props: Partial<Props<T> & {
+//         n: number,
+//     children: null | ((
+//         next: ((nextProps?:Partial<Props<T>>) => JSX.Element),
+//         key : number
+//     ) => JSX.Element),
+//     }>
+// ): null|JSX.Element
+// export function Poly ({children,n=0,...props}: any) {
+//     if (n<0) return null
+//     const child = children(n>0 && ((nextProps: any={}) => {
+//         return <Poly n={n-1} {...nextProps} children={children}/>
+//     }), n)
+//     return React.cloneElement(child, {...props, children: null,...child.props})
+// }

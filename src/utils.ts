@@ -39,3 +39,10 @@ export function mergedGeometry () {
     cyl.applyMatrix4(arr);
     return BufferGeometryUtils.mergeBufferGeometries([cyl, sph])
 }
+export function functionalProps <Props extends any={}>(props: Props, ...args: any[]) {
+    Object.keys(props).forEach((key: any) => {
+        if (typeof props[key] === "function")
+            props[key] = props[key](args)
+    })
+    return props
+}

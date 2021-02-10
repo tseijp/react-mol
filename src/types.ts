@@ -50,6 +50,9 @@ export type BrickProps = {}
 // ************************* UTILS ************************* //
 export type Vec3<T=number> = [T,T,T]
 export type Fun<T=Vec3,U=number> = T | ((...args:U[]) => T)
+export type Merge<A, B> = {
+    [P in keyof A]: P extends keyof B ? B[P] : A[P]
+} & Omit<B, keyof A>
 
 export type Spread<L extends object, R extends object> = Id<
     & Partial<{ [P in keyof (L & R)]: SpreadProp<L, R, P> }>
