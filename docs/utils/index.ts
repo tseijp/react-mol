@@ -1,5 +1,7 @@
 import DEMOS from '../demos'
 import CODES from '../codes'
+import {BufferGeometryUtils} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import * as THREE from 'three';
 export * from './Page'
 export * from './serviceWorker'
 
@@ -13,6 +15,15 @@ export type AppPage = {
     code: string,
     Demo: any,
 }
+
+export function molGeometry () {
+    const arr = new THREE.Matrix4().makeTranslation(0,-1/2,0)
+    const sph = new THREE.SphereBufferGeometry(.3, 32, 32)
+    const cyl = new THREE.CylinderBufferGeometry(.1,.1,1,10)
+    cyl.applyMatrix4(arr);
+    return BufferGeometryUtils.mergeBufferGeometries([cyl, sph])
+}
+
 export const AppPage = {
     pathname: ({file="", name=""}) => `/rmol/${file}/${!name||name==="default"
             ? ""

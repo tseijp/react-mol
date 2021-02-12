@@ -5,4 +5,4 @@ import * as Spring from './Spring'
 import * as Cannon from './Cannon'
 // import * as Plant from './Plant'
 // import * as Swarm from './Swarm'
-export default {Basic, Flow, Mol, Spring, Cannon}
+export default {Basic, Spring, Cannon, Flow, Mol, }

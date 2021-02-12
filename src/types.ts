@@ -9,21 +9,20 @@ export type AtomObject = Spread<THREE.Group, {
 
 export type RenderProps<T extends object={}> = Spread<{
     ref: MutableRefObject<AtomObject>,
-    geometry?: null | THREE.Geometry,
-    material?: null | THREE.Material,
-    count   ?: null | number,
-    children?: ReactNode|((state:RenderProps<T>)=>ReactNode),
+    geometry: null | THREE.Geometry,
+    material: null | THREE.Material,
+    count   : null | number,
+    children: ReactNode|((state:RenderProps<T>)=>ReactNode),
 }, T>
 
 export type AtomProps<T extends object={}> = Spread<{
-    // FOR THREE
     matrix: THREE.Matrix4,
     position: Vec3,
     rotation: Vec3,
     scale: Vec3,
     color: string,
-    ref?: MutableRefObject<AtomObject>,
-    children?: ReactNode|((state:AtomProps<T>)=>ReactNode),
+    ref: MutableRefObject<AtomObject>,
+    children: ReactNode|((state:AtomProps<T>)=>ReactNode),
 }, T>
 
 export type MolProps = {
@@ -44,8 +43,6 @@ export type FlowProps = {
     scale?: Fun,
     color?: Fun<string>
 }
-
-export type BrickProps = {}
 
 // ************************* UTILS ************************* //
 export type Vec3<T=number> = [T,T,T]

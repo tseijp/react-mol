@@ -1,7 +1,8 @@
 import React from 'react'
 import {useFrame} from 'react-three-fiber'
 import {C, H, O, CH3, Poly} from '../../src'
-import {Render, Recursion, mergedGeometry as molGeometry} from '../../src'
+import {Render, Recursion} from '../../src'
+import {molGeometry} from '../utils'
 import * as THREE from 'three'
 // utils
 const rand=(mul=Math.PI*2)=>Math.random()*mul
