@@ -34,9 +34,9 @@ export function calcMolPos (index: number=0, angle=Math.PI/2, double=false): Vec
         :   index<4? vec as Vec3: [0,-1,0]
 }
 
-export function functionalProps <Props extends any={}>(props: Props, ...args: any[]) {
-    const state = Object.assign({}, props)
-    Object.keys(state).forEach((key: any) => {
+export function functionalProps <Props extends object={}>(props: Props, ...args: any[]) {
+    const state: any = Object.assign({}, props)
+    Object.keys(state).forEach(key => {
         if (typeof state[key] === "function")
             state[key] = state[key](...args)
     })

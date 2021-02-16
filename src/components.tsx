@@ -51,7 +51,7 @@ export function Poly <T extends object={}>(
 
 export function Poly ({children, n=0}: any) {
   if (n <= 0) return null
-  const child = children(n > 0 && <Poly n={n - 1} children={children}/>, n)
+  const child = children(<Poly n={n - 1} children={children}/>, n - 1)
   return React.cloneElement(child, {children:null, ...child.props})
 }
 
