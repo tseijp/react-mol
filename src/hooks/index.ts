@@ -1,2 +1,2 @@
 export * from './useAtom';
-export * from './useRender';
+export * from './useInstanced';

@@ -1,17 +1,26 @@
 import React from 'react'
 import {useAtom} from 'jotai'
 import {useFrame} from 'react-three-fiber'
-import {atomsAtom} from '../atoms'
-import {RenderProps} from '../types'
+import {atomsAtom, AtomObject} from '../atoms'
+import {Spread, InstancedMeshProps} from '../utils'
 import * as THREE from 'three'
 
 var uuid = 0
-export function useRender <T extends object={}>(
-    props: unknown & Partial<RenderProps<T>>,
-    ref: null | React.Ref<unknown>
-):  unknown & Partial<RenderProps<T>>
 
-export function useRender ({
+export type InstancedProps<T extends object={}> = Spread<Spread<{
+    ref: React.MutableRefObject<AtomObject>,
+    geometry: null | THREE.Geometry,
+    material: null | THREE.Material,
+    count   : null | number,
+    children: React.ReactNode | ((state: InstancedProps<T>) => React.ReactNode),
+}, Partial<InstancedMeshProps>>, T>
+
+export function useInstanced <T extends object={}>(
+    props: unknown & Partial<InstancedProps<T>>,
+    ref: null | React.Ref<unknown>
+): any //Partial<InstancedProps<T>>
+
+export function useInstanced ({
     geometry:g=null, count:c=1000,
     material:m=null, ...props
 }: any, ref: any) {

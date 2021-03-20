@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 import {useControl as _} from 'react-three-gui'
 import {animated, useTrail} from 'react-spring/three'
-import {Render, Atom as _Atom} from '../../src'
+import {Instanced, Atom as _Atom} from '../../src'
 // import {Vector3, LineCurve3} from 'three'
 import * as THREE from 'three'
 
@@ -27,7 +27,7 @@ export const Trans = ({
     lap=_('lap', {type, value: 2, min: 0, max: 5}),
     config={mass: 10, tension: 700, friction: 30},
 }) => (
-    <Render position={[-c * s / 2, -h / 2, -c * s / 2]}>
+    <Instanced position={[-c * s / 2, -h / 2, -c * s / 2]}>
         <tubeBufferGeometry attach="geometry" args={useMemo(() => {
             const points = [...Array(l||0).keys()].map(i => {
                 const x = r * cos(2 * PI * lap * i / l)
@@ -44,5 +44,5 @@ export const Trans = ({
                 position-z={~~(i / c) * s}
                 rotation-y={x}/>
         )}
-    </Render>
+    </Instanced>
 )

@@ -1,5 +1,5 @@
 import React, {useRef, useMemo} from 'react'
-import {Render, Flow, Vec3} from '../../src'
+import {Instanced, Flow, Vec3} from '../../src'
 import niceColors from 'nice-color-palettes'
 import {useFrame} from 'react-three-fiber'
 // import {useControl} from 'react-three-gui'
@@ -12,7 +12,7 @@ export const Points =({count:c=50})=> {
         niceColors[17][Math.floor(Math.random()*5)]
     ), [c])
     return (
-        <Render position={[-c/4,-1,-c/4]} count={2500}>
+        <Instanced position={[-c/4,-1,-c/4]} count={2500}>
             <sphereBufferGeometry attach="geometry" args={[1,32,32]}/>
             <meshPhongMaterial    attach="material" />
             {Array(c**2).fill(0).map((_,i) =>
@@ -21,7 +21,7 @@ export const Points =({count:c=50})=> {
                     position={r => [i%c,r,i/c%c]}
                     scale={r => [r/3,r/3,r/3]} />
             )}
-        </Render>
+        </Instanced>
     )
 }
 export const Boxes =()=> {
@@ -37,7 +37,7 @@ export const Boxes =()=> {
         now.current += delta
     })
     return (
-        <Render ref={ref} count={10**3}>
+        <Instanced ref={ref} count={10**3}>
             <boxBufferGeometry attach="geometry" />
             <meshPhongMaterial attach="material" />
             {Array(1000).fill(0).map((_,i) =>
@@ -51,7 +51,7 @@ export const Boxes =()=> {
                     rotation={r => [0,r*2,r*3]}
                     scale={r => [r/4,r/4,r/4]}/>
             )}
-        </Render>
+        </Instanced>
     )
 }
 export const Spheres =() => {
@@ -61,7 +61,7 @@ export const Spheres =() => {
         niceColors[17][~~rand(5)]
     ), [c])
     return (
-        <Render max={c}>
+        <Instanced count={c}>
             <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
             <meshPhongMaterial    attach="material" color={0xffffff} />
             {Array(c).fill(0).map((_, i) =>
@@ -75,7 +75,7 @@ export const Spheres =() => {
                     scale={(t,s) => Array(3).fill(max(.5, 2*cos(t+s*50))) as Vec3}
                     />
             )}
-        </Render>
+        </Instanced>
     )
 }
 export const Particles =({count=1000}) => {
@@ -83,7 +83,7 @@ export const Particles =({count=1000}) => {
         niceColors[17][~~rand(5)]
     ), [count])
     return (
-        <Render count={count}>
+        <Instanced count={count}>
             <dodecahedronBufferGeometry args={[0.2, 0]} />
             <meshPhongMaterial />
             {Array(count).fill(0).map((_, i) =>
@@ -95,7 +95,7 @@ export const Particles =({count=1000}) => {
                         z + cos(t*s*f/50) + sin(t*s/50)*f/10,]}
                     scale={t => Array(3).fill(Math.cos(t)) as Vec3}/>
             )}
-        </Render>
+        </Instanced>
     )
 }
 export const Dodecas =({count=2500,size=5}) => {
@@ -103,7 +103,7 @@ export const Dodecas =({count=2500,size=5}) => {
         niceColors[17][~~rand(5)]
     ), [count])
     return (
-        <Render count={count}>
+        <Instanced count={count}>
             <dodecahedronBufferGeometry args={[1,0]}/>
             <meshStandardMaterial />
             {Array(count).fill(0).map((_,i) =>
@@ -118,7 +118,7 @@ export const Dodecas =({count=2500,size=5}) => {
                     scale={(t,s)=>Array(3).fill(cos(t*s/2)*size) as Vec3}
                     color={colors[i]}/>
             )}
-        </Render>
+        </Instanced>
     )
 }
 export default Dodecas

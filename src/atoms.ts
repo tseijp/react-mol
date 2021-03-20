@@ -1,5 +1,11 @@
 import {atom} from 'jotai'
-import {AtomObject} from './types'
+import {Spread} from './utils'
+
+export type AtomObject = Spread<THREE.Group, {
+    id: number,
+    group: THREE.Group,
+    color: THREE.Color
+}>
 
 export const atomsAtom = atom<AtomObject[]>([])
 

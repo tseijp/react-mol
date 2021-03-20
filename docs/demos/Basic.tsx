@@ -1,6 +1,6 @@
 import React from 'react'
 import {useFrame} from 'react-three-fiber'
-import {Atom, Render} from '../../src'
+import {Atom, Instanced} from '../../src'
 import {useControl as _} from 'react-three-gui'
 import * as THREE from 'three'
 
@@ -10,15 +10,15 @@ export function Add () {
   const range  = _('range', {type: "number", value:  5, min: 0, max: 10})
   const number = _('number', {type: "number", value: 10, min: 0, max: 100})
   return (
-    <Render>
+    <Instanced>
       <boxBufferGeometry attach="geometry"/>
       <meshPhongMaterial attach="material"/>
       {[...Array(number)].map((_, key) =>
         <Atom key={key}
             color={0xffffff*random()}
-            position={[...Array(3)].map(() => range*(random()-.5))}/>
+            position={[...Array(3)].map(() => range*(random()-.5)) as any}/>
       )}
-    </Render>
+    </Instanced>
   )
 }
 
@@ -35,7 +35,7 @@ export function Basic () {
   })
 
   return (
-    <Render>
+    <Instanced>
       <boxBufferGeometry attach="geometry" />
       <meshPhongMaterial attach="material" />
       <Atom color="red" position={[1, -2, -5]} rotation={[0, 0, Math.PI/3]}>
@@ -51,7 +51,7 @@ export function Basic () {
           </Atom>
         </Atom>
       </Atom>
-    </Render>
+    </Instanced>
   )
 }
 export default Basic

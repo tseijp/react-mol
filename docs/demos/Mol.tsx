@@ -1,30 +1,30 @@
 import React from 'react'
 import {useFrame} from 'react-three-fiber'
 import {C, H, O, CH3, Poly} from '../../src'
-import {Render, Recursion} from '../../src'
+import {Instanced, Recursion} from '../../src'
 import {molGeometry} from '../utils'
 import * as THREE from 'three'
 // utils
 const rand=(mul=Math.PI*2)=>Math.random()*mul
 
 export const MethylAlcohol =()=>
-    <Render geometry={molGeometry()}>
+    <Instanced geometry={molGeometry()}>
         <meshPhongMaterial attach="material"/>
         <C><H/><H/><H/><O><H/></O></C>
-    </Render>
+    </Instanced>
 
 export const AcetilAcid =()=>
-    <Render geometry={molGeometry()}>
+    <Instanced geometry={molGeometry()}>
         <meshPhongMaterial attach="material"/>
         <Recursion>
             <C><H/><H/><H/></C>
             <C><O double/></C>
             <O><H/></O>
         </Recursion>
-    </Render>
+    </Instanced>
 
 export const Polyethylene =()=>
-    <Render geometry={molGeometry()}>
+    <Instanced geometry={molGeometry()}>
         <meshPhongMaterial attach="material"/>
         <H>
             <Poly n={2}>
@@ -39,10 +39,10 @@ export const Polyethylene =()=>
             }
             </Poly>
         </H>
-    </Render>
+    </Instanced>
 
 export const Polypropylene =()=>
-    <Render geometry={molGeometry()}>
+    <Instanced geometry={molGeometry()}>
         <meshPhongMaterial attach="material"/>
         <H>
             <Poly n={2}>
@@ -58,7 +58,7 @@ export const Polypropylene =()=>
             }
             </Poly>
         </H>
-    </Render>
+    </Instanced>
 
 export const Random =()=> {
     const top = React.useRef<any>(null)
@@ -75,7 +75,7 @@ export const Random =()=> {
     })
 
     return (
-        <Render ref={mesh} geometry={molGeometry()}>
+        <Instanced ref={mesh} geometry={molGeometry()}>
             <meshPhongMaterial attach="material"/>
             <H ref={top}>
                 <Poly n={200}>
@@ -91,7 +91,7 @@ export const Random =()=> {
                 }
                 </Poly>
             </H>
-        </Render>
+        </Instanced>
     )
 }
 export default Random

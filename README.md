@@ -1,24 +1,3 @@
-<!-- ****************************** ****************************** >
-- REFS
-    - inspiration
-        - https://threejs.org/examples/#css3d_molecules
-        - https://threejs.org/examples/#webgl_loader_pdb
-        - https://threejs.org/examples/#webgl_skinning_simple
-    - instancing
-        - https://threejs.org/examples/#webgl_buffergeometry_lines
-        - https://threejs.org/examples/#webgl_instancing_raycast
-        - https://threejs.org/examples/#webgl_postprocessing_sao
-- TODO rmol branch: feature/Shader
-    <Shader uniforms={uniforms}>
-        <boxBufferGeometry/>
-        <phongBasicMaterial/>
-        {Array(100000).map((_,i) => <Atom shader/> )}
-    </Shader>
-    <GPUComputationRenderer dataType={THREE.HalFloatTime}>
-        <texture2D repeatWrapping uniform={{time: 0, delta: 0}}/>
-        <texture2D repeatWrapping uniform={{time: 0, delta: 0}}/>
-    </GPUComputationRenderer>
-<!   ****************************** ****************************** -->
 <p align="center">
 
 [ ![https://tsei.jp/rmol](
@@ -26,6 +5,7 @@
     https://tsei.jp/rmol)
 
 </p>
+
 <br/><br/><hr/><br/><br/>
 
 [![build-✔](
@@ -69,7 +49,7 @@ __Quick started__
       <ul>
         <li><a href="#Recipes-of-mol">Mol</a></li>
         <li><a href="#Recipes-of-flow">Flow</a></li>
-        <li><a href="#Recipes-of-brick">Brick</a></li>
+        <li><a href="#Recipes-of-tile">Tile</a></li>
         <li><a href="#Recipes-of-spring">Spring</a></li>
       </ul>
     </td>
@@ -91,7 +71,7 @@ __Quick started__
       </ul>
     </td>
     <td>
-      <strong><a href="#recipes-of-brick">Brick</a></strong>
+      <strong><a href="#recipes-of-tile">Tile</a></strong>
       <ul>
         <li><a href="#Basic">Basic</a></li>
       </ul>
@@ -190,18 +170,6 @@ export const Flow = React.forwardRef((props, forwardRef) => {
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Points.gif)](
     https://tsei.jp/rmol/Flow/Points)
 
-</td></tr>
-<tr valign="top"><td>
-
-🧬<strong>`<Hel/>`</strong>
-([More Recipes](#recipes-of-hel))
-
-<details><summary>View Code</summary>
-
-~~TODO~~
-
-</details>
-
 </td></td>
 </table>
 
@@ -212,7 +180,7 @@ ___What does it look like?___
 <tr valign="top"><td>
 
 🪐<strong>`<Atom/>`</strong>
-(~~[live demo](https://tsei.jp/rmol/Basic/Basic)~~).
+([live demo](https://tsei.jp/rmol/Basic/Basic)).
 
 </td><td>
     <a href="https://tsei.jp/rmol/Basic/Basic"><img
@@ -238,7 +206,7 @@ function Basic () {
   })
 
   return (
-    <Render>
+    <Instanced>
       <boxBufferGeometry attach="geometry" />
       <meshPhongMaterial attach="material" />
       <Atom color="red" position={[1, -2, -5]} rotation={[0, 0, Math.PI/3]}>
@@ -254,7 +222,7 @@ function Basic () {
           </Atom>
         </Atom>
       </Atom>
-    </Render>
+    </Instanced>
   )
 }
 
@@ -290,7 +258,7 @@ function Basic () {
   })
 
   return (
-    <Render>
+    <Instanced>
       <Recursion>
         <boxBufferGeometry/>
         <meshPhongMaterial/>
@@ -300,7 +268,7 @@ function Basic () {
         )}
         <Atom color="blue" position={[2, 0, 0]} ref={ref}/>
       </Recursion>
-    </Render>
+    </Instanced>
   )
 }
 
@@ -495,7 +463,7 @@ ReactDOM.render(
 </td><td>
 
 ```tsx
-<Render position={[-12.5,0,-25]} count={2500}>
+<Instanced position={[-12.5,0,-25]} count={2500}>
   <sphereBufferGeometry/>
   <meshPhongMaterial   />
   {[...Array(2500)].map((_,i) =>
@@ -505,7 +473,7 @@ ReactDOM.render(
       position={r => [i%c,r,i/c%c]}
       scale={r => [r/3,r/3,r/3]} />
   )}
-</Render>
+</Instanced>
 ```
 
 </td><td>
@@ -521,7 +489,7 @@ ReactDOM.render(
 </td><td>
 
 ```tsx
-<Render count={10**3}>
+<Instanced count={10**3}>
   <boxBufferGeometry />
   <meshPhongMaterial/>
   {[...Array(1000)].map((_,i) =>
@@ -532,7 +500,7 @@ ReactDOM.render(
       rotation={r => [0,r*2,r*3]}
       scale={r => [r/4,r/4,r/4]}/>
   )}
-</Render>
+</Instanced>
 ```
 
 </td><td>
@@ -548,7 +516,7 @@ ReactDOM.render(
 </td><td>
 
 ```tsx
-<Render count={1000}>
+<Instanced count={1000}>
   <sphereBufferGeometry args={[1,32,32]}/>
   <meshPhongMaterial color={0xffffff}/>
   {[...Array(1000)].map((_, i) =>
@@ -561,7 +529,7 @@ ReactDOM.render(
       scale={(t,s) => Array(3).fill(
               max(.3, cos((t+s*10)*s))*s)}/>
   )}
-</Render>
+</Instanced>
 ```
 
 </td><td>
@@ -577,7 +545,7 @@ ReactDOM.render(
 </td><td>
 
 ```tsx
-<Render count={1000}>
+<Instanced count={1000}>
   <dodecahedronBufferGeometry args={[1,0]}/>
   <meshStandardMaterial/>
   {[...Array(1000)].map((_,i) =>
@@ -590,7 +558,7 @@ ReactDOM.render(
       rotation={(t,s)=>Array(3).fill(cos(t*s))}
       scale={(t,s)=>Array(3).fill(cos(t*s))}/>
   )}
-</Render>
+</Instanced>
 ```
 
 </td><td>
@@ -598,24 +566,6 @@ ReactDOM.render(
 [![Dodecas](
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Dodecas.gif)](
     https://tsei.jp/rmol/Flow/Dodecas)
-
-</td></tr></table>
-
-<br/><br/><hr/><br/><br/>
-
-### Recipes of Brick
-
-<table><!--*************** Recipes of Brick ***************--><tr><td><br/>
-
-[![Brick](
-    https://img.shields.io/badge/Brick-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
-
-</td><td><br/>
-
-[![Code](
-    https://img.shields.io/badge/Code-black.svg)](
-    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
 
 </td></tr></table>
 
@@ -636,7 +586,7 @@ ReactDOM.render(
     https://github.com/tseijp/react-mol/blob/master/src/Atom.tsx)
 
 </td></tr><tr><td>
-    
+
 ###### Pieces
 
 </td><td>
@@ -655,7 +605,7 @@ ReactDOM.render(
     https://tsei.jp/rmol/Spring/Bounds)
 
 </td></tr><tr><td>
-    
+
 ###### Pipes
 
 </td><td>
@@ -670,6 +620,31 @@ ReactDOM.render(
 <!--******************************      ******************************-->
 <!--****************************** TODO ******************************-->
 <!--******************************      ******************************-->
+
+<details>
+<summary>
+
+### Recipes of Tile
+
+</summary>
+
+
+<table><!--*************** Recipes of Tile ***************--><tr><td><br/>
+
+[![Tile](
+    https://img.shields.io/badge/Tile-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
+
+</td><td><br/>
+
+[![Code](
+    https://img.shields.io/badge/Code-black.svg)](
+    https://github.com/tseijp/react-mol/blob/master/src/index.tsx)
+
+</td></tr></table>
+
+<br/><br/><hr/><br/><br/>
+</details>
 
 <details>
 <summary>

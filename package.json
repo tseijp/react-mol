@@ -43,7 +43,7 @@
         ]
     },
     "dependencies": {
-        "jotai": "^0.12.5"
+        "jotai": "^0.15.3"
     },
     "peerDependencies": {
         "react": ">=16.8",

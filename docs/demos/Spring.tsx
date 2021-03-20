@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 import {useControl as _} from 'react-three-gui'
 import {animated, useSprings} from 'react-spring/three'
-import {Render, Atom as _Atom} from '../../src'
+import {Instanced, Atom as _Atom} from '../../src'
 import {Vector3, LineCurve3} from 'three'
 
 const Atom = animated(_Atom);
@@ -24,7 +24,7 @@ export const Bounds = ({
     hieght: h=_("height", {type, value: 10, min: 0, max: 50}),
     config={mass: 10, tension: 750, friction: 25},
 }) => (
-    <Render count={c**2}>
+    <Instanced count={c**2}>
         <cylinderBufferGeometry attach="geometry" args={[1, 1, 10, 6]}/>
         <meshPhysicalMaterial
             attach="material"
@@ -48,7 +48,7 @@ export const Bounds = ({
                     scale-y={x.to(v => (v + .5) * a / 8)}/>
             ))}
         </group>
-    </Render>
+    </Instanced>
 )
 
 export const Pieces = ({
@@ -68,7 +68,7 @@ export const Pieces = ({
     , [l])
 
     return (
-        <Render>
+        <Instanced>
             <tubeBufferGeometry attach="geometry" args={[line, 20, r / l / 2, 12, false]}/>
             <meshPhysicalMaterial attach="material" roughness={0.2} metalness={1.0} color="darksalmon"/>
             <group rotation-z={PI}>
@@ -85,7 +85,7 @@ export const Pieces = ({
                     )
                 )}
             </group>
-        </Render>
+        </Instanced>
     )
 }
 
@@ -97,7 +97,7 @@ export const Pipes = ({
     radius: r=_('radius', {type, value: 1, min: 0, max: 5}),
     config={mass: 10, tension: 750, friction: 25},
 }) => (
-    <Render>
+    <Instanced>
         <tubeBufferGeometry attach="geometry" args={useMemo(() => {
             const v1 = new Vector3(0, 0,  0)
             const v2 = new Vector3(0, 0, s * 10)
@@ -126,14 +126,14 @@ export const Pipes = ({
                     scale-z={x.to(v => v + 1)}/>
             )}
         </group>
-    </Render>
+    </Instanced>
 )
 
 export const Rings = ({
     count: c=100,
     config={mass: 2.2, tension: 138, friction: 79}
 }) => (
-    <Render>
+    <Instanced>
         <torusBufferGeometry attach="geometry" args={[10, .5, 5, 50]}/>
         <meshPhysicalMaterial attach="material" roughness={0.2} metalness={1.0} color="darksalmon"/>
         <group scale={Array(3).fill(1 / exp(c / 12)) as any}
@@ -149,5 +149,5 @@ export const Rings = ({
                     )}/>
             ))}
         </group>
-    </Render>
+    </Instanced>
 )

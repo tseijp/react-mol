@@ -1,5 +1,5 @@
 export const Points = `
-<Render position={[-12.5,0,-25]} max={2500}>
+<Instanced position={[-12.5,0,-25]} max={2500}>
   <sphereBufferGeometry/>
   <meshPhongMaterial   />
   {Array(2500).fill(0).map((_,i) =>
@@ -9,10 +9,10 @@ export const Points = `
       position={r => [i%c,r,i/c%c]}
       scale={r => [r/3,r/3,r/3]} />
   )}
-</Render>
+</Instanced>
 `
 export const Boxes = `
-<Render max={10**3}>
+<Instanced max={10**3}>
   <boxBufferGeometry />
   <meshPhongMaterial/>
   {Array(1000).fill(0).map((_,i) =>
@@ -23,10 +23,10 @@ export const Boxes = `
       rotation={r => [0,r*2,r*3]}
       scale={r => [r/4,r/4,r/4]}/>
   )}
-</Render>
+</Instanced>
 `
 export const Spheres = `
-<Render max={1000}>
+<Instanced max={1000}>
   <sphereBufferGeometry args={[1,32,32]}/>
   <meshPhongMaterial color={0xffffff}/>
   {Array(1000).fill(0).map((_, i) =>
@@ -39,10 +39,10 @@ export const Spheres = `
       scale={(t,s) => Array(3).fill(
               max(.3, cos((t+s*10)*s))*s)}/>
   )}
-</Render>
+</Instanced>
 `
 export const Particles = `
-<Render max={c}>
+<Instanced max={c}>
   <dodecahedronBufferGeometry args={[0.2, 0]} />
   <meshPhongMaterial />
   {Array(c).fill(0).map((_, i) =>
@@ -54,10 +54,10 @@ export const Particles = `
             z + cos(t*s*f/50) + sin(t*s/50)*f/10,]}
         scale={t => Array(3).fill(Math.cos(t)) as Vec3}/>
   )}
-</Render>
+</Instanced>
 `
 export const Dodecas = `
-<Render max={1000}>
+<Instanced max={1000}>
   <dodecahedronBufferGeometry args={[1,0]}/>
   <meshStandardMaterial/>
   {Array(1000).fill(0).map((_,i) =>
@@ -70,5 +70,5 @@ export const Dodecas = `
       rotation={(t,s)=>Array(3).fill(cos(t*s))}
       scale={(t,s)=>Array(3).fill(cos(t*s))}/>
   )}
-</Render>
+</Instanced>
 `

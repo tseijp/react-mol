@@ -55,7 +55,7 @@ function App () {
             <HookCard {...{dark,size}}>
                 <HookCanvas {...{dark,size}}><page.Demo/></HookCanvas>
             </HookCard>
-            <button onClick={()=>set(p=>p+1)}>Render</button>
+            <button onClick={()=>set(p=>p+1)}>Instanced</button>
         </HookNote>
     )
     return (
@@ -65,7 +65,7 @@ function App () {
                     <HookCard {...{dark,size}}><HookCtrl/></HookCard>
                     <HookCard {...{dark,size}}><HookTree>{trees}</HookTree></HookCard>
                     <HookCard {...{dark,size}}><HookCode code={page.code}/></HookCard>
-                    <button onClick={()=>set(p=>p+1)}>Render</button>
+                    <button onClick={()=>set(p=>p+1)}>Instanced</button>
                 </HookNote>
                 <HookNote>
                     <HookCard {...{dark,size}}>

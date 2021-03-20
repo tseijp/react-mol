@@ -1,10 +1,16 @@
 import React, {useRef, useCallback, useState} from 'react'
 import {Color, Group} from 'three'
 import {useUpdateAtom} from 'jotai/utils'
-import {addAtom, delAtom} from '../atoms'
-import {AtomProps, AtomObject} from '../types'
+import {addAtom, delAtom, AtomObject} from '../atoms'
+import {Spread, GroupProps} from '../utils'
 
 let uuid = 0
+
+export type AtomProps<T extends object={}> = Spread<Spread<{
+    color: Color | number | string
+    children: React.ReactNode | ((state:AtomProps<T>) => React.ReactNode),
+}, GroupProps>, T>
+
 export function useAtom <T extends object={}>(
     props:  unknown & Partial<AtomProps<T>>,
     ref:  null | React.Ref<unknown>
