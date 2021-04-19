@@ -1,15 +1,31 @@
 import React, {useRef, useCallback, useState} from 'react'
 import {Color, Group} from 'three'
+import {atom} from 'jotai'
 import {useUpdateAtom} from 'jotai/utils'
-import {addAtom, delAtom, AtomObject} from '../atoms'
 import {Spread, GroupProps} from '../utils'
 
-let uuid = 0
+
+export type AtomObject = Spread<THREE.Group, {
+    id: number,
+    group: THREE.Group,
+    color: THREE.Color
+}>
+
+export const atomsAtom = atom<AtomObject[]>([])
+
+export const addAtom = atom(null, (get, set, newAtom: AtomObject) => {
+    set(atomsAtom, [...get(atomsAtom), newAtom])
+})
+export const delAtom = atom(null, (get, set, id: number) => {
+    set(atomsAtom, get(atomsAtom).filter(value => value.id!== id))
+})
 
 export type AtomProps<T extends object={}> = Spread<Spread<{
     color: Color | number | string
     children: React.ReactNode | ((state:AtomProps<T>) => React.ReactNode),
 }, GroupProps>, T>
+
+let uuid = 0
 
 export function useAtom <T extends object={}>(
     props:  unknown & Partial<AtomProps<T>>,

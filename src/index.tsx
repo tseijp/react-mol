@@ -6,7 +6,6 @@ import {eulerVec3, calcMolPos, functionalProps, Fun, Vec3} from './utils'
 const {sin} = Math
 
 export * from './utils'
-export * from './atoms'
 export * from './hooks'
 export const Atom = forwardRef(_Atom)
 export const Instanced = forwardRef(_Instanced)
@@ -56,7 +55,7 @@ function _Recursion (props: any, ref: any) {
   const grand = React.Children.map(child.props.children, c => c)
   const children = [
     ...(grand ?? []),
-    other.length && React.createElement(Recursion, {}, other)
+    other.length && React.createElement(_Recursion, {}, other)
   ]
   return React.cloneElement(child, {ref, recursion: false, children})
 }
@@ -71,8 +70,8 @@ function _Poly <T extends object={}>(
 
 function _Poly ({children, n=0}: any, ref: any) {
   if (n <= 0) return null
-  const child = children(<Poly n={n - 1} children={children}/>, n - 1)
-  return React.cloneElement(child, {children:null, ref, ...child.props})
+  const target = children(React.createElement(_Poly, {n:n - 1}, children), n - 1)
+  return React.cloneElement(target, {children:null, ref, ...target.props})
 }
 
 function _Tile <Item=number, Key=number>(props: {
@@ -147,13 +146,13 @@ function _Flow (props: any, forwardRef: any) {
     const { position: p, scale: s, args: a,
             rotation: r, color: c } = props
     const args = fun(a)
-        ? a(now.current, ...ref.current.position.toArray())
-        : [ now.current, ...(a ?? []) ]
+      ? a(now.current, ...ref.current.position.toArray())
+      : [ now.current, ...(a ?? []) ]
     p && ref.current.position.set(...(fun(p)? p(...args): p))
     r && ref.current.rotation.set(...(fun(r)? r(...args): r))
     s && ref.current.scale.set(...(fun(s)? s(...args): s))
     if (c && ref.current.color)
-        ref.current.color.set(fun(c)? c(...args): c)
+      ref.current.color.set(fun(c)? c(...args): c)
   })
   return <Atom ref={ref}></Atom>
 }

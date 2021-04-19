@@ -8,6 +8,7 @@ export * from './serviceWorker'
 const get = (obj={},key='') => key in obj ? (obj as any)[key] : null
 const keys = Object.entries(DEMOS)
     .map(([file, demos]: any) => [file, ...Object.keys(demos)])
+
 export type AppPage = {
     file: string,
     name: string,
@@ -36,10 +37,28 @@ export const AppPage = {
 }
 
 export const STYLES: {[key:string]:React.CSSProperties} = {
-    top : {overflowX:"hidden",minHeight:"100%",},
-    card: {width:"100%",height:"100%"},
-    ctrl: {position:"relative",width:"100%",top:0,left:0,margin:0,padding:0},
-    note: {width:"100%", height:"100%", display:"block", padding:"1rem",}
+    top : {
+        overflowX:"hidden",
+        minHeight:"100%",
+    },
+    card: {
+        width:"100%",
+        height:"100%"
+    },
+    ctrl: {
+        position:"relative",
+        width:"100%",
+        top:0,
+        left:0,
+        margin:0,
+        padding:0
+    },
+    note: {
+        width:"100%",
+        height:"100%",
+        display:"block",
+        padding:"1rem",
+    },
 }
 
 export const COLORS = [

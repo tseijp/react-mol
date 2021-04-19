@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Helmet} from 'react-helmet-async';
-import {OrbitControls} from 'drei'
+import {OrbitControls} from '@react-three/drei'
 import {HelmetProvider} from 'react-helmet-async'
 import {Controls} from 'react-three-gui';
 import {unregister, usePage, AppPage, STYLES, COLORS}  from './utils'
@@ -28,7 +28,7 @@ const HookCanvas = ({children}: any) => (
         <ambientLight intensity={.3} />
         <pointLight position={[ 100, 100, 100]} intensity={2.5} />
         <pointLight position={[-100,-100, 100]} intensity={5} color="pink" />
-        <OrbitControls />
+        <OrbitControls {...({} as any)}/>
         <React.Suspense fallback={null}>
             {React.useMemo(() => children, [children])}
         </React.Suspense>
@@ -36,7 +36,6 @@ const HookCanvas = ({children}: any) => (
 )
 // ************************* APP ************************* //
 function App () {
-    const [,set] = React.useState(0)
     const [dark] = useGrid<number>({init:0, md:1, lg:0  })
     const [size] = useGrid<number>({init:0, md:1, lg:1.5})
     const [side] = useGrid({xs:0,lg:89/233})
@@ -55,7 +54,6 @@ function App () {
             <HookCard {...{dark,size}}>
                 <HookCanvas {...{dark,size}}><page.Demo/></HookCanvas>
             </HookCard>
-            <button onClick={()=>set(p=>p+1)}>Instanced</button>
         </HookNote>
     )
     return (
@@ -65,16 +63,17 @@ function App () {
                     <HookCard {...{dark,size}}><HookCtrl/></HookCard>
                     <HookCard {...{dark,size}}><HookTree>{trees}</HookTree></HookCard>
                     <HookCard {...{dark,size}}><HookCode code={page.code}/></HookCard>
-                    <button onClick={()=>set(p=>p+1)}>Instanced</button>
                 </HookNote>
                 <HookNote>
                     <HookCard {...{dark,size}}>
-                        <HookCanvas {...{dark,size}}><page.Demo/></HookCanvas>
+                        <HookCanvas {...{dark,size}}>
+                            <page.Demo/>
+                        </HookCanvas>
                     </HookCard>
                 </HookNote>
             </Split>
             <Helmet>
-                <title>{window.location.pathname.split('/').slice(-1)[0]}</title>
+                <title>{page.file} {page.name}</title>
                 <meta charSet="utf-8" />
                 <meta name="Hatena::Bookmark" content="nocomment" />
                 <link rel="canonical" href="https://tsei.jp/" />

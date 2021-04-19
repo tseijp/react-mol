@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {Tile, Atom as AtomTpl, Instanced} from '../../src'
 import {useLoader} from 'react-three-fiber'
 import { useControl as _ } from 'react-three-gui'
-import { Physics, usePlane, useBox } from 'use-cannon'
+import { Physics, usePlane, useBox } from '@react-three/cannon'
 import * as THREE from 'three'
 
 const {PI, random, cos, sin, } = Math
@@ -126,7 +126,7 @@ export const Hall = ({
             <boxBufferGeometry attach="geometry" args={[1, 1, 1]}/>
             <meshPhongMaterial attach="material" color="firebrick" shininess={0}/>
             <group position-x={-(w + dist) * c / 2}>
-                <Tile   items={[...Array(l).keys()]}
+                <Tile items={[...Array(l).keys()]}
                     position-x={(j=0) => (j % 2 - .5) * w}
                     position-y={h}>
                     {(j=0) =>

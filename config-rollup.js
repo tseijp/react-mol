@@ -38,13 +38,13 @@ export default [
     { input, output: {file: pkg.main, format: 'cjs'}, external, plugins: [
         babel( getBabelOptions({useESModules: false}) ),
         commonjs({extensions}),
-        resolve ({extensions}),
+        resolve ({extensions, modulesOnly: true}),
         targetTypings(),
     ]},
     { input, output: {file: pkg.module, format: 'esm'}, external, plugins: [
         babel( getBabelOptions({useESModules: true}) ),
         commonjs({extensions}),
-        resolve ({extensions}),
+        resolve ({extensions, modulesOnly: true}),
         targetTypings(),
     ] },
 ]

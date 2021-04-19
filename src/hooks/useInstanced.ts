@@ -1,16 +1,16 @@
 import React from 'react'
 import {useAtom} from 'jotai'
 import {useFrame} from 'react-three-fiber'
-import {atomsAtom, AtomObject} from '../atoms'
+import {atomsAtom, AtomObject} from './useAtom'
 import {Spread, InstancedMeshProps} from '../utils'
-import * as THREE from 'three'
+import {BufferGeometry, Material, InstancedMesh} from 'three'
 
 var uuid = 0
 
 export type InstancedProps<T extends object={}> = Spread<Spread<{
     ref: React.MutableRefObject<AtomObject>,
-    geometry: null | THREE.Geometry,
-    material: null | THREE.Material,
+    geometry: null | BufferGeometry,
+    material: null | Material,
     count   : null | number,
     children: React.ReactNode | ((state: InstancedProps<T>) => React.ReactNode),
 }, Partial<InstancedMeshProps>>, T>
@@ -18,7 +18,7 @@ export type InstancedProps<T extends object={}> = Spread<Spread<{
 export function useInstanced <T extends object={}>(
     props: unknown & Partial<InstancedProps<T>>,
     ref: null | React.Ref<unknown>
-): any //Partial<InstancedProps<T>>
+): Partial<InstancedProps<T>>
 
 export function useInstanced ({
     geometry:g=null, count:c=1000,
@@ -26,7 +26,7 @@ export function useInstanced ({
 }: any, ref: any) {
     const [atoms] = useAtom(atomsAtom)
     const [id] = React.useState(() => uuid++)
-    const mesh = React.useRef<THREE.InstancedMesh>(null)
+    const mesh = React.useRef<InstancedMesh>(null)
     const args = React.useMemo(() => [g, m, c], [g, m, c])
 
     useFrame(() => {
