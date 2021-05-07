@@ -1,8 +1,8 @@
 import React, {useRef, useMemo} from 'react'
 import {Instanced, Flow, Vec3} from '../../src'
 import niceColors from 'nice-color-palettes'
-import {useFrame} from 'react-three-fiber'
-// import {useControl} from 'react-three-gui'
+import {useFrame} from '@react-three/fiber'
+import {OrbitControls} from '@react-three/drei'
 
 const {sin,cos,max} = Math
 const rand=(m=1,a=0)=>m*Math.random()+a
@@ -13,7 +13,8 @@ export const Points =({count:c=50})=> {
     ), [c])
     return (
         <Instanced position={[-c/4,-1,-c/4]} count={2500}>
-            <sphereBufferGeometry attach="geometry" args={[1,32,32]}/>
+            <OrbitControls {...({} as any)}/>
+            <sphereGeometry attach="geometry" args={[1,32,32]}/>
             <meshPhongMaterial    attach="material" />
             {Array(c**2).fill(0).map((_,i) =>
                 <Flow key={i} color={colors[i]}
@@ -38,7 +39,8 @@ export const Boxes =()=> {
     })
     return (
         <Instanced ref={ref} count={10**3}>
-            <boxBufferGeometry attach="geometry" />
+            <OrbitControls {...({} as any)}/>
+            <boxGeometry attach="geometry" />
             <meshPhongMaterial attach="material" />
             {Array(1000).fill(0).map((_,i) =>
                 <Flow key={i} color={colors[i]}
@@ -62,7 +64,8 @@ export const Spheres =() => {
     ), [c])
     return (
         <Instanced count={c}>
-            <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
+            <OrbitControls {...({} as any)}/>
+            <sphereGeometry attach="geometry" args={[1, 32, 32]} />
             <meshPhongMaterial    attach="material" color={0xffffff} />
             {Array(c).fill(0).map((_, i) =>
                 <Flow key={i} color={colors[i]}
@@ -84,7 +87,8 @@ export const Particles =({count=1000}) => {
     ), [count])
     return (
         <Instanced count={count}>
-            <dodecahedronBufferGeometry args={[0.2, 0]} />
+            <OrbitControls {...({} as any)}/>
+            <dodecahedronGeometry args={[0.2, 0]} />
             <meshPhongMaterial />
             {Array(count).fill(0).map((_, i) =>
                 <Flow key={i} color={colors[i]}
@@ -104,7 +108,8 @@ export const Dodecas =({count=2500,size=5}) => {
     ), [count])
     return (
         <Instanced count={count}>
-            <dodecahedronBufferGeometry args={[1,0]}/>
+            <OrbitControls {...({} as any)}/>
+            <dodecahedronGeometry args={[1,0]}/>
             <meshStandardMaterial />
             {Array(count).fill(0).map((_,i) =>
                 <Flow key={i}

@@ -1,5 +1,5 @@
-import React, {forwardRef} from 'react'
-import {useFrame} from 'react-three-fiber'
+import React, {Children, Ref, forwardRef, cloneElement, createElement as el} from 'react'
+import {useFrame} from '@react-three/fiber'
 import {useAtom, AtomProps, useInstanced, InstancedProps} from './hooks'
 import {eulerVec3, calcMolPos, functionalProps, Fun, Vec3} from './utils'
 
@@ -18,17 +18,17 @@ export const H = forwardRef((p: any, ref) => <Mol {...p} ref={ref} color="white"
 export const C = forwardRef((p: any, ref) => <Mol {...p} ref={ref} color="black"/>)
 export const O = forwardRef((p: any, ref) => <Mol {...p} ref={ref} color="red"/>)
 export const N = forwardRef((p: any, ref) => <Mol {...p} ref={ref} color="blue"/>)
-export const OH = (p: any) => <O {...p}><H/></O>
-export const CO = (p: any) => <C {...p}><O double/></C>
-export const CH = (p: any) => <C {...p}><H/></C>
-export const CH2 = (p: any) => <C {...p}><H/><H/></C>
-export const CH3 = (p: any) => <C {...p}><H/><H/><H/></C>
+export const OH = forwardRef((p: any, ref) => <O {...p} ref={ref}><H/></O>)
+export const CO = forwardRef((p: any, ref) => <C {...p} ref={ref}><O double/></C>)
+export const CH = forwardRef((p: any, ref) => <C {...p} ref={ref}><H/></C>)
+export const CH2 = forwardRef((p: any, ref) => <C {...p} ref={ref}><H/><H/></C>)
+export const CH3 = forwardRef((p: any, ref) => <C {...p} ref={ref}><H/><H/><H/></C>)
 export const Sin = forwardRef((p: any, ref) => <Flow {...p} ref={ref} args={(x,_,z,t) => [sin((x+t)/3)+sin((z+t)/2)]} />)
 export const Box = forwardRef((p: any, ref) => <Flow {...p} ref={ref} args={(x,y,z,t) => [sin(x/4+t) +sin(y/4+t)+sin(z/4+t)]} />)
 
 function _Atom <T extends object={}>(
   props: Partial<AtomProps<T>>,
-  ref: React.Ref<any>
+  ref: Ref<any>
 ): null | JSX.Element
 
 function _Atom (props: any, ref: any) {
@@ -37,41 +37,36 @@ function _Atom (props: any, ref: any) {
 
 function _Instanced <T extends object={}>(
   props: Partial<InstancedProps<T>>,
-  ref: React.Ref<any>
+  ref: Ref<any>
 ): null | JSX.Element;
 
 function _Instanced (props: any, ref: any) {
   return <instancedMesh {...useInstanced(props, ref)}/>
 }
 
-function _Recursion <T extends object={}>(
+function _Recursion <T extends object={}> (
   props: Partial<InstancedProps<T>>,
-  ref: React.Ref<any>
+  ref: Ref<any>
 ): null | JSX.Element;
 
 function _Recursion (props: any, ref: any) {
-  const [child, ...other] = React.Children.map(props.children, c=>c)
+  const [child, ...other] = Children.map(props.children, c=>c)
   if (typeof child!=="object") return null
-  const grand = React.Children.map(child.props.children, c => c)
-  const children = [
-    ...(grand ?? []),
-    other.length && React.createElement(_Recursion, {}, other)
-  ]
-  return React.cloneElement(child, {ref, recursion: false, children})
+  const grand = Children.map(child.props.children, c => c)
+  const children = [...(grand ?? []), other.length && el(_Recursion, {}, other)]
+  return cloneElement(child, {ref, recursion: false, children})
 }
 
-function _Poly <T extends object={}>(
+function _Poly <T extends object={}> (
   props: Partial<AtomProps<T & {
     n: number,
-    children: (children: JSX.Element, index: number) => JSX.Element,
-  }>>,
-  ref: React.Ref<any>
-): null|JSX.Element
+    children: (target: JSX.Element, index: number) => JSX.Element,
+}>>, ref: Ref<any>): null|JSX.Element
 
 function _Poly ({children, n=0}: any, ref: any) {
   if (n <= 0) return null
-  const target = children(React.createElement(_Poly, {n:n - 1}, children), n - 1)
-  return React.cloneElement(target, {children:null, ref, ...target.props})
+  const target = children(el(_Poly, {n:n - 1}, children), n - 1)
+  return cloneElement(target, {children:null, ref, ...target.props})
 }
 
 function _Tile <Item=number, Key=number>(props: {
@@ -79,17 +74,17 @@ function _Tile <Item=number, Key=number>(props: {
   items?: Item[],
   keys?: Key[],
   children: ((item: Item, index: number) => JSX.Element) | JSX.Element
-}, ref: React.Ref<any>): null | JSX.Element
+}, ref: Ref<any>): null | JSX.Element
 
 function _Tile ({items=[], keys=[], children, ...props}: any, ref: any) {
   return (
     <Poly n={items.length || keys.length} ref={ref}>
-      {(el: any, i=0) =>
+      {(element: any, i=0) =>
         <React.Fragment key={keys[i] ?? i}>
           {typeof children === "function"
             ? children(items[i] ?? i, keys[i] ?? i)
             : children}
-          <group children={el} {...functionalProps(props, items[i] ?? i, keys[i] ?? i)}/>
+          {el('group', functionalProps(props, items[i] ?? i, keys[i] ?? i), element)}
         </React.Fragment>
       }
     </Poly>
@@ -105,7 +100,7 @@ function _Mol (props: {
   ring?: boolean,
   double?: boolean,
   recursion?: boolean
-}, ref: React.Ref<any>): null | JSX.Element
+}, ref: Ref<any>): null | JSX.Element
 
 function _Mol (props: any, ref: any) {
   const {index: i, angle: a, double:d} = props
@@ -116,23 +111,20 @@ function _Mol (props: any, ref: any) {
   }, [i, a, d])
 
   const children = React.useMemo(() =>
-    React.Children.map(props.children, (child :any, index) =>
-      React.cloneElement(child, {index})
+    Children.map(props.children, (child :any, index) =>
+      cloneElement(child, {index})
   ), [props.children])
 
   return <Atom {...props} {...state} ref={ref} children={children}></Atom>
 }
 
-function _Flow (
-  props: Partial<AtomProps<{
-    args?: Fun<number[]>,
-    position?: Fun,
-    rotation?: Fun,
-    scale?: Fun,
-    color?: Fun<string>
-  }>>,
-  ref: React.Ref<any>
-): null | JSX.Element
+function _Flow (props: Partial<AtomProps<{
+  args?: Fun<number[]>,
+  position?: Fun,
+  rotation?: Fun,
+  scale?: Fun,
+  color?: Fun<string>
+}>>, ref: Ref<any>): null | JSX.Element
 
 function _Flow (props: any, forwardRef: any) {
   const ref = React.useRef<any>(null)
@@ -172,5 +164,5 @@ function _Flow (props: any, forwardRef: any) {
 //     const child = children(n>0 && ((nextProps: any={}) => {
 //         return <Poly n={n-1} {...nextProps} children={children}/>
 //     }), n)
-//     return React.cloneElement(child, {...props, children: null,...child.props})
+//     return cloneElement(child, {...props, children: null,...child.props})
 // }

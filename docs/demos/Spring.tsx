@@ -1,12 +1,12 @@
 import React, {useMemo} from 'react'
-import {useControl as _} from 'react-three-gui'
+import {useControls as _} from 'leva'
 import {animated, useSprings} from 'react-spring/three'
 import {Instanced, Atom as _Atom} from '../../src'
 import {Vector3, LineCurve3} from 'three'
+import {OrbitControls} from '@react-three/drei'
 
 const Atom = animated(_Atom);
 const {PI, exp, cos, sin, sqrt} = Math;
-const type = "number"
 const from = { x: 0 };
 const to = async (next: any) => {
     while (1) {
@@ -18,14 +18,15 @@ const to = async (next: any) => {
 export const Bounds = ({
     count: c=30,
     delay: d=75,
-    amp: a=_("amp", {type, value: 1, min: 0, max: 5}),
-    space: s=_("space", {type, value: 1, min: 0, max: 5}),
-    width: w=_("width", {type, value: 10, min: 0, max: 50}),
-    hieght: h=_("height", {type, value: 10, min: 0, max: 50}),
+    a=_({amp: {value: 1, min: 0, max: 5}}).amp,
+    s=_({space: {value: 1, min: 0, max: 5}}).space,
+    w=_({width: {value: 10, min: 0, max: 50}}).width,
+    h=_({height: {value: 10, min: 0, max: 50}}).height,
     config={mass: 10, tension: 750, friction: 25},
 }) => (
     <Instanced count={c**2}>
-        <cylinderBufferGeometry attach="geometry" args={[1, 1, 10, 6]}/>
+        <OrbitControls {...({} as any)}/>
+        <cylinderGeometry attach="geometry" args={[1, 1, 10, 6]}/>
         <meshPhysicalMaterial
             attach="material"
             color="darksalmon"
@@ -53,7 +54,7 @@ export const Bounds = ({
 
 export const Pieces = ({
     layer: l=24,
-    radius: r=_('radius', {type, value: 2.5, min: 0, max: 5}),
+    radius: r=_({radius: {value: 2.5, min: 0, max: 5}}).radius,
     config={mass: 10, tension: 700, friction: 30},
 }) => {
     const line = useMemo(() => {
@@ -69,13 +70,15 @@ export const Pieces = ({
 
     return (
         <Instanced>
-            <tubeBufferGeometry attach="geometry" args={[line, 20, r / l / 2, 12, false]}/>
+            <OrbitControls {...({} as any)}/>
+            <tubeGeometry attach="geometry" args={[line, 20, r / l / 2, 12, false]}/>
             <meshPhysicalMaterial attach="material" roughness={0.2} metalness={1.0} color="darksalmon"/>
             <group rotation-z={PI}>
                 {useSprings(2 * l, (i) => ({from, to, config, delay: 250 * (i / l)}))[0]
                 .map(({x}, i) =>
                     [...Array(counts[i])].map((_, j) =>
                         <Atom
+                            key={j}
                             scale-z={sqrt(1 - ((i - l)**2 + j**2) / l**2)}
                             position-x={(i - l) * r / l}
                             position-y={j * r / l}
@@ -93,12 +96,13 @@ export const Pipes = ({
     freq: f=1,
     count: c=100,
     layer: l=10,
-    stick: s=_('stick', {type, value: 1, min: 0, max: 5}),
-    radius: r=_('radius', {type, value: 1, min: 0, max: 5}),
+    s=_({stick: {value: 1, min: 0, max: 5}}).stick,
+    r=_({radius: {value: 1, min: 0, max: 5}}).radius,
     config={mass: 10, tension: 750, friction: 25},
 }) => (
     <Instanced>
-        <tubeBufferGeometry attach="geometry" args={useMemo(() => {
+        <OrbitControls {...({} as any)}/>
+        <tubeGeometry attach="geometry" args={useMemo(() => {
             const v1 = new Vector3(0, 0,  0)
             const v2 = new Vector3(0, 0, s * 10)
             return [new LineCurve3(v1, v2), 20, 10 * PI * r / c, 12, false]
@@ -134,7 +138,8 @@ export const Rings = ({
     config={mass: 2.2, tension: 138, friction: 79}
 }) => (
     <Instanced>
-        <torusBufferGeometry attach="geometry" args={[10, .5, 5, 50]}/>
+        <OrbitControls {...({} as any)}/>
+        <torusGeometry attach="geometry" args={[10, .5, 5, 50]}/>
         <meshPhysicalMaterial attach="material" roughness={0.2} metalness={1.0} color="darksalmon"/>
         <group scale={Array(3).fill(1 / exp(c / 12)) as any}
             rotation={[PI / 2, 0, 0]}>

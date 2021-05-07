@@ -1,21 +1,8 @@
-import DEMOS from '../demos'
-import CODES from '../codes'
+import React, {createElement as el} from 'react'
 import {BufferGeometryUtils} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import * as THREE from 'three';
-export * from './Page'
 export * from './serviceWorker'
-
-const get = (obj={},key='') => key in obj ? (obj as any)[key] : null
-const keys = Object.entries(DEMOS)
-    .map(([file, demos]: any) => [file, ...Object.keys(demos)])
-
-export type AppPage = {
-    file: string,
-    name: string,
-    keys: string[],
-    code: string,
-    Demo: any,
-}
+export * from './atom'
 
 export function molGeometry () {
     const arr = new THREE.Matrix4().makeTranslation(0,-1/2,0)
@@ -25,15 +12,14 @@ export function molGeometry () {
     return BufferGeometryUtils.mergeBufferGeometries([cyl, sph])
 }
 
-export const AppPage = {
-    pathname: ({file="", name=""}) => `/rmol/${file}/${!name||name==="default"
-            ? ""
-            : name + "/"}`,
-    file: window.location.pathname.split('/').filter(v=>v).find((_,i)=>i===1)||"",
-    name: window.location.pathname.split('/').filter(v=>v).find((_,i)=>i===2)||"",
-    code: ({file="", name=""}) => get(get(CODES, file) || {}, name||"default")||"No code",
-    Demo: ({file="", name=""}) => get(get(DEMOS, file) || {}, name||"default")||null,
-    keys,
+
+export function getTrees (set: any, fontSize="1rem") {
+    return (file:string[], i: any) => el(
+        'span', {key: i, style: {fontSize}},
+        file.map(name => name && name!=="default" &&
+            el('span', {key: name, onClick: () => set([file[0], name])}, name)
+        )
+    )
 }
 
 export const STYLES: {[key:string]:React.CSSProperties} = {

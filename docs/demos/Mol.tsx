@@ -1,5 +1,6 @@
 import React from 'react'
-import {useFrame} from 'react-three-fiber'
+import {useFrame} from '@react-three/fiber'
+import {OrbitControls} from '@react-three/drei'
 import {C, H, O, CH3, Poly} from '../../src'
 import {Instanced, Recursion} from '../../src'
 import {molGeometry} from '../utils'
@@ -9,12 +10,14 @@ const rand=(mul=Math.PI*2)=>Math.random()*mul
 
 export const MethylAlcohol =()=>
     <Instanced geometry={molGeometry()}>
+        <OrbitControls {...({} as any)}/>
         <meshPhongMaterial attach="material"/>
         <C><H/><H/><H/><O><H/></O></C>
     </Instanced>
 
 export const AcetilAcid =()=>
     <Instanced geometry={molGeometry()}>
+        <OrbitControls {...({} as any)}/>
         <meshPhongMaterial attach="material"/>
         <Recursion>
             <C><H/><H/><H/></C>
@@ -25,6 +28,7 @@ export const AcetilAcid =()=>
 
 export const Polyethylene =()=>
     <Instanced geometry={molGeometry()}>
+        <OrbitControls {...({} as any)}/>
         <meshPhongMaterial attach="material"/>
         <H>
             <Poly n={2}>
@@ -43,6 +47,7 @@ export const Polyethylene =()=>
 
 export const Polypropylene =()=>
     <Instanced geometry={molGeometry()}>
+        <OrbitControls {...({} as any)}/>
         <meshPhongMaterial attach="material"/>
         <H>
             <Poly n={2}>
@@ -76,6 +81,7 @@ export const Random =()=> {
 
     return (
         <Instanced ref={mesh} geometry={molGeometry()}>
+            <OrbitControls {...({} as any)}/>
             <meshPhongMaterial attach="material"/>
             <H ref={top}>
                 <Poly n={200}>

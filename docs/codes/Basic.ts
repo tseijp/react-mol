@@ -2,7 +2,7 @@ export const Basic = `
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Atom } from 'react-mol'
-import { Canvas, useFrame } from 'react-three-fiber'
+import { Canvas, useFrame } from ''
 function BasicExample () {
   const ref = React.useRef(null)
   useFrame(() => {

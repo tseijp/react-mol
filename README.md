@@ -28,7 +28,7 @@
     https://twitter.com/intent/tweet?url=https://tsei.jp/rmol/&text=🍡A+molecular+chemistry+based+simulation+library)
 
 __Installation__
-- `npm i three react-three-fiber react-mol`
+- `npm i three @react-three/fiber react-mol`
 
 __Quick started__
 - `git clone https://github.com/tseijp/react-mol`
@@ -140,7 +140,7 @@ export const Mol = React.forwardRef((props, ref) => {
 ```tsx
 import React from 'react'
 import { Atom } from 'react-mol'
-import { useFrame } from "react-three-fiber"
+import { useFrame } from ""
 
 export const Flow = React.forwardRef((props, forwardRef) => {
   const now = React.useRef(0)
@@ -192,7 +192,7 @@ ___What does it look like?___
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Atom } from 'react-mol'
-import { Canvas, useFrame } from 'react-three-fiber'
+import { Canvas, useFrame } from ''
 
 function Basic () {
   // This reference will give us direct access to the last instance
@@ -244,7 +244,7 @@ ReactDOM.render(
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Atom } from 'react-mol'
-import { Canvas, useFrame } from 'react-three-fiber'
+import { Canvas, useFrame } from ''
 
 function Basic () {
   // This reference will give us direct access to the last instance

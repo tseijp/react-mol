@@ -43,67 +43,62 @@ export function functionalProps <Props extends object={}>(props: Props, ...args:
     return state
 }
 
-/**
- * THREE TYPES
- * ref: https://github.com/pmndrs/react-three-fiber/blob/master/src/three-types.ts
- */
-
 export type Vec3<T=number> = [T,T,T]
 
 export type Fun<T=Vec3,U=number> = T | ((...args:U[]) => T)
 
-export type NonFunctionKeys<T> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof T]
-export type Overwrite<T, O> = Omit<T, NonFunctionKeys<O>> & O
-
-export type NamedArrayTuple<T extends (...args: any) => any> = Parameters<T>
-type Args<T> = T extends new (...args: any) => any ? ConstructorParameters<T> : T
-
-export type Euler = THREE.Euler | Parameters<THREE.Euler['set']>
-export type Matrix4 = THREE.Matrix4 | Parameters<THREE.Matrix4['set']>
-export type Vector2 = THREE.Vector2 | Parameters<THREE.Vector2['set']>
-export type Vector3 = THREE.Vector3 | Parameters<THREE.Vector3['set']>
-export type Color = THREE.Color | number | string
-export type Layers = THREE.Layers | Parameters<THREE.Layers['set']>
-export type Quaternion = THREE.Quaternion | Parameters<THREE.Quaternion['set']>
-
-export type EventHandlers = {
-  onClick?: (event: MouseEvent) => void
-  onContextMenu?: (event: MouseEvent) => void
-  onDoubleClick?: (event: MouseEvent) => void
-  onPointerUp?: (event: PointerEvent) => void
-  onPointerDown?: (event: PointerEvent) => void
-  onPointerOver?: (event: PointerEvent) => void
-  onPointerOut?: (event: PointerEvent) => void
-  onPointerMove?: (event: PointerEvent) => void
-  onPointerMissed?: (event: React.MouseEvent) => void
-  onWheel?: (event: WheelEvent) => void
-}
-
-export interface NodeProps<T, P> {
-    attach?: string
-    attachArray?: string
-    attachObject?: NamedArrayTuple<(target: string, name: string) => void>
-    args?: Args<P>
-    children?: React.ReactNode
-    ref?: React.Ref<React.ReactNode>
-    key?: React.Key
-    onUpdate?: (self: T) => void
-}
-
-export type Node<T, P> = Overwrite<Partial<T>, NodeProps<T, P>>
-export type Object3DNode<T, P> = Overwrite<Node<T, P>, {
-    position?: Vector3
-    up?: Vector3
-    scale?: Vector3
-    rotation?: Euler
-    matrix?: Matrix4
-    quaternion?: Quaternion
-    layers?: Layers
-    dispose?: (() => void) | null
-}> & EventHandlers
-
-export type GroupProps = Object3DNode<THREE.Group, typeof THREE.Group>
-export type InstancedMeshProps = Object3DNode<THREE.InstancedMesh, typeof THREE.InstancedMesh>
+// export type NonFunctionKeys<T> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof T]
+// export type Overwrite<T, O> = Omit<T, NonFunctionKeys<O>> & O
+//
+// export type NamedArrayTuple<T extends (...args: any) => any> = Parameters<T>
+// type Args<T> = T extends new (...args: any) => any ? ConstructorParameters<T> : T
+//
+// export type Euler = THREE.Euler | Parameters<THREE.Euler['set']>
+// export type Matrix4 = THREE.Matrix4 | Parameters<THREE.Matrix4['set']>
+// export type Vector2 = THREE.Vector2 | Parameters<THREE.Vector2['set']>
+// export type Vector3 = THREE.Vector3 | Parameters<THREE.Vector3['set']>
+// export type Color = THREE.Color | number | string
+// export type Layers = THREE.Layers | Parameters<THREE.Layers['set']>
+// export type Quaternion = THREE.Quaternion | Parameters<THREE.Quaternion['set']>
+//
+// export type EventHandlers = {
+//   onClick?: (event: MouseEvent) => void
+//   onContextMenu?: (event: MouseEvent) => void
+//   onDoubleClick?: (event: MouseEvent) => void
+//   onPointerUp?: (event: PointerEvent) => void
+//   onPointerDown?: (event: PointerEvent) => void
+//   onPointerOver?: (event: PointerEvent) => void
+//   onPointerOut?: (event: PointerEvent) => void
+//   onPointerMove?: (event: PointerEvent) => void
+//   onPointerMissed?: (event: React.MouseEvent) => void
+//   onWheel?: (event: WheelEvent) => void
+// }
+//
+// export interface NodeProps<T, P> {
+//     attach?: string
+//     attachArray?: string
+//     attachObject?: NamedArrayTuple<(target: string, name: string) => void>
+//     args?: Args<P>
+//     children?: React.ReactNode
+//     ref?: React.Ref<React.ReactNode>
+//     key?: React.Key
+//     onUpdate?: (self: T) => void
+// }
+//
+// export type Node<T, P> = Overwrite<Partial<T>, NodeProps<T, P>>
+// export type Object3DNode<T, P> = Overwrite<Node<T, P>, {
+//     position?: Vector3
+//     up?: Vector3
+//     scale?: Vector3
+//     rotation?: Euler
+//     matrix?: Matrix4
+//     quaternion?: Quaternion
+//     layers?: Layers
+//     dispose?: (() => void) | null
+// }> & EventHandlers
+//
+// export type GroupProps = Object3DNode<THREE.Group, typeof THREE.Group>
+// export type InstancedMeshProps = Object3DNode<THREE.InstancedMesh, typeof THREE.InstancedMesh>
 
 export type Merge<A, B> = {
     [P in keyof A]: P extends keyof B ? B[P] : A[P]

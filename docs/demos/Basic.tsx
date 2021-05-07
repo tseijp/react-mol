@@ -1,18 +1,25 @@
 import React from 'react'
-import {useFrame} from 'react-three-fiber'
+import {useFrame} from '@react-three/fiber'
 import {Atom, Instanced} from '../../src'
-import {useControl as _} from 'react-three-gui'
+import {useControls as _} from 'leva'
+import {OrbitControls} from '@react-three/drei'
 import * as THREE from 'three'
 
 const {random} = Math
 
-export function Add () {
-  const range  = _('range', {type: "number", value:  5, min: 0, max: 10})
-  const number = _('number', {type: "number", value: 10, min: 0, max: 100})
+// export function Add ({range, number}=_({
+//     range: {value: 5, min: 0, max: 10},
+//     number: {value: 5, min: 0, max: 100}
+// })) {
+export function Add ({
+    range = _({range: {value: 5, min: 0, max: 10}}).range,
+    number = _({number: {value: 5, min: 0, max: 100}}).number
+}) {
   return (
     <Instanced>
-      <boxBufferGeometry attach="geometry"/>
+      <boxGeometry attach="geometry"/>
       <meshPhongMaterial attach="material"/>
+      <OrbitControls {...({} as any)}/>
       {[...Array(number)].map((_, key) =>
         <Atom key={key}
             color={0xffffff*random()}
@@ -36,8 +43,9 @@ export function Basic () {
 
   return (
     <Instanced>
-      <boxBufferGeometry attach="geometry" />
+      <boxGeometry attach="geometry" />
       <meshPhongMaterial attach="material" />
+      <OrbitControls {...({} as any)}/>
       <Atom color="red" position={[1, -2, -5]} rotation={[0, 0, Math.PI/3]}>
         <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>
           <Atom color="green" position={[2, 0, 1]} rotation={[0, 0, Math.PI/3]}>

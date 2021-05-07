@@ -1,14 +1,14 @@
 import React, {useRef, useCallback, useState} from 'react'
-import {Color, Group} from 'three'
-import {atom} from 'jotai'
 import {useUpdateAtom} from 'jotai/utils'
-import {Spread, GroupProps} from '../utils'
+import {Color, Group} from 'three'
+import {GroupProps} from '@react-three/fiber'
+import {atom} from 'jotai'
+import {Spread} from '../utils'
 
-
-export type AtomObject = Spread<THREE.Group, {
+export type AtomObject = Spread<Group, {
     id: number,
-    group: THREE.Group,
-    color: THREE.Color
+    group: Group,
+    color: Color
 }>
 
 export const atomsAtom = atom<AtomObject[]>([])
@@ -16,6 +16,7 @@ export const atomsAtom = atom<AtomObject[]>([])
 export const addAtom = atom(null, (get, set, newAtom: AtomObject) => {
     set(atomsAtom, [...get(atomsAtom), newAtom])
 })
+
 export const delAtom = atom(null, (get, set, id: number) => {
     set(atomsAtom, get(atomsAtom).filter(value => value.id!== id))
 })

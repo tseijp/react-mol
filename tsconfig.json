@@ -3,7 +3,7 @@
     "target": "es6",
     "module": "esnext",
     "moduleResolution": "node",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -22,9 +22,17 @@
     "lib": [
       "dom",
       "dom.iterable",
+      "es5",
       "esnext"
-    ]
+    ],
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["./docs", "./src", "./test"],
-  "exclude": ["./node_modules/**/*"]
+  "include": [
+    "./docs/**/*",
+    "./src/**/*",
+    "./test/**/*"
+  ],
+  "exclude": [
+    "./node_modules/**/*"
+  ]
 }

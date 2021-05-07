@@ -1,8 +1,8 @@
 import React from 'react'
 import {useAtom} from 'jotai'
-import {useFrame} from 'react-three-fiber'
+import {useFrame, InstancedMeshProps} from '@react-three/fiber'
 import {atomsAtom, AtomObject} from './useAtom'
-import {Spread, InstancedMeshProps} from '../utils'
+import {Spread} from '../utils'
 import {BufferGeometry, Material, InstancedMesh} from 'three'
 
 var uuid = 0
@@ -31,7 +31,7 @@ export function useInstanced ({
 
     useFrame(() => {
         if (!mesh.current) return
-        atoms.forEach(({color: c, group: {matrixWorld: m}}, i) => {
+        atoms.forEach(({color: c, group: {matrixWorld: m}}: any, i: any) => {
             if (c) mesh.current?.setColorAt (i, c)
             if (m) mesh.current?.setMatrixAt(i, m)
         })
