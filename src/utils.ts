@@ -34,6 +34,14 @@ export function calcMolPos (index: number=0, angle=Math.PI/2, double=false): Vec
         :   index<4? vec as Vec3: [0,-1,0]
 }
 
+export function nextFloor (...floor: number[]) {
+    const max = Math.max(...floor)
+    return floor
+        .flatMap((v, i) => v === max? i: [])
+        .reduce<any[]>((acc, i) => [...acc, ...acc.map(a => [i, ...a]), [i]], [])
+        .map(acc => floor.map((v, i) => acc.indexOf(i) < 0? v: v + 1))
+}
+
 export function functionalProps <Props extends object={}>(props: Props, ...args: any[]) {
     const state: any = Object.assign({}, props)
     Object.keys(state).forEach(key => {

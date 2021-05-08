@@ -1,7 +1,7 @@
 import React, {Children, Ref, forwardRef, cloneElement, createElement as el} from 'react'
 import {useFrame} from '@react-three/fiber'
 import {useAtom, AtomProps, useInstanced, InstancedProps} from './hooks'
-import {eulerVec3, calcMolPos, functionalProps, Fun, Vec3} from './utils'
+import {eulerVec3, calcMolPos, functionalProps, nextFloor, Fun, Vec3} from './utils'
 
 const {sin} = Math
 
@@ -10,6 +10,7 @@ export * from './hooks'
 export const Atom = forwardRef(_Atom)
 export const Instanced = forwardRef(_Instanced)
 export const Recursion = forwardRef(_Recursion)
+export const Honey = forwardRef(_Honey)
 export const Poly = forwardRef(_Poly)
 export const Tile = forwardRef(_Tile)
 export const Mol = forwardRef(_Mol)
@@ -57,6 +58,16 @@ function _Recursion (props: any, ref: any) {
   return cloneElement(child, {ref, recursion: false, children})
 }
 
+function _Honey <T extends object={}> (props: Partial<AtomProps<T & {
+  children: (floor: number[], key: number) => JSX.Element
+  floor?: number[]
+}>>, ref: Ref<any>): JSX.Element
+
+function _Honey ({as='group', floor: [i,j,k]=[0,0,0], children, ...other}: any, ref: any) {
+  const nexts = React.useMemo(() => nextFloor(i,j,k), [i,j,k])
+  return el(as, {ref, ...other}, nexts.map((...args: any) => children(...args)))
+}
+
 function _Poly <T extends object={}> (
   props: Partial<AtomProps<T & {
     n: number,
@@ -65,7 +76,7 @@ function _Poly <T extends object={}> (
 
 function _Poly ({children, n=0}: any, ref: any) {
   if (n <= 0) return null
-  const target = children(el(_Poly, {n:n - 1}, children), n - 1)
+  const target = children(el(Poly, {n:n - 1}, children), n - 1)
   return cloneElement(target, {children:null, ref, ...target.props})
 }
 

@@ -21,11 +21,11 @@ const HookCard = (props:any) => <Card {...props} min={-1} style={STYLES.card} ra
 const HookCode = (props:any) => props.code// && <Code {...props}/>
 const HookCtrl = (props:any) => <Leva fill flat hideTitleBar titleBar={{drag:false}} {...props} style={STYLES.ctrl}/>
 const HookTree = (props: any) => <Trees {...props} size={.5}/>
-const HookCanvas = ({children}: any) => (
+const HookCanvas = ({children, height='calc(100vh - 2rem)'}: any) => (
   <Canvas
     onCreated={({gl}: any) => gl.setClearColor(COLORS[~~(Math.random()*COLORS.length)])}
     camera={{fov: 75, position: [0, 0, 5]}}
-    style={{width: '100%', height: 'calc(100vh - 2rem)'}}
+    style={{width: '100%', height}}
     gl={{alpha: true, antialias: false, logarithmicDepthBuffer: true}}>
     <ambientLight intensity={.3} />
     <pointLight position={[ 100, 100, 100]} intensity={2.5} />
@@ -42,6 +42,10 @@ function Demos () {
   const [[file, name], set] = useAtom(filenameAtom)
   const [, update] = React.useState(0)
   const trees = React.useMemo(() => keys.map(getTrees(set)), [keys, set])
+
+  if (window.location.hash)
+    return <HookCanvas height='100%'><Demo/></HookCanvas>
+
   return (
     <div style={STYLES.top}>
       <Split order={Demo? [side, -1]: [1, 0]} min={.1}>
