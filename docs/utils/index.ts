@@ -12,7 +12,6 @@ export function molGeometry () {
     return BufferGeometryUtils.mergeBufferGeometries([cyl, sph])
 }
 
-
 export function getTrees (set: any, fontSize="1rem") {
     return (file:string[], i: any) => el(
         'span', {key: i, style: {fontSize}},

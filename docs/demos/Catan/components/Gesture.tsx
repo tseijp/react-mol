@@ -1,39 +1,32 @@
-import {useRef, useMemo} from 'react'
+import {useRef, useMemo, createElement as el} from 'react'
 import {useThree} from '@react-three/fiber'
 import {useGesture} from 'react-use-gesture'
 import {useSpring} from 'react-spring/three'
-
-export function Gesture (props: {
-    children: (bind: any) => JSX.Element,
-    onHover?: (event: any) => any
-    onDrag?: (event: any) => any,
-    disableDrag?: boolean
-    disableHover? :boolean
-}): JSX.Element
+import {animated as a} from 'react-spring/three'
 
 export function Gesture (props: any) {
-    const {children, onDrag, onHover, disableDrag, disableHover} = props
-    const asp = useThree(({size, viewport}) => size.width / viewport.width)
+    const {children, onDrag, onHover, disable=false} = props
     const hover = useRef(false)
-    const [s,set] = useSpring(() => ({position: [0, 0, 0], scale: [1, 1, 1]}))
+    const aspect = useThree(({size, viewport}) => size.width / viewport.width)
+    const [s,api] = useSpring(() => ({position: [0, 0, 0], scale: [1, 1, 1]}))
 
     const b = useGesture({
         onDrag: (event) => {
-            if (disableDrag) return
+            if (disable) return
             const {first, last, down, movement: [x, y]} = event
-            set({position: down? [10*x/asp, 1, 10*y/asp]: [0, 0, 0]})
+            api.start({position: down? [10*x/aspect, 1, 10*y/aspect]: [0, 0, 0]})
             if (onDrag && (first || last))
                 onDrag(event)
         },
         onHover: (event) => {
-            if (hover.current === event.hovering || disableHover) return
+            if (hover.current === event.hovering || disable) return
             const {hovering} = event
             hover.current = hovering
-            set({scale: hovering? [.8,.8,.8]: [1,1,1]})
+            api.start({scale: hovering? [.8,.8,.8]: [1,1,1]})
             if (onHover)
                 onHover(event)
         }
     }, {eventOptions: { pointer: true }})
 
-    return useMemo(() => children(() => ({...b(), ...s})), [children, b, s])
+    return useMemo(() => el(a.group, {...b(), ...s as any}, children), [children, b, s])
 }

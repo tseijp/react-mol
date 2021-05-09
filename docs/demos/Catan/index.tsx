@@ -1,24 +1,16 @@
 import React from 'react'
-import {Catan} from './components/Catan'
-import {Group} from './components/Group'
-import {Control} from './components/Control'
-import {Instanced, Atom, Honey} from '../../../src'
-import {floorVec} from './utils'
 import {Text} from '@react-three/drei'
+
+import {Instanced, Atom, Honey} from '../../../src'
+import {Catan} from './components/Catan'
+import {Hex} from './components/Hex'
+import {Control} from './components/Control'
+import {floorVec} from './utils'
 
 export function OneField () {
     return (
       <Catan>
-        <Group terrain='desert'/>
-      </Catan>
-    )
-}
-
-export function TwoField () {
-    return (
-      <Catan>
-        <Group terrain='forest' floor={[0,0,0]}/>
-        <Group terrain='desert' floor={[1,0,0]}/>
+        <Hex/>
       </Catan>
     )
 }
@@ -28,7 +20,7 @@ export function SevenField () {
       <Catan>
         <Honey>
           {(floor, key) =>
-            <Group {...{floor, key}}/>
+            <Hex {...{floor, key}}/>
           }
         </Honey>
       </Catan>
@@ -39,10 +31,10 @@ export function NineteenField () {
     return (
       <Catan>
         <Honey>
-          {(f, k) =>
-            <Honey floor={f} key={k}>
+          {(floor, key) =>
+            <Honey floor={floor} key={key}>
               {(floor, key) =>
-                <Group floor={floor} key={key} terrain='forest'/>
+                <Hex floor={floor} key={key}/>
               }
             </Honey>
           }

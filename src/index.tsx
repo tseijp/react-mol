@@ -59,9 +59,9 @@ function _Recursion (props: any, ref: any) {
 }
 
 function _Honey <T extends object={}> (props: Partial<AtomProps<T & {
-  children: (floor: number[], key: number) => JSX.Element
+  children: (floor: number[], key: number) => null | JSX.Element
   floor?: number[]
-}>>, ref: Ref<any>): JSX.Element
+}>>, ref: Ref<any>): null | JSX.Element
 
 function _Honey ({as='group', floor: [i,j,k]=[0,0,0], children, ...other}: any, ref: any) {
   const nexts = React.useMemo(() => nextFloor(i,j,k), [i,j,k])

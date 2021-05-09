@@ -4,7 +4,6 @@ import {Leva} from 'leva'
 import {Helmet} from 'react-helmet-async';
 import {Canvas} from '@react-three/fiber'
 import {useGrid} from 'use-grid'
-import {Controls} from 'react-three-gui';
 import {HelmetProvider} from 'react-helmet-async'
 import {useAtom, Provider} from 'jotai'
 import {Card, Split, Trees} from '@tsei/core'
@@ -35,12 +34,12 @@ const HookCanvas = ({children, height='calc(100vh - 2rem)'}: any) => (
     </React.Suspense>
   </Canvas>
 )
-// ************************* APP ************************* //
-function Demos () {
-  const [dark, size, side] = useGrid({init:[0, 0, 0], md:[1, 1, 0], lg:[0, 1.5, 89/233]})[0]
-  const [{keys, code, Demo}] = useAtom(pageAtom)
-  const [[file, name], set] = useAtom(filenameAtom)
+
+function App () {
   const [, update] = React.useState(0)
+  const [dark, size, side] = useGrid({init:[0, 0, 0], md:[1, 1, 0], lg:[0, 1.5, 89/233]})[0]
+  const [[file, name], set] = useAtom(filenameAtom)
+  const [{keys, code, Demo}] = useAtom(pageAtom)
   const trees = React.useMemo(() => keys.map(getTrees(set)), [keys, set])
 
   if (window.location.hash)
@@ -75,11 +74,9 @@ function Demos () {
 
 ReactDOM.render(
   <HelmetProvider>
-    <Controls.Provider>
-      <Provider>
-        <Demos/>
-      </Provider>
-    </Controls.Provider>
+    <Provider>
+      <App/>
+    </Provider>
   </HelmetProvider>
 , document.getElementById('root'));
 unregister();

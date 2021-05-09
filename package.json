@@ -90,7 +90,6 @@
         "react-scripts": "4.0.3",
         "react-spring": "9.1.2",
         "react-test-renderer": "^17.0.1",
-        "react-three-gui": "^0.4.2",
         "rollup": "^2.29.0",
         "three": "0.128.0",
         "ts-jest": "^26.4.1",
