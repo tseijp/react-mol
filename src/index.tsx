@@ -63,8 +63,8 @@ function _Honey <T extends object={}> (props: Partial<AtomProps<T & {
   floor?: number[]
 }>>, ref: Ref<any>): null | JSX.Element
 
-function _Honey ({as='group', floor: [i,j,k]=[0,0,0], children, ...other}: any, ref: any) {
-  const nexts = React.useMemo(() => nextFloor(i,j,k), [i,j,k])
+function _Honey ({as='group', floor=[0,0,0], children, ...other}: any, ref: any) {
+  const nexts = React.useMemo(() => nextFloor(...floor), [floor])
   return el(as, {ref, ...other}, nexts.map((...args: any) => children(...args)))
 }
 

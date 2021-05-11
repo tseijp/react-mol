@@ -9,9 +9,9 @@ export type TokenOrTerrain = {
     terrain?: string,
 }
 
-export const dragAtom = atom<TokenOrTerrain | undefined>(undefined)
+export const dragAtom = atom<TokenOrTerrain>({})
 
-export const hoverAtom = atom<TokenOrTerrain | undefined>(undefined)
+export const hoverAtom = atom<TokenOrTerrain>({})
 
 export const colorAtom = atom({} as any)
 

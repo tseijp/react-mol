@@ -37,9 +37,9 @@ export function Settlement (props: any) {
 
 export function Terrain (props: any) {
     const {children, terrain, ...other} = props
-    const [drag] = useAtom(dragAtom)
-    const [hover] = useAtom(hoverAtom)
-    const [color] = useAtom(colorAtom)
+    const [drag] = useAtom(dragAtom),
+         [hover] = useAtom(hoverAtom),
+         [color] = useAtom(colorAtom)
     return (
       <a.mesh {...other}>
         <cylinderGeometry

@@ -1,8 +1,7 @@
 import {createElement as el, useState, useMemo as memo} from 'react'
 import {useAtom} from 'jotai'
-import {useControls as _} from 'leva'
-import {Gesture} from './Gesture'
 import {Icon} from './Icon'
+import {Gesture} from './Gesture'
 import {Terrain} from '../meshes'
 import {floorVec, icons} from '../utils'
 import {hoverAtom, dragAtom} from '../atom'
@@ -19,24 +18,25 @@ export function Hex (props: any) {
           [floor,_setFloor] = useState(props.floor || [0, 0, 0]),
           [token,_setToken] = useState(props.token || ~~(random()* 10)),
         [terrain, setTerrain] = useState(props.terrain || terrainKeys[~~(random()*6)])
+
     const disable = memo(() => !terrain && !drag?.terrain && !!drag?.token, [terrain, drag])
-    const onDrag = ({first, last}: any) => {
-        setDrag(first? {terrain}: undefined)
-        if (last && hover && hover?.setTerrain) {
+    const onHover = memo(() => (e: any) => {
+        setHover(e.hovering && {terrain, setTerrain})
+    }, [setHover, terrain, setTerrain])
+    const onDrag = memo(() => ({first, last}: any) => {
+        setDrag(first? {terrain}: {})
+        if (last && hover?.setTerrain) {
             hover.setTerrain(terrain)
             if (!rockTerrain)
                 setTerrain(hover.terrain)
         }
-    }
-    const onHover = (e: any) => {
-        setHover(e.hovering && {terrain, setTerrain})
-    }
+    }, [rockTerrain, terrain, hover.terrain, hover.setTerrain])
 
     return (
       <group {...other} position={memo(getPos(...floor), [floor])}>
         <Gesture {...{disable, onDrag, onHover}}>
           <Terrain {...{floor, token, terrain}}>
-            <Icon token={token} rotation-x={-PI/2} {..._({padding: 50, fontSize: 150})}>
+            <Icon rotation-x={-PI/2} {...{token, padding: 50, fontSize: 150}}>
               {(icons as any)[terrain] && el((icons as any)[terrain])}
               <span>{`${token}`}<span/></span>
             </Icon>

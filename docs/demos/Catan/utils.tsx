@@ -1,8 +1,8 @@
 const {cos, sin, sqrt, PI} = Math
 
-export const floorVec = (r= 10*sqrt(3)) => [
-    {i: r, j: r*cos(-PI*2/3), k: r*cos(PI*2/3)},
-    {i: 0, j: r*sin(-PI*2/3), k: r*sin(PI*2/3)}
+export const floorVec = (r= 5*sqrt(3), a=0) => [
+    {i: r*cos(a), j: r*cos(a-PI*2/3), k: r*cos(a+PI*2/3)},
+    {i: r*sin(a), j: r*sin(a-PI*2/3), k: r*sin(a+PI*2/3)}
 ]
 
 const shuffle = ([...array]) => {

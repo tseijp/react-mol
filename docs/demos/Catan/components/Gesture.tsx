@@ -1,7 +1,7 @@
-import {useRef, useMemo, createElement as el} from 'react'
+import {useRef, createElement as el} from 'react'
 import {useThree} from '@react-three/fiber'
-import {useGesture} from 'react-use-gesture'
 import {useSpring} from 'react-spring/three'
+import {useGesture} from 'react-use-gesture'
 import {animated as a} from 'react-spring/three'
 
 export function Gesture (props: any) {
@@ -9,7 +9,6 @@ export function Gesture (props: any) {
     const hover = useRef(false)
     const aspect = useThree(({size, viewport}) => size.width / viewport.width)
     const [s,api] = useSpring(() => ({position: [0, 0, 0], scale: [1, 1, 1]}))
-
     const b = useGesture({
         onDrag: (event) => {
             if (disable) return
@@ -26,7 +25,6 @@ export function Gesture (props: any) {
             if (onHover)
                 onHover(event)
         }
-    }, {eventOptions: { pointer: true }})
-
-    return useMemo(() => el(a.group, {...b(), ...s as any}, children), [children, b, s])
+    })
+    return el(a.group, {...b(), ...s as any}, children)
 }
