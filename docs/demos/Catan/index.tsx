@@ -1,22 +1,26 @@
 import React from 'react'
 import {Text, OrbitControls} from '@react-three/drei'
 
-import {Hex} from './components/Hex'
-import {Item} from './components/Item'
+import {Path} from './components/Path'
 import {Catan} from './components/Catan'
+import {Terrain} from './components/Terrain'
+import {Settlement} from './components/Settlement'
 import {Instanced, Atom, Honey} from '../../../src'
 
 const {cos, sin, sqrt, PI} = Math
-const _2 = sqrt(2)
-const _3 = sqrt(3)
 
 export function OneField () {
     return (
       <Catan>
-        <Hex/>
+        <Terrain/>
         <Honey>
           {(floor, key) =>
-            <Item {...{floor, key}}/>
+            floor.reduce((a, v) => a + v) % 3
+              ? <group key={key}>
+                  <Settlement {...{floor}}/>
+                  <Path {...{floor}}/>
+                </group>
+              : null
           }
         </Honey>
       </Catan>
@@ -28,7 +32,21 @@ export function SevenField () {
       <Catan>
         <Honey>
           {(floor, key) =>
-            <Hex {...{floor, key}}/>
+            <group key={key}>
+              <Terrain {...{floor}}/>
+              <Honey {...{floor}}>
+                {(floor, key) =>
+                  <Honey {...{floor, key    }}>
+                    {(floor, key) =>
+                      <group {...{key}}>
+                        {floor.reduce((a, v) => a + v) % 3 && <Settlement {...{floor}}/>}
+                        {floor.filter(v =>!(v % 2)).length && <Path {...{floor}}/>}
+                      </group>
+                    }
+                  </Honey>
+                }
+              </Honey>
+            </group>
           }
         </Honey>
       </Catan>
@@ -40,9 +58,28 @@ export function NineteenField () {
       <Catan>
         <Honey>
           {(floor, key) =>
-            <Honey floor={floor} key={key}>
+            <Honey {...{floor, key}}>
               {(floor, key) =>
-                <Hex floor={floor} key={key}/>
+                <group key={key}>
+                  <Terrain {...{floor, key}}/>
+                  <Honey {...{floor, key}}>
+                    {(floor, key) =>
+                      <Honey {...{floor, key}}>
+                        {(floor, key) =>
+                          <Honey {...{floor, key}}>
+                            {(floor, key) =>
+                              <group {...{key}}>
+                                {floor.reduce((a, v) => a+v) % 3 &&
+                                 floor.filter(v => v % 5).length && <Settlement {...{floor}}/>}
+                                {floor.filter(v =>!(v%2)).length && <Path {...{floor}}/>}
+                              </group>
+                            }
+                          </Honey>
+                        }
+                      </Honey>
+                    }
+                  </Honey>
+                </group>
               }
             </Honey>
           }
@@ -57,14 +94,14 @@ export function Truncated () {
         {i: R, j:-R, k:-R, l: R},
         {i: R, j:-R, k: R, l:-R},
         {i: R, j: R, k:-R, l:-R},
-    ], [])
+    ], [R])
     const args = React.useMemo(() => [
         [R, r, 0,   R,-r, 0,   R, 0, r,   R, 0,-r,
         -R, r, 0,  -R,-r, 0,  -R, 0, r,  -R, 0,-r,
          r, R, 0,  -r, R, 0,   0, R, r,   0, R,-r,
          r,-R, 0,  -r,-R, 0,   0,-R, r,   0,-R,-r,
          r, 0, R,  -r, 0, R,   0, r, R,   0,-r, R,
-         r, 0,-R,  -r, 0,-R,   0, r,-R,   0,-r,-R,],
+         r, 0,-R,  -r, 0,-R,   0, r,-R,   0,-r,-R],
         [0, 2, 1,   0, 1, 3,   4, 5, 6,   4, 7, 5, // ⏹: 0, 1, 2, 3, 4, 5, 6, 7,
          8, 9,10,   8,11, 9,  12,14,13,  12,13,15, // ⏹: 8, 9,10,11,12,13,14,15,
         16,17,19,  16,18,17,  20,21,22,  20,23,21, // ⏹:16,17,18,19,20,21,22,23,
@@ -75,14 +112,14 @@ export function Truncated () {
          4, 6,17,   4,17, 9,   9,17,18,   9,18,10, // 🔯: 4, 6, 9,10,17,18,
          5,13, 6,   6,13,17,  13,14,17,  14,19,17, // 🔯: 5, 6,13,14,17,19,
          4, 9, 7,   7, 9,21,   9,11,21,  11,22,21, // 🔯: 4, 7, 9,11,21,22,
-         5, 7,21,   5,21,13,  13,21,23,  13,23,15, // 🔯: 5, 7,13,15,21,23,
-         ]
+         5, 7,21,   5,21,13,  13,21,23,  13,23,15],// 🔯: 5, 7,13,15,21,23,
     ], [r, R])
     return (
         <Instanced scale={[.5, .5, .5]}>
-          <meshPhysicalMaterial attach="material" color="red" roughness={0.2} metalness={1.0}/>
+          <meshPhysicalMaterial attach="material" color="red" roughness={.2} metalness={.9}/>
           <polyhedronGeometry args={args as any}/>
           <OrbitControls />
+          <Atom/>
           <Honey floor={[0,0,0,0]}>
             {(floor, key) =>
               <Honey {...{floor, key}}>
@@ -111,11 +148,11 @@ export function Truncated () {
     )
 }
 
-export function Rhombic ({radius: r=1}) {
+export function Rhombic ({radius: r=1/sqrt(2)}) {
     const [x, y, z] = React.useMemo(() => [
-        {i: r/_2, j:-r/_2, k: r/_2, l:-r/_2},
-        {i: r/_2, j:-r/_2, k:-r/_2, l: r/_2},
-        {i: r/_2, j: r/_2, k:-r/_2, l:-r/_2},
+        {i: r, j:-r, k: r, l:-r},
+        {i: r, j:-r, k:-r, l: r},
+        {i: r, j: r, k:-r, l:-r},
     ], [r])
     const args = React.useMemo(() => [
         [2, 0, 0,  -2, 0, 0,   0, 2, 0,   0,-2, 0,   0, 0, 2,   0, 0,-2,
@@ -128,7 +165,7 @@ export function Rhombic ({radius: r=1}) {
     ], [])
     return (
         <Instanced scale={[.5, .5, .5]}>
-          <meshPhysicalMaterial attach="material" color="red" roughness={0.2} metalness={1.0}/>
+          <meshPhysicalMaterial attach="material" color="red" roughness={.2} metalness={.9}/>
           <polyhedronGeometry args={args as any}/>
           <OrbitControls />
           <Honey floor={[0,0,0,0]}>
@@ -159,7 +196,7 @@ export function Rhombic ({radius: r=1}) {
     )
 }
 
-export function Honeycomb ({radius: r=10*_3, angle: a=0}) {
+export function Honeycomb ({radius: r=10*sqrt(3), angle: a=0}) {
     const [x, z] = React.useMemo(() => [
         {i: r*cos(a), j: r*cos(a-PI*2/3), k: r*cos(a+PI*2/3)},
         {i: r*sin(a), j: r*sin(a-PI*2/3), k: r*sin(a+PI*2/3)}
@@ -189,9 +226,9 @@ export function Honeycomb ({radius: r=10*_3, angle: a=0}) {
                                               {(floor, key) =>
                                                 <Honey {...{floor, key}}>
                                                   {([i, j, k], key) =>
-                                                    <Atom key={key}
-                                                      position-x={x.i*i+x.j*j+x.k*k}
-                                                      position-z={z.i*i+z.j*j+z.k*k}>
+                                                    <Atom key={key} position={[
+                                                        x.i*i+x.j*j+x.k*k, 0,
+                                                        z.i*i+z.j*j+z.k*k]}>
                                                       <Text fontSize={2}
                                                         position-y={1}
                                                         rotation-x={-Math.PI/2}>

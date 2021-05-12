@@ -3,15 +3,13 @@ import {Honeycomb} from './models'
 
 export const dissableControlAtom = atom(false)
 
-export type TokenOrTerrain = {
+export type Any = {
     [key: string]: any,
-    token?: number,
-    terrain?: string,
 }
 
-export const dragAtom = atom<TokenOrTerrain>({})
+export const dragAtom = atom<Any | undefined>(undefined)
 
-export const hoverAtom = atom<TokenOrTerrain>({})
+export const hoverAtom = atom<Any | undefined>(undefined)
 
 export const colorAtom = atom({} as any)
 

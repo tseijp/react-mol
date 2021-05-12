@@ -35,7 +35,7 @@ export function Control ({
         <PerspectiveCamera makeDefault ref={camera} position={[0, scale, 0]} />
         <MapControls
             camera={camera.current}
-            enabled={!drag?.terrain && !drag?.token}
+            enabled={!drag}
             enableRotate={enableRotate}/>
       </group>
     )

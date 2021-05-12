@@ -59,7 +59,7 @@ function _Recursion (props: any, ref: any) {
 }
 
 function _Honey <T extends object={}> (props: Partial<AtomProps<T & {
-  children: (floor: number[], key: number) => null | JSX.Element
+  children: (floor: number[], index: number, array: number[][]) => null | JSX.Element
   floor?: number[]
 }>>, ref: Ref<any>): null | JSX.Element
 
@@ -81,7 +81,7 @@ function _Poly ({children, n=0}: any, ref: any) {
 }
 
 function _Tile <Item=number, Key=number>(props: {
-  [key: string]: any| ((item: Item, key: Key) => any),
+  [key: string]: any| ((item: Item, key: Key, items: Item[]) => any),
   items?: Item[],
   keys?: Key[],
   children: ((item: Item, index: number) => JSX.Element) | JSX.Element
@@ -93,7 +93,7 @@ function _Tile ({items=[], keys=[], children, ...props}: any, ref: any) {
       {(element: any, i=0) =>
         <React.Fragment key={keys[i] ?? i}>
           {typeof children === "function"
-            ? children(items[i] ?? i, keys[i] ?? i)
+            ? children(items[i] ?? i, keys[i] ?? i, items)
             : children}
           {el('group', functionalProps(props, items[i] ?? i, keys[i] ?? i), element)}
         </React.Fragment>
@@ -120,12 +120,10 @@ function _Mol (props: any, ref: any) {
     const rotation = eulerVec3(position, [0,1,0])
     return {position, rotation}
   }, [i, a, d])
-
   const children = React.useMemo(() =>
     Children.map(props.children, (child :any, index) =>
       cloneElement(child, {index})
   ), [props.children])
-
   return <Atom {...props} {...state} ref={ref} children={children}></Atom>
 }
 
