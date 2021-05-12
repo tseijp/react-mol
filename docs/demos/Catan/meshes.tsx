@@ -1,5 +1,5 @@
 import {useAtom} from 'jotai'
-import {colorAtom, dragAtom, hoverAtom} from './atom'
+import {colorAtom, draggingAtom, hoveringAtom} from './atoms'
 
 export function Robber (props: any) {
     const {children, ...other} = props
@@ -12,10 +12,10 @@ export function Robber (props: any) {
     )
 }
 
-export function Path (props: any) {
+export function Road (props: any) {
     const {children, path, ...other} = props
-    // const [drag] = useAtom(dragAtom),
-    //      [hover] = useAtom(hoverAtom)
+    // const [d] = useAtom(draggingAtom),
+    //       [h] = useAtom(hoveringAtom)
     return (
       <mesh {...other}>
         <boxGeometry args={[6, 1.5, 1.5]}/>
@@ -28,10 +28,10 @@ export function Path (props: any) {
     )
 }
 
-export function Settlement (props: any) {
+export function Settle (props: any) {
     const {children, settlement, ...other} = props
-    // const [drag] = useAtom(dragAtom),
-    //      [hover] = useAtom(hoverAtom)
+    // const [d] = useAtom(draggingAtom),
+    //       [h] = useAtom(hoveringAtom)
     return (
       <mesh {...other}>
         <boxGeometry args={[3, 3, 3]}/>
@@ -46,18 +46,18 @@ export function Settlement (props: any) {
 
 export function Terrain (props: any) {
     const {children, terrain, ...other} = props
-    const [drag] = useAtom(dragAtom),
-         [hover] = useAtom(hoverAtom),
-         [color] = useAtom(colorAtom)
+    const [d] = useAtom(draggingAtom),
+          [h] = useAtom(hoveringAtom),
+          [c] = useAtom(colorAtom)
     return (
       <mesh {...other}>
         <cylinderGeometry
           attach="geometry"
           args={[9, 10, 1, 6, 1, false]}/>
         <meshLambertMaterial attach="material"
-          wireframe={!!(!terrain && (drag && hover))}
-            visible={!!(terrain || (drag && hover))}
-              color={(color as any)[terrain] || "red"}/>
+          wireframe={!!(!terrain && (d && h))}
+            visible={!!(terrain || (d && h))}
+              color={(c as any)[terrain] || "red"}/>
         {children}
       </mesh>
     )

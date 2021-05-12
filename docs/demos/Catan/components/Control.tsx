@@ -3,9 +3,8 @@ import {Camera} from '@react-three/fiber'
 import {useAtom} from 'jotai'
 import {useControls as _} from 'leva'
 import {MapControls, PerspectiveCamera} from '@react-three/drei'
-import {dragAtom} from '../atom'
 import {hoverCursor} from '../utils'
-import {hoverAtom, colorAtom} from '../atom'
+import {draggingAtom, hoveringAtom, colorAtom} from '../atoms'
 
 export function Control ({
     children,
@@ -22,20 +21,20 @@ export function Control ({
     ...other
 }: any) {
     const camera = React.useRef<Camera>()
-    const [drag] = useAtom(dragAtom)
-    const [hover] = useAtom(hoverAtom)
-    const [color, setColor] = useAtom(colorAtom)
-    React.useEffect(() => void setColor(colors), [setColor, colors])
+    const [dragging] = useAtom(draggingAtom),
+          [hovering] = useAtom(hoveringAtom),
+          [color,set] = useAtom(colorAtom)
+    React.useEffect(() => void set(colors), [set, colors])
     React.useEffect(() => {
-        document.body.style.cursor = hoverCursor(hover?.terrain, color)
-    }, [hover, color])
+        document.body.style.cursor = hoverCursor(hovering?.terrain, color)
+    }, [hovering, color])
     return (
       <group {...other}>
         {children}
         <PerspectiveCamera makeDefault ref={camera} position={[0, scale, 0]} />
         <MapControls
             camera={camera.current}
-            enabled={!drag}
+            enabled={!dragging}
             enableRotate={enableRotate}/>
       </group>
     )

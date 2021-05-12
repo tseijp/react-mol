@@ -5,7 +5,7 @@ import {useAtom} from 'jotai'
 import {Gesture} from './Gesture'
 import {Terrain as Mesh} from '../meshes'
 import {floorVec, icons} from '../utils'
-import {hoverAtom, dragAtom} from '../atom'
+import {hoveringAtom, draggingAtom} from '../atoms'
 
 const {random, sqrt, PI} = Math
 const [x, z] = floorVec(10 * sqrt(3))
@@ -13,25 +13,24 @@ const getPos = (i=0, j=0, k=0) => () => [x.i*i+x.j*j+x.k*k, 0, z.i*i+z.j*j+z.k*k
 const terrainKeys = ['hills', 'forest', 'mountains', 'fields', 'pasture', 'desert']
 
 export function Terrain (props: any) {
-    const {children, rockTerrain=false, ...other} = props
-    const  [drag, setDrag] = useAtom(dragAtom),
-          [hover, setHover] = useAtom(hoverAtom),
-          [floor,_setFloor] = useState(props.floor || [0, 0, 0]),
-          [token,_setToken] = useState(props.token || ~~(random()* 10)),
-        [terrain, setTerrain] = useState(props.terrain || terrainKeys[~~(random()*6)])
+    const {children, rock=false, ...other} = props
+    const [d, setDragging] = useAtom(draggingAtom),
+          [h, setHovering] = useAtom(hoveringAtom),
+     [terrain, setTerrain] = useState(props.terrain || terrainKeys[~~(random()*6)]),
+                  [floor,] = useState(props.floor || [0, 0, 0]),
+                  [token,] = useState(props.token || ~~(random()* 10))
 
-    const disable = memo(() => !terrain && !drag?.terrain && !!drag?.token, [terrain, drag])
+    const disable = !(terrain || d?.terrain) || d?.road || d?.settle
     const onHover = memo(() => (e: any) => {
-        // setHover(e.hovering && {terrain, setTerrain})
-    }, [setHover, terrain, setTerrain])
+        setHovering(e.hovering && {terrain, setTerrain})
+    }, [setHovering, terrain, setTerrain])
     const onDrag = memo(() => ({first, last}: any) => {
-        setDrag(first? {terrain}: undefined)
-        if (last && hover?.setTerrain) {
-            hover.setTerrain(terrain)
-            if (!rockTerrain)
-                setTerrain(hover.terrain)
+        setDragging(first? {terrain}: undefined)
+        if (last && h?.setTerrain) {
+            h.setTerrain(terrain)
+            !rock&&setTerrain(h.terrain)
         }
-    }, [rockTerrain, terrain, hover])
+    }, [rock, terrain, h])
 
     return (
       <group {...other} position={memo(getPos(...floor), [floor])}>

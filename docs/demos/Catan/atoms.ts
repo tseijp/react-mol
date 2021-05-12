@@ -5,11 +5,14 @@ export const dissableControlAtom = atom(false)
 
 export type Any = {
     [key: string]: any,
+    road?: string,
+    terrain?: string,
+    settlement?: string,
 }
 
-export const dragAtom = atom<Any | undefined>(undefined)
+export const draggingAtom = atom<Any | undefined>(undefined)
 
-export const hoverAtom = atom<Any | undefined>(undefined)
+export const hoveringAtom = atom<Any | undefined>(undefined)
 
 export const colorAtom = atom({} as any)
 

@@ -1,10 +1,10 @@
 import React from 'react'
 import {Text, OrbitControls} from '@react-three/drei'
 
-import {Path} from './components/Path'
+import {Road} from './components/Road'
 import {Catan} from './components/Catan'
+import {Settle} from './components/Settle'
 import {Terrain} from './components/Terrain'
-import {Settlement} from './components/Settlement'
 import {Instanced, Atom, Honey} from '../../../src'
 
 const {cos, sin, sqrt, PI} = Math
@@ -17,8 +17,8 @@ export function OneField () {
           {(floor, key) =>
             floor.reduce((a, v) => a + v) % 3
               ? <group key={key}>
-                  <Settlement {...{floor}}/>
-                  <Path {...{floor}}/>
+                  <Settle {...{floor}}/>
+                  <Road {...{floor}}/>
                 </group>
               : null
           }
@@ -39,8 +39,8 @@ export function SevenField () {
                   <Honey {...{floor, key    }}>
                     {(floor, key) =>
                       <group {...{key}}>
-                        {floor.reduce((a, v) => a + v) % 3 && <Settlement {...{floor}}/>}
-                        {floor.filter(v =>!(v % 2)).length && <Path {...{floor}}/>}
+                        {floor.reduce((a, v) => a + v) % 3 && <Settle {...{floor}}/>}
+                        {floor.filter(v =>!(v % 2)).length && <Road {...{floor}}/>}
                       </group>
                     }
                   </Honey>
@@ -70,8 +70,8 @@ export function NineteenField () {
                             {(floor, key) =>
                               <group {...{key}}>
                                 {floor.reduce((a, v) => a+v) % 3 &&
-                                 floor.filter(v => v % 5).length && <Settlement {...{floor}}/>}
-                                {floor.filter(v =>!(v%2)).length && <Path {...{floor}}/>}
+                                 floor.filter(v => v % 5).length && <Settle {...{floor}}/>}
+                                {floor.filter(v =>!(v%2)).length && <Road {...{floor}}/>}
                               </group>
                             }
                           </Honey>
