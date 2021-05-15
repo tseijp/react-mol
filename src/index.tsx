@@ -58,10 +58,13 @@ function _Recursion (props: any, ref: any) {
   return cloneElement(child, {ref, recursion: false, children})
 }
 
-function _Honey <T extends object={}> (props: Partial<AtomProps<T & {
-  children: (floor: number[], index: number, array: number[][]) => null | JSX.Element
-  floor?: number[]
-}>>, ref: Ref<any>): null | JSX.Element
+function _Honey <T extends object={}> (
+  props: Partial<AtomProps<T & {
+    children: (floor: number[], index: number, array: number[][]) => null | JSX.Element
+    floor?: number[]
+  }>>,
+  ref: Ref<any>
+): null | JSX.Element
 
 function _Honey ({as='group', floor=[0,0,0], children, ...other}: any, ref: any) {
   const nexts = React.useMemo(() => nextFloor(...floor), [floor])
@@ -71,21 +74,34 @@ function _Honey ({as='group', floor=[0,0,0], children, ...other}: any, ref: any)
 function _Poly <T extends object={}> (
   props: Partial<AtomProps<T & {
     n: number,
-    children: (target: JSX.Element, index: number) => JSX.Element,
-}>>, ref: Ref<any>): null|JSX.Element
+    args: any,
+    children: (
+      target: ((...args: any) => JSX.Element | JSX.Element),
+      index: number,
+      ...args: any
+    ) => JSX.Element,
+  }>>,
+  ref: Ref<any>
+): null|JSX.Element
 
-function _Poly ({children, n=0}: any, ref: any) {
+function _Poly ({children, n=0, args=[], ...other}: any, ref: any) {
   if (n <= 0) return null
-  const target = children(el(Poly, {n:n - 1}, children), n - 1)
-  return cloneElement(target, {children:null, ref, ...target.props})
+  const next =
+    args?.length === 0? (n <= 1? null: el(Poly, {n: n-1, ref, ...other}, children))
+    : (...args: any) => (n <= 1? null: el(Poly, {n: n-1, ref, args, ...other}, children))
+  return children(next, n-1, ...args)
+  //return cloneElement(next, {children:null, ref, ...next.props})
 }
 
-function _Tile <Item=number, Key=number>(props: {
-  [key: string]: any| ((item: Item, key: Key, items: Item[]) => any),
-  items?: Item[],
-  keys?: Key[],
-  children: ((item: Item, index: number) => JSX.Element) | JSX.Element
-}, ref: Ref<any>): null | JSX.Element
+function _Tile <Item=number, Key=number>(
+  props: {
+    [key: string]: any| ((item: Item, key: Key, items: Item[]) => any),
+    items?: Item[],
+    keys?: Key[],
+    children: ((item: Item, index: number) => JSX.Element) | JSX.Element
+  },
+  ref: Ref<any>
+): null | JSX.Element
 
 function _Tile ({items=[], keys=[], children, ...props}: any, ref: any) {
   return (
@@ -102,50 +118,53 @@ function _Tile ({items=[], keys=[], children, ...props}: any, ref: any) {
   )
 }
 
-function _Mol (props: {
-  distance: Vec3,
-  element: number,
-  matrix: THREE.Matrix4,
-  index: number,
-  angle: number,
-  ring?: boolean,
-  double?: boolean,
-  recursion?: boolean
-}, ref: Ref<any>): null | JSX.Element
+function _Mol (
+  props: {
+    distance: Vec3,
+    element: number,
+    matrix: THREE.Matrix4,
+    index: number,
+    angle: number,
+    ring?: boolean,
+    double?: boolean,
+    recursion?: boolean
+  },
+  ref: Ref<any>
+): null | JSX.Element
 
 function _Mol (props: any, ref: any) {
-  const {index: i, angle: a, double:d} = props
+  const {index: i, angle: a, double:d, children} = props
   const state = React.useMemo(() => {
     const position = calcMolPos(i, a, d)
     const rotation = eulerVec3(position, [0,1,0])
     return {position, rotation}
   }, [i, a, d])
-  const children = React.useMemo(() =>
-    Children.map(props.children, (child :any, index) =>
-      cloneElement(child, {index})
-  ), [props.children])
-  return <Atom {...props} {...state} ref={ref} children={children}></Atom>
+  return el(Atom, {...props, ...state, ref}, React.useMemo(() =>
+    Children.map(children, (child, index) => cloneElement(child, {index})
+  ), [children]))
 }
 
-function _Flow (props: Partial<AtomProps<{
-  args?: Fun<number[]>,
-  position?: Fun,
-  rotation?: Fun,
-  scale?: Fun,
-  color?: Fun<string>
-}>>, ref: Ref<any>): null | JSX.Element
+function _Flow (
+  props: Partial<AtomProps<{
+    args?: Fun<number[]>,
+    position?: Fun,
+    rotation?: Fun,
+    scale?: Fun,
+    color?: Fun<string>
+  }>>,
+  ref: Ref<any>
+): null | JSX.Element
 
 function _Flow (props: any, forwardRef: any) {
+  const { position: p, scale: s, args: a,
+          rotation: r, color: c, ...other } = props
   const ref = React.useRef<any>(null)
   const now = React.useRef<number>(0)
   const fun = (value: any): value is Function => typeof value==="function"
-
   React.useImperativeHandle(forwardRef, () => ref.current)
   useFrame((_, delta) => {
     if (!ref.current) return
     now.current += delta
-    const { position: p, scale: s, args: a,
-            rotation: r, color: c } = props
     const args = fun(a)
       ? a(now.current, ...ref.current.position.toArray())
       : [ now.current, ...(a ?? []) ]
@@ -155,23 +174,5 @@ function _Flow (props: any, forwardRef: any) {
     if (c && ref.current.color)
       ref.current.color.set(fun(c)? c(...args): c)
   })
-  return <Atom ref={ref}></Atom>
+  return el(Atom, {ref, ...other})
 }
-
-// TODO functional Props for Poly
-// export function Poly <T extends object={}>(
-//     props: Partial<Props<T> & {
-//         n: number,
-//     children: null | ((
-//         next: ((nextProps?:Partial<Props<T>>) => JSX.Element),
-//         key : number
-//     ) => JSX.Element),
-//     }>
-// ): null|JSX.Element
-// export function Poly ({children,n=0,...props}: any) {
-//     if (n<0) return null
-//     const child = children(n>0 && ((nextProps: any={}) => {
-//         return <Poly n={n-1} {...nextProps} children={children}/>
-//     }), n)
-//     return cloneElement(child, {...props, children: null,...child.props})
-// }

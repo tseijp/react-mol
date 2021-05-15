@@ -2,16 +2,16 @@ import React from 'react'
 import {Text, OrbitControls} from '@react-three/drei'
 
 import {Road} from './components/Road'
-import {Catan} from './components/Catan'
+import {Control} from './components/Control'
 import {Settle} from './components/Settle'
 import {Terrain} from './components/Terrain'
-import {Instanced, Atom, Honey} from '../../../src'
+import {Instanced, Atom, Honey, Poly} from '../../../src'
 
 const {cos, sin, sqrt, PI} = Math
 
 export function OneField () {
     return (
-      <Catan>
+      <Control>
         <Terrain/>
         <Honey>
           {(floor, key) =>
@@ -23,39 +23,42 @@ export function OneField () {
               : null
           }
         </Honey>
-      </Catan>
+      </Control>
     )
 }
 
 export function SevenField () {
     return (
-      <Catan>
+      <Control>
         <Honey>
           {(floor, key) =>
             <group key={key}>
               <Terrain {...{floor}}/>
               <Honey {...{floor}}>
                 {(floor, key) =>
-                  <Honey {...{floor, key    }}>
-                    {(floor, key) =>
-                      <group {...{key}}>
-                        {floor.reduce((a, v) => a + v) % 3 && <Settle {...{floor}}/>}
-                        {floor.filter(v =>!(v % 2)).length && <Road {...{floor}}/>}
-                      </group>
-                    }
-                  </Honey>
+                  <group key={key}>
+                    {/*<Terrain terrain={false} {...{floor}}/>*/}
+                    <Honey {...{floor, key}}>
+                      {(floor, key) =>
+                        <group {...{key}}>
+                          {floor.reduce((a, v) => a + v) % 3 && <Settle {...{floor}}/>}
+                          {floor.filter(v =>!(v % 2)).length && <Road {...{floor}}/>}
+                        </group>
+                      }
+                    </Honey>
+                  </group>
                 }
               </Honey>
             </group>
           }
         </Honey>
-      </Catan>
+      </Control>
     )
 }
 
 export function NineteenField () {
     return (
-      <Catan>
+      <Control>
         <Honey>
           {(floor, key) =>
             <Honey {...{floor, key}}>
@@ -84,7 +87,7 @@ export function NineteenField () {
             </Honey>
           }
         </Honey>
-      </Catan>
+      </Control>
     )
 }
 
@@ -116,34 +119,25 @@ export function Truncated () {
     ], [r, R])
     return (
         <Instanced scale={[.5, .5, .5]}>
-          <meshPhysicalMaterial attach="material" color="red" roughness={.2} metalness={.9}/>
+          <meshPhysicalMaterial attach="material" color="darksalmon" roughness={.3} metalness={1}/>
           <polyhedronGeometry args={args as any}/>
           <OrbitControls />
-          <Atom/>
-          <Honey floor={[0,0,0,0]}>
-            {(floor, key) =>
+          <Poly n={7} args={[[0, 0, 0, 0], 0]}>
+            {(next, _, floor, key) =>
               <Honey {...{floor, key}}>
-                {(floor, key) =>
-                  <Honey {...{floor, key}}>
-                    {(floor, key) =>
-                      <Honey {...{floor, key}}>
-                        {(floor, key) =>
-                          <Honey {...{floor, key}}>
-                            {([i, j, k, l], key) =>
-                              <Atom key={key} position={[
-                                x.i*i+x.j*j+x.k*k+x.l*l,
-                                y.i*i+y.j*j+y.k*k+y.l*l,
-                                z.i*i+z.j*j+z.k*k+z.l*l]}/>
-                            }
-                          </Honey>
-                        }
-                      </Honey>
+                {([i, j, k, l], key) =>
+                  <group key={key}>
+                    {next([i, j, k, l], key) ||
+                    <Atom key={key} position={[
+                       x.i*i+x.j*j+x.k*k+x.l*l,
+                       y.i*i+y.j*j+y.k*k+y.l*l,
+                       z.i*i+z.j*j+z.k*k+z.l*l]}/>
                     }
-                  </Honey>
+                   </group>
                 }
               </Honey>
             }
-          </Honey>
+          </Poly>
         </Instanced>
     )
 }
@@ -165,33 +159,25 @@ export function Rhombic ({radius: r=1/sqrt(2)}) {
     ], [])
     return (
         <Instanced scale={[.5, .5, .5]}>
-          <meshPhysicalMaterial attach="material" color="red" roughness={.2} metalness={.9}/>
+          <meshPhysicalMaterial attach="material" color="darksalmon" roughness={.3} metalness={1}/>
           <polyhedronGeometry args={args as any}/>
           <OrbitControls />
-          <Honey floor={[0,0,0,0]}>
-            {(floor, key) =>
+          <Poly n={7} args={[[0, 0, 0, 0], 0]}>
+            {(next, _, floor, key) =>
               <Honey {...{floor, key}}>
-                {(floor, key) =>
-                  <Honey {...{floor, key}}>
-                    {(floor, key) =>
-                      <Honey {...{floor, key}}>
-                        {(floor, key) =>
-                          <Honey {...{floor, key}}>
-                            {([i, j, k, l], key) =>
-                              <Atom key={key} position={[
-                                x.i*i+x.j*j+x.k*k+x.l*l,
-                                y.i*i+y.j*j+y.k*k+y.l*l,
-                                z.i*i+z.j*j+z.k*k+z.l*l]}/>
-                            }
-                          </Honey>
-                        }
-                      </Honey>
+                {([i, j, k, l], key) =>
+                  <group key={key}>
+                    {next([i, j, k, l], key) ||
+                    <Atom key={key} position={[
+                       x.i*i+x.j*j+x.k*k+x.l*l,
+                       y.i*i+y.j*j+y.k*k+y.l*l,
+                       z.i*i+z.j*j+z.k*k+z.l*l]}/>
                     }
-                  </Honey>
+                   </group>
                 }
               </Honey>
             }
-          </Honey>
+          </Poly>
         </Instanced>
     )
 }
@@ -204,57 +190,29 @@ export function Honeycomb ({radius: r=10*sqrt(3), angle: a=0}) {
     return (
       <Instanced>
         <cylinderGeometry attach="geometry" args={[9, 10, 1, 6, 1, false]}/>
-        <meshPhysicalMaterial attach="material" color="red" roughness={0.2} metalness={1.0}/>
+        <meshPhysicalMaterial attach="material" color="darksalmon" roughness={0.3} metalness={1}/>
         <OrbitControls />
-        <Honey>
-          {(floor, key) =>
+        <Poly n={10} args={[[0, 0, 0], 0]}>
+          {(next, _, floor, key) =>
             <Honey {...{floor, key}}>
-              {(floor, key) =>
-                <Honey {...{floor, key}}>
-                  {(floor, key) =>
-                    <Honey {...{floor, key}}>
-                      {(floor, key) =>
-                          <Honey {...{floor, key}}>
-                            {(floor, key) =>
-                              <Honey {...{floor, key}}>
-                                {(floor, key) =>
-                                  <Honey {...{floor, key}}>
-                                    {(floor, key) =>
-                                      <Honey {...{floor, key}}>
-                                        {(floor, key) =>
-                                            <Honey {...{floor, key}}>
-                                              {(floor, key) =>
-                                                <Honey {...{floor, key}}>
-                                                  {([i, j, k], key) =>
-                                                    <Atom key={key} position={[
-                                                        x.i*i+x.j*j+x.k*k, 0,
-                                                        z.i*i+z.j*j+z.k*k]}>
-                                                      <Text fontSize={2}
-                                                        position-y={1}
-                                                        rotation-x={-Math.PI/2}>
-                                                        {`${floor}`}
-                                                      </Text>
-                                                    </Atom>
-                                                  }
-                                                </Honey>
-                                              }
-                                            </Honey>
-                                        }
-                                      </Honey>
-                                    }
-                                  </Honey>
-                                }
-                              </Honey>
-                            }
-                          </Honey>
-                      }
-                    </Honey>
+              {([i, j, k], key) =>
+                <group key={key}>
+                  {next([i, j, k], key) ||
+                    <Atom position={[
+                        x.i*i+x.j*j+x.k*k, 0,
+                        z.i*i+z.j*j+z.k*k]}>
+                      <Text fontSize={2}
+                        position-y={1}
+                        rotation-x={-Math.PI/2}>
+                        {`${floor}`}
+                      </Text>
+                    </Atom>
                   }
-                </Honey>
+                </group>
               }
             </Honey>
           }
-        </Honey>
+        </Poly>
       </Instanced>
     )
 }

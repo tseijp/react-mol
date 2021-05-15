@@ -1,7 +1,7 @@
 {
     "name": "react-mol",
     "homepage": "/",
-    "version": "2.1.2",
+    "version": "2.2.1",
     "module": "index.js",
     "types": "index.d.ts",
     "main": "index.cjs.js",

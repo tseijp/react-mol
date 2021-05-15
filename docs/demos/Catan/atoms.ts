@@ -3,16 +3,25 @@ import {Honeycomb} from './models'
 
 export const dissableControlAtom = atom(false)
 
-export type Any = {
+export type Base = {
     [key: string]: any,
     road?: string,
     terrain?: string,
     settlement?: string,
 }
 
-export const draggingAtom = atom<Any | undefined>(undefined)
+export const dragAtom = atom(
+    {} as Base,
+    (get, set, args: any) => {
+        const {hover, ...drag} = args || {}
+        hover !== undefined
+        ? set(hoverAtom, hover)
+        : set(dragAtom, drag)
+        get(dragAtom).hover = hover
+    }
+)
 
-export const hoveringAtom = atom<Any | undefined>(undefined)
+export const hoverAtom = atom({} as Base)
 
 export const colorAtom = atom({} as any)
 

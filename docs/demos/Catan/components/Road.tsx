@@ -5,39 +5,41 @@ import {useAtom} from 'jotai'
 import {Gesture} from './Gesture'
 import {floorVec} from '../utils'
 import {Road as Mesh} from '../meshes'
-import {hoveringAtom, draggingAtom} from '../atoms'
+import {dragAtom} from '../atoms'
 
-const {sqrt, PI} = Math
+const {sqrt, PI, random} = Math
 const [x, z] = floorVec(5 * sqrt(3))
 const getPos = (i=0, j=0, k=0) => () => [x.i*i+x.j*j+x.k*k, 2, z.i*i+z.j*j+z.k*k]
 const getRot = (i=0, j=0, k=0) => () => [0, PI/2 + [PI/3, 0, -PI/3][[i%2-j%2, j%2-k%2, k%2-i%2].indexOf(0)],  0]
 
 export function Road (props: any) {
-    const {children, floor} = props
-    const [ , setHovering] = useAtom(hoveringAtom),
-          [d, setDragging] = useAtom(draggingAtom),
-           [road, setRoad] = useState(props.road || "user1")
+    const {children, floor, rock, ...other} = props
+    const [drag, setDrag] = useAtom(dragAtom),
+          [road, setRoad] = useState(props.road || `user${~~(random()*40)}`)
 
-    const disable = !(road || d?.road) || d?.settle || d?.terrain
-    const onHover = memo(() => (e: any) => {
-        setHovering(e.hovering && {road, setRoad})
-    }, [setHovering, road, setRoad])
-    const onDrag = memo(() => ({first}: any) => {
-        setDragging(first? {road}: undefined)
-    }, [road])
+    const position = memo(getPos(...floor), [floor])
+    const disable = !(road || drag?.road) || drag?.settle || drag?.terrain
+    const onHover = (e: any) => setDrag({hover: e.active && {road, setRoad}})
+    const onDrag = (e: any) => {
+        setDrag(e.first && {road, setRoad})
+        return () => {
+            if (!drag?.hover?.setRoad) return
+            console.log(drag?.hover)
+            setRoad(drag?.hover?.road)
+            if (!rock) drag?.hover?.setRoad(road)
+        }
+    }
 
     return (
-      <group position={memo(getPos(...floor), [floor]) as any}>
-        <Gesture {...{disable, onHover, onDrag}}>
-          <Mesh {...{road}} rotation={memo(getRot(...floor), [floor]) as any}/>
-          <Style prepend center transform
-            style={{ pointerEvents: 'none'}}
-            rotation-x={-PI/2}>
-            <span>{``}<span/></span>
-          </Style>
-          {children}
-        </Gesture>
-      </group>
+      <Gesture {...{disable, onHover, onDrag, position, ...other}}>
+        <Mesh {...{road}} rotation={memo(getRot(...floor), [floor]) as any}/>
+        <Style prepend center transform
+          style={{ pointerEvents: 'none'}}
+          rotation-x={-PI/2}>
+          <span>{``}<span/></span>
+        </Style>
+        {children}
+      </Gesture>
     )
 }
 

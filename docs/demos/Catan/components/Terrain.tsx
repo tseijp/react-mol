@@ -1,11 +1,11 @@
-import {createElement as el, useState, useMemo as memo} from 'react'
+import React, {createElement as el, useState, useMemo as memo} from 'react'
 import styled from 'styled-components'
 import {Html} from '@react-three/drei'
 import {useAtom} from 'jotai'
 import {Gesture} from './Gesture'
+import {dragAtom} from '../atoms'
 import {Terrain as Mesh} from '../meshes'
 import {floorVec, icons} from '../utils'
-import {hoveringAtom, draggingAtom} from '../atoms'
 
 const {random, sqrt, PI} = Math
 const [x, z] = floorVec(10 * sqrt(3))
@@ -14,35 +14,32 @@ const terrainKeys = ['hills', 'forest', 'mountains', 'fields', 'pasture', 'deser
 
 export function Terrain (props: any) {
     const {children, rock=false, ...other} = props
-    const [d, setDragging] = useAtom(draggingAtom),
-          [h, setHovering] = useAtom(hoveringAtom),
-     [terrain, setTerrain] = useState(props.terrain || terrainKeys[~~(random()*6)]),
-                  [floor,] = useState(props.floor || [0, 0, 0]),
-                  [token,] = useState(props.token || ~~(random()* 10))
+    const [drag, setDrag] = useAtom(dragAtom),
+    [terrain, setTerrain] = useState(props.terrain || terrainKeys[~~(random()*6)]),
+                 [floor,] = useState(props.floor || [0, 0, 0]),
+                 [token,] = useState(props.token || ~~(random()* 10))
 
-    const disable = !(terrain || d?.terrain) || d?.road || d?.settle
-    const onHover = memo(() => (e: any) => {
-        setHovering(e.hovering && {terrain, setTerrain})
-    }, [setHovering, terrain, setTerrain])
-    const onDrag = memo(() => ({first, last}: any) => {
-        setDragging(first? {terrain}: undefined)
-        if (last && h?.setTerrain) {
-            h.setTerrain(terrain)
-            !rock&&setTerrain(h.terrain)
+    const position =  memo(getPos(...floor), [floor])
+    const disable = !(terrain || drag?.terrain) || drag?.road || drag?.settle
+    const onHover = (e: any) => setDrag({hover: e.active && {terrain, setTerrain}})
+    const onDrag = (e: any) => {
+        setDrag(e.first && {terrain, setTerrain})
+        return () => {
+            if (!drag?.hover?.setTerrain) return
+            setTerrain(drag?.hover?.terrain)
+            if (!rock) drag?.hover?.setTerrain(terrain)
         }
-    }, [rock, terrain, h])
+    }
 
     return (
-      <group {...other} position={memo(getPos(...floor), [floor])}>
-        <Gesture {...{disable, onDrag, onHover}}>
-          <Mesh {...{floor, token, terrain}}/>
-          <Style rotation-x={-PI/2} {...{token, padding: 50, fontSize: 150}}>
-            {(icons as any)[terrain] && el((icons as any)[terrain])}
-            <span>{`${token}`}<span/></span>
-          </Style>
-        </Gesture>
+      <Gesture {...{disable, onDrag, onHover, position, ...other}}>
+        <Mesh {...{floor, token, terrain}}/>
+        <Style rotation-x={-PI/2} {...{token, padding: 50, fontSize: 150}}>
+          {(icons as any)[terrain] && el((icons as any)[terrain])}
+          <span>{`${token}`}<span/></span>
+        </Style>
         {children}
-      </group>
+      </Gesture>
     )
 }
 
