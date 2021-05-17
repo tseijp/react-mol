@@ -1,5 +1,8 @@
+import {useMemo} from 'react'
 import {useAtom} from 'jotai'
-import {colorAtom, dragAtom} from './atoms'
+import {colorAtom} from './atoms'
+import {floorVec} from './utils'
+import {Gesture} from './components'
 
 export function Robber (props: any) {
     const {children, ...other} = props
@@ -13,51 +16,51 @@ export function Robber (props: any) {
 }
 
 export function Road (props: any) {
-    const {children, road, ...other} = props
-    const //[d] = useAtom(dragAtom),
-          [c] = useAtom(colorAtom)
+    const {children, road, floor, ...other} = props
+    const [c] = useAtom(colorAtom),
+          pos = useMemo(() => floorVec.roadPos(...floor), [floor]),
+          rot = useMemo(() => floorVec.roadRot(...floor), [floor])
     return (
-      <mesh {...other}>
+      <Gesture {...other} position={pos} rotation={rot}>
         <boxGeometry args={[6, 1.5, 1.5]}/>
         <meshLambertMaterial
           wireframe//={!!(!path && (drag && hover))}
             visible//={!!(path || (drag && hover))}
               color={(c as any)[road] || "red"}/>
         {children}
-      </mesh>
+      </Gesture>
     )
 }
 
 export function Settle (props: any) {
-    const {children, settle, ...other} = props
-    const //[d] = useAtom(dragAtom),
-          [c] = useAtom(colorAtom)
+    const {children, settle, floor, ...other} = props
+    const [c] = useAtom(colorAtom)
+    const pos = useMemo(() => floorVec.settlePos(...floor), [floor])
     return (
-      <mesh {...other}>
+      <Gesture {...other} position={pos}>
         <boxGeometry args={[3, 3, 3]}/>
         <meshLambertMaterial
           wireframe//={!!(!settlement && (drag && hover))}
             visible//={!!(settlement || (drag && hover))}
               color={(c as any)[settle] || "red"}/>
         {children}
-      </mesh>
+      </Gesture>
     )
 }
 
 export function Terrain (props: any) {
-    const {children, terrain, ...other} = props
-    const [d] = useAtom(dragAtom),
-          [c] = useAtom(colorAtom)
+    const {children, terrain, token, floor, ...other} = props
+    const [c] = useAtom(colorAtom)
+    const pos = useMemo(() => floorVec.terrainPos(...floor), [floor])
     return (
-      <mesh {...other}>
+      <Gesture {...other} position={pos}>
         <cylinderGeometry
           attach="geometry"
           args={[9, 10, 1, 6, 1, false]}/>
-        <meshLambertMaterial attach="material"
-          wireframe={!!(!terrain && (d))}
-            visible={!!(terrain || (d))}
-              color={(c as any)[terrain] || "red"}/>
+        <meshLambertMaterial
+          attach="material"
+          color={(c as any)[terrain]}/>
         {children}
-      </mesh>
+      </Gesture>
     )
 }

@@ -1,10 +1,11 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import {Camera} from '@react-three/fiber'
 import {useAtom} from 'jotai'
 import {useControls as _} from 'leva'
 import {MapControls, PerspectiveCamera} from '@react-three/drei'
+
 import {hoverCursor} from '../utils'
-import {dragAtom, hoverAtom, colorAtom} from '../atoms'
+import {hoverAtom, colorAtom, honeycombAtom} from '../atoms'
 
 export function Control ({
     children,
@@ -22,30 +23,32 @@ export function Control ({
         user2: "#00f",
         user3: "#fff",
     }),
+    rate=_({
+        hills: 3,
+        forest: 4,
+        mountains: 3,
+        fields: 4,
+        pasture: 4,
+        desert: 1
+    }),
     ...other
 }: any) {
     const camera = React.useRef<Camera>()
-    const [drag] = useAtom(dragAtom),
-         [hover] = useAtom(hoverAtom),
-     [color,set] = useAtom(colorAtom)
-    const cursor = useMemo(() => {
-        const {road, settle, terrain} = hover || {}
-        if (drag?.road) return road
-        if (drag?.settle) return settle
-        if (drag?.terrain) return terrain
-        return road || settle || terrain
-    }, [drag, hover])
+    const [{road: r, settle: s, terrain: t}] = useAtom(hoverAtom),
+          [color, set] = useAtom(colorAtom),
+          [, setHoney] = useAtom(honeycombAtom)
     React.useEffect(() => void set(colors), [set, colors])
+    React.useEffect(() => void setHoney({rate}), [setHoney, rate])
     React.useEffect(() => {
-        document.body.style.cursor = hoverCursor(cursor, color)
-    }, [cursor, color])
+        document.body.style.cursor = hoverCursor(r || s || t, color)
+    }, [r, s, t, color])
     return (
       <group {...other}>
         {children}
         <PerspectiveCamera makeDefault ref={camera} position={[0, scale, 0]} />
         <MapControls
             camera={camera.current}
-            enabled={!drag?.settle && !drag?.road && !drag?.terrain}
+            enabled={!(r || s || t)}
             enableRotate={enableRotate}/>
       </group>
     )

@@ -1,10 +1,7 @@
 import React from 'react'
 import {Text, OrbitControls} from '@react-three/drei'
 
-import {Road} from './components/Road'
-import {Control} from './components/Control'
-import {Settle} from './components/Settle'
-import {Terrain} from './components/Terrain'
+import {Control, Road, Settle, Terrain} from './components'
 import {Instanced, Atom, Honey, Poly} from '../../../src'
 
 const {cos, sin, sqrt, PI} = Math
@@ -36,17 +33,14 @@ export function SevenField () {
               <Terrain {...{floor}}/>
               <Honey {...{floor}}>
                 {(floor, key) =>
-                  <group key={key}>
-                    {/*<Terrain terrain={false} {...{floor}}/>*/}
-                    <Honey {...{floor, key}}>
-                      {(floor, key) =>
-                        <group {...{key}}>
-                          {floor.reduce((a, v) => a + v) % 3 && <Settle {...{floor}}/>}
-                          {floor.filter(v =>!(v % 2)).length && <Road {...{floor}}/>}
-                        </group>
-                      }
-                    </Honey>
-                  </group>
+                  <Honey {...{floor, key}}>
+                    {(floor, key) =>
+                      <group key={key}>
+                        {floor.reduce((a, v) => a + v) % 3 && <Settle {...{floor}}/>}
+                        {floor.filter(v =>!(v % 2)).length && <Road {...{floor}}/>}
+                      </group>
+                    }
+                  </Honey>
                 }
               </Honey>
             </group>
@@ -71,7 +65,7 @@ export function NineteenField () {
                         {(floor, key) =>
                           <Honey {...{floor, key}}>
                             {(floor, key) =>
-                              <group {...{key}}>
+                              <group key={key}>
                                 {floor.reduce((a, v) => a+v) % 3 &&
                                  floor.filter(v => v % 5).length && <Settle {...{floor}}/>}
                                 {floor.filter(v =>!(v%2)).length && <Road {...{floor}}/>}

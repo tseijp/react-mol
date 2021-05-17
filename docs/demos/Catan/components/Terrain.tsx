@@ -1,54 +1,59 @@
-import React, {createElement as el, useState, useMemo as memo} from 'react'
+import {createElement as el, useEffect, useState, useMemo as memo} from 'react'
+import {useAtom} from 'jotai'
 import styled from 'styled-components'
 import {Html} from '@react-three/drei'
-import {useAtom} from 'jotai'
-import {Gesture} from './Gesture'
-import {dragAtom} from '../atoms'
+import {icons} from '../utils'
 import {Terrain as Mesh} from '../meshes'
-import {floorVec, icons} from '../utils'
+import {dragTerrainAtom, honeycombAtom} from '../atoms'
 
-const {random, sqrt, PI} = Math
-const [x, z] = floorVec(10 * sqrt(3))
-const getPos = (i=0, j=0, k=0) => () => [x.i*i+x.j*j+x.k*k, 0, z.i*i+z.j*j+z.k*k]
-const terrainKeys = ['hills', 'forest', 'mountains', 'fields', 'pasture', 'desert']
+const {PI} = Math
 
 export function Terrain (props: any) {
-    const {children, rock=false, ...other} = props
-    const [drag, setDrag] = useAtom(dragAtom),
-    [terrain, setTerrain] = useState(props.terrain || terrainKeys[~~(random()*6)]),
-                 [floor,] = useState(props.floor || [0, 0, 0]),
-                 [token,] = useState(props.token || ~~(random()* 10))
+    const {children, rock=false, hidden=false, ...other} = props
+    const [honeycomb] = useAtom(honeycombAtom),
+          [drag, setDrag] = useAtom(dragTerrainAtom),
+         [token, setToken] = useState(props.token),
+       [terrain, setTerrain] = useState(props.terrain)
 
-    const position =  memo(getPos(...floor), [floor])
-    const disable = !(terrain || drag?.terrain) || drag?.road || drag?.settle
-    const onHover = (e: any) => setDrag({hover: e.active && {terrain, setTerrain}})
-    const onDrag = (e: any) => {
-        setDrag(e.first && {terrain, setTerrain})
-        return () => {
-            if (!drag?.hover?.setTerrain) return
-            setTerrain(drag?.hover?.terrain)
-            if (!rock) drag?.hover?.setTerrain(terrain)
-        }
+    const state = {
+        disable: !(terrain || drag.terrain) || drag.road || drag.settle,
+        onHover: (e: any) => setDrag({hover: e.active && {token, setToken, terrain, setTerrain}}),
+         onDrag: (e: any) => setDrag(e.first && {terrain, setTerrain}) || (() => {
+            if (!drag.hover?.setTerrain || !drag.hover?.setToken) return
+            if (!rock) drag.hover?.setToken(token)
+            if (!rock) drag.hover?.setTerrain(terrain)
+            setToken(drag.hover?.token)
+            setTerrain(drag.hover?.terrain)
+        })
     }
 
+    useEffect(() => {
+        if (hidden) return
+        setTerrain(honeycomb.terrain(...props.floor))
+        setToken(honeycomb.token(...props.floor))
+    }, [honeycomb, hidden, props.floor])
+
     return (
-      <Gesture {...{disable, onDrag, onHover, position, ...other}}>
-        <Mesh {...{floor, token, terrain}}/>
-        <Style rotation-x={-PI/2} {...{token, padding: 50, fontSize: 150}}>
-          {(icons as any)[terrain] && el((icons as any)[terrain])}
-          <span>{`${token}`}<span/></span>
-        </Style>
+      <Mesh {...{...state, ...other, token, terrain}}>
+        {memo(() => !token || !terrain? null:
+          <Style rotation-x={-PI/2} token={token}>
+            {(icons as any)[terrain] && el((icons as any)[terrain])}
+            <span>{`${token}`}<span/></span>
+          </Style>
+        , [token, terrain])}
         {children}
-      </Gesture>
+      </Mesh>
     )
 }
 
 const {abs} = Math
 
-export const Style = styled<any>(Html).attrs(_ => ({
+const Style = styled<any>(Html).attrs(_ => ({
     center: true,
     transform: true,
-    style: { pointerEvents: 'none'},
+    padding: 50,
+    fontSize: 150,
+    style: { pointerEvents: 'none', zindex: -1},
     color: (_.token-7)**2-1? 'black': '#ff5588',
     dotLen: 7 - abs(_.token - 7) - 1,
     filter: `drop-shadow(0px 25px 25px rgba(0, 0, 0, 0.1))`,

@@ -1,26 +1,27 @@
 const {cos, sin, sqrt, PI} = Math
 
-export const floorVec = (r= 5*sqrt(3), a=0) => [
+const floorVec = (r= 5*sqrt(3), a=0) => [
     {i: r*cos(a), j: r*cos(a-PI*2/3), k: r*cos(a+PI*2/3)},
     {i: r*sin(a), j: r*sin(a-PI*2/3), k: r*sin(a+PI*2/3)}
 ]
-
-const shuffle = ([...array]) => {
-    for (let i = array.length - 1; i >= 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]
-    }
-    return array
+floorVec.roadVec = floorVec(5 * sqrt(3))
+floorVec.roadRot = (i=0, j=0, k=0) => [0, PI/2 + [PI/3, 0, -PI/3][[i%2-j%2, j%2-k%2, k%2-i%2].indexOf(0)],  0]
+floorVec.roadPos = (i=0, j=0, k=0) => {
+    const [x, z] = floorVec.roadVec
+    return [x.i*i+x.j*j+x.k*k, 2, z.i*i+z.j*j+z.k*k]
+}
+floorVec.settleVec = floorVec(10, PI/6)
+floorVec.settlePos = (i=0, j=0, k=0) => {
+    const [x, z] = floorVec.settleVec
+    return [x.i*i+x.j*j+x.k*k, 2, z.i*i+z.j*j+z.k*k]
+}
+floorVec.terrainVec = floorVec(10 * sqrt(3))
+floorVec.terrainPos = (i=0, j=0, k=0) => {
+    const [x, z] = floorVec.terrainVec
+    return [x.i*i+x.j*j+x.k*k, 0, z.i*i+z.j*j+z.k*k]
 }
 
-export const nineteenTerain = shuffle([
-    ...Array(4).fill('hills'),
-    ...Array(4).fill('forest'),
-    ...Array(4).fill('mountains'),
-    ...Array(3).fill('fields'),
-    ...Array(3).fill('pastures'),
-    ...Array(1).fill('desert'),
-])
+export {floorVec}
 
 export const hoverCursor = (key='', colors: any={}) => `url('data:image/svg+xml;base64,${btoa(key? `
 <svg width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
