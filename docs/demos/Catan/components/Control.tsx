@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Camera} from '@react-three/fiber'
 import {useAtom} from 'jotai'
 import {useControls as _} from 'leva'
@@ -34,21 +34,21 @@ export function Control ({
     ...other
 }: any) {
     const camera = React.useRef<Camera>()
-    const [{road: r, settle: s, terrain: t}] = useAtom(hoverAtom),
-          [color, set] = useAtom(colorAtom),
-          [, setHoney] = useAtom(honeycombAtom)
-    React.useEffect(() => void set(colors), [set, colors])
-    React.useEffect(() => void setHoney({rate}), [setHoney, rate])
-    React.useEffect(() => {
-        document.body.style.cursor = hoverCursor(r || s || t, color)
-    }, [r, s, t, color])
+    const [{build}] = useAtom(hoverAtom),
+       [color, set] = useAtom(colorAtom),
+       [, setHoney] = useAtom(honeycombAtom)
+    useEffect(() => void set(colors), [set, colors])
+    useEffect(() => void setHoney({rate}), [setHoney, rate])
+    useEffect(() => {
+        document.body.style.cursor = hoverCursor(build, color)
+    }, [build, color])
     return (
       <group {...other}>
         {children}
         <PerspectiveCamera makeDefault ref={camera} position={[0, scale, 0]} />
         <MapControls
             camera={camera.current}
-            enabled={!(r || s || t)}
+            enabled={!build}
             enableRotate={enableRotate}/>
       </group>
     )

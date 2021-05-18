@@ -13,6 +13,7 @@ export const honeycombAtom = atom(
 )
 
 export type Drag = {
+    [key: string]: any,
     hover?: any,
     road?: string,
     settle?: string,
@@ -29,8 +30,8 @@ export const hoverAtom = atom({} as Drag)
 
 export const colorAtom = atom({} as any)
 
-function setDrag (...args: any) {
-    const [_dragAtom, get, set, {hover, ...drag}] = args
+function setDrag (_dragAtom: any, ...args: any) {
+    const [get, set, {hover, ...drag}] = args
     hover === undefined
     ? set(_dragAtom, drag)
     : set(hoverAtom, hover)

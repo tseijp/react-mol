@@ -1,7 +1,8 @@
 import React from 'react'
 import {Text, OrbitControls} from '@react-three/drei'
 
-import {Control, Road, Settle, Terrain} from './components'
+import {Control} from './components'
+import {Road, Settle, Terrain} from './builds'
 import {Instanced, Atom, Honey, Poly} from '../../../src'
 
 const {cos, sin, sqrt, PI} = Math
