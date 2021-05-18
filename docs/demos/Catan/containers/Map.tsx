@@ -7,7 +7,7 @@ import {MapControls, PerspectiveCamera} from '@react-three/drei'
 import {hoverCursor} from '../utils'
 import {hoverAtom, colorAtom, honeycombAtom} from '../atoms'
 
-export function Control ({
+export function Map ({
     children,
     enableRotate=false,
     scale=_({scale: {value: 100, min: 0, max: 500}}).scale,
@@ -34,21 +34,21 @@ export function Control ({
     ...other
 }: any) {
     const camera = React.useRef<Camera>()
-    const [{build}] = useAtom(hoverAtom),
-       [color, set] = useAtom(colorAtom),
-       [, setHoney] = useAtom(honeycombAtom)
+    const [{mesh}] = useAtom(hoverAtom),
+      [color, set] = useAtom(colorAtom),
+      [, setHoney] = useAtom(honeycombAtom)
     useEffect(() => void set(colors), [set, colors])
     useEffect(() => void setHoney({rate}), [setHoney, rate])
     useEffect(() => {
-        document.body.style.cursor = hoverCursor(build, color)
-    }, [build, color])
+        document.body.style.cursor = hoverCursor(mesh, color)
+    }, [mesh, color])
     return (
       <group {...other}>
         {children}
         <PerspectiveCamera makeDefault ref={camera} position={[0, scale, 0]} />
         <MapControls
             camera={camera.current}
-            enabled={!build}
+            enabled={!mesh}
             enableRotate={enableRotate}/>
       </group>
     )

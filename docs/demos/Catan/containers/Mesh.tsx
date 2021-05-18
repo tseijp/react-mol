@@ -1,13 +1,26 @@
-import {createElement as el} from 'react'
+import {useState, createElement as el} from 'react'
+import {useAtom} from 'jotai'
 import {useThree} from '@react-three/fiber'
 import {useSpring} from 'react-spring/three'
 import {useGesture} from 'react-use-gesture'
 import {animated as a} from 'react-spring/three'
 
-export function Gesture (props: any) {
-    const {children, rotation, disable=false, onHover, onDrag, ...other} = props
-    const aspect = useThree(_ => _.camera.position.y * _.size.width / _.viewport.width)
+export function useMesh (value: any, atom: any) {
+    const [drag, setDrag]  = useAtom(atom) as any,
+           [mesh, setMesh] = useState(value),
+        onHover = (e: any) => setDrag({hover: e.active && {mesh, setMesh}}),
+        onDrag  = (e: any) => setDrag(e.first && {mesh, setMesh}) || (() => {
+            if (!drag.hover?.setMesh) return
+            drag.hover?.setMesh(mesh)
+            setMesh((drag.hover || {}).mesh)
+        })
+    return [{mesh, onHover, onDrag} as any, setMesh]
+}
+
+export function Mesh (props: any) {
+    const {children, rotation, onHover, onDrag, disable, ...other} = props
     const [s, api] = useSpring(() => ({position: [0, 0, 0], scale: [1, 1, 1]}))
+    const aspect = useThree(_ => _.camera.position.y * _.size.width / _.viewport.width)
     const bind = useGesture({
         onDrag: e => {
             if (disable) return
@@ -19,7 +32,7 @@ export function Gesture (props: any) {
             api.start({position, scale: [1,1,1]})
         },
         onHover: e => {
-            if (disable || e.dragging) return
+            if (e.dragging || disable) return
             if (e.active) onHover?.call(this, e)
             if (!e.active) onHover?.call(this, e)?.call(this, e)
             e.event.stopPropagation()
