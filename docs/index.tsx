@@ -28,7 +28,6 @@ const HookCanvas = ({children, height='calc(100vh - 2rem)'}: any) => (
     gl={{alpha: true, antialias: false, logarithmicDepthBuffer: true}}>
     <ambientLight intensity={.3} />
     <pointLight position={[ 100, 100, 100]} intensity={2.5} />
-    <pointLight position={[-100,-100, 100]} intensity={5} />
     <React.Suspense fallback={null}>
       {React.useMemo(() => children, [children])}
     </React.Suspense>

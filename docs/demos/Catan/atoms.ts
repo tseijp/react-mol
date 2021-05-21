@@ -12,14 +12,11 @@ export const honeycombAtom = atom(
     }
 )
 
-export type Drag = {
-    [key: string]: any,
-    hover?: any,
+export type Drag = {[key: string]: any, hover?: any}
 
-    road?: string,
-    settle?: string,
-    terrain?: string,
-}
+export const colorAtom = atom({} as any)
+
+export const hoverAtom = atom({} as Drag)
 
 export const dragRobberAtom = atom({} as Drag, (...args) => {setDrag(dragRobberAtom, ...args)})
 
@@ -29,9 +26,7 @@ export const dragSettleAtom = atom({} as Drag, (...args) => {setDrag(dragSettleA
 
 export const dragTerrainAtom = atom({} as Drag, (...args) => {setDrag(dragTerrainAtom, ...args)})
 
-export const hoverAtom = atom({} as Drag)
-
-export const colorAtom = atom({} as any)
+export const dragUserAtom = atom({} as Drag, (...args) => {setDrag(dragUserAtom, ...args)})
 
 function setDrag (_dragAtom: any, ...args: any) {
     const [get, set, {hover, ...drag}] = args

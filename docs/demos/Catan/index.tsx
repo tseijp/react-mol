@@ -1,35 +1,30 @@
 import React from 'react'
 import {Text, OrbitControls} from '@react-three/drei'
-
-import {Map} from './containers'
-import {Robber, Road, Settle, Terrain} from './meshes'
+import {Map, Tools} from './containers'
+import {Robber, Road, Settle, Terrain, User} from './meshes'
 import {Instanced, Atom, Honey, Poly} from '../../../src'
 
 const {cos, sin, sqrt, PI} = Math
-
-export function OneField () {
-    return (
-      <Map>
-        <Terrain>
-          <Robber/>
-        </Terrain>
-        <Honey>
-          {(floor, key) =>
-            floor.reduce((a, v) => a + v) % 3
-              ? <group key={key}>
-                  <Settle floor={floor}/>
-                  <Road floor={floor}/>
-                </group>
-              : null
-          }
-        </Honey>
-      </Map>
-    )
-}
+const items = ['hills', 'forest', 'mountains', 'fields', 'pasture', 'desert']
 
 export function SevenField () {
     return (
-      <Map>
+      <>
+        <Map>
+          <Tools left top items={[...Array(4)].map((_, i) => `user${i}`)}>
+            {(item, key) => <User user={item} key={key}/>}
+          </Tools>
+          <Tools left bottom items={[Road, Settle, Settle]}>
+            {(Item, key) => <Item rock key={key}/>}
+          </Tools>
+          <Tools right bottom>
+            <Honey>
+              {(floor, key, self) => key === self.length - 1? null:
+                <Terrain terrain={items[key]} {...{floor, key}}/>
+              }
+            </Honey>
+          </Tools>
+        </Map>
         <Honey>
           {(floor, key) =>
             <group key={key}>
@@ -51,13 +46,28 @@ export function SevenField () {
             </group>
           }
         </Honey>
-      </Map>
+      </>
     )
 }
 
 export function NineteenField () {
     return (
-      <Map>
+      <>
+        <Map>
+          <Tools left top items={[...Array(4)].map((_, i) => `user${i}`)}>
+            {(item, key) => <User user={item} key={key}/>}
+          </Tools>
+          <Tools left bottom items={[Road, Settle, Settle]}>
+            {(Item, key) => <Item rock key={key}/>}
+          </Tools>
+          <Tools right bottom>
+            <Honey>
+              {(floor, key, self) => //key === self.length - 1? null:
+                <Terrain terrain={items[key]} {...{floor, key}}/>
+              }
+            </Honey>
+          </Tools>
+        </Map>
         <Honey>
           {(floor, key) =>
             <Honey {...{floor, key}}>
@@ -88,7 +98,7 @@ export function NineteenField () {
             </Honey>
           }
         </Honey>
-      </Map>
+      </>
     )
 }
 

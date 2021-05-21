@@ -4,21 +4,20 @@ import {useThree} from '@react-three/fiber'
 import {useSpring} from 'react-spring/three'
 import {useGesture} from 'react-use-gesture'
 import {animated as a} from 'react-spring/three'
-
-export function useMesh (value: any, atom: any) {
-    const [drag, setDrag]  = useAtom(atom) as any,
-           [mesh, setMesh] = useState(value),
+export function useMesh (value: any, atom: any, rock=false) {
+    const [drag, setDrag] = useAtom(atom) as any,
+          [mesh, setMesh] = useState(value),
         onHover = (e: any) => setDrag({hover: e.active && {mesh, setMesh}}),
         onDrag  = (e: any) => setDrag(e.first && {mesh, setMesh}) || (() => {
             if (!drag.hover?.setMesh) return
+            if (!rock) setMesh((drag.hover || {}).mesh)
             drag.hover?.setMesh(mesh)
-            setMesh((drag.hover || {}).mesh)
         })
     return [{mesh, onHover, onDrag} as any, setMesh]
 }
 
 export function Mesh (props: any) {
-    const {children, rotation, onHover, onDrag, disable, ...other} = props
+    const {children, onHover, onDrag, disable, ...other} = props
     const [s, api] = useSpring(() => ({position: [0, 0, 0], scale: [1, 1, 1]}))
     const aspect = useThree(_ => _.camera.position.y * _.size.width / _.viewport.width)
     const bind = useGesture({
@@ -39,5 +38,5 @@ export function Mesh (props: any) {
             api.start({scale: e.hovering? [.8,.8,.8]: [1,1,1]})
         }
     })
-    return el(a.group, other, el(a.mesh, {...bind(), ...s as any, rotation}, children))
+    return el(a.group, other, el(a.mesh, {...bind(), ...s as any}, children))
 }

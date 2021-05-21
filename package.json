@@ -58,6 +58,7 @@
         "@react-three/cannon": "^1.1.1",
         "@react-three/drei": "4.3.3",
         "@react-three/fiber": "6.0.19",
+        "@react-three/flex": "^0.6.0",
         "@rollup/plugin-babel": "^5.2.1",
         "@rollup/plugin-commonjs": "^15.1.0",
         "@rollup/plugin-node-resolve": "^9.0.0",
