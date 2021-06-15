@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {OrbitControls} from '@react-three/drei'
 import {useControls as _} from 'leva'
 import {animated, useTrail} from 'react-spring/three'
-import {Instanced, Atom as _Atom} from '../../src'
+import {Instanced, Atom as _Atom} from 'react-mol'
 import * as THREE from 'three'
 
 const Atom = animated(_Atom);

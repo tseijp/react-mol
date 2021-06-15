@@ -1,8 +1,8 @@
 import React from 'react'
 import {useFrame} from '@react-three/fiber'
 import {OrbitControls} from '@react-three/drei'
-import {C, H, O, CH3, Poly} from '../../src'
-import {Instanced, Recursion} from '../../src'
+import {C, H, O, CH3, Poly} from 'react-mol'
+import {Instanced, Recursion} from 'react-mol'
 import {molGeometry} from '../utils'
 import * as THREE from 'three'
 // utils

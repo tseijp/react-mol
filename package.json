@@ -1,100 +1,24 @@
 {
-    "name": "react-mol",
-    "homepage": "/",
-    "version": "2.2.1",
-    "module": "index.js",
-    "types": "index.d.ts",
-    "main": "index.cjs.js",
+    "name": "@react-mol/root",
     "author": "tsei",
     "license": "MIT",
-    "private": false,
-    "sideEffects": false,
-    "description": "🍡A molecular chemistry based simulation library",
-    "repository": "https://github.com/tseijp/react-mol",
-    "bugs": "https://github.com/tseijp/react-mol/issues",
-    "keywords": [
-        "react",
-        "three",
-        "fiber",
-        "threejs",
-        "typescript"
-    ],
+    "private": true,
+    "description": "Cross-platform speech engine for React",
+    "repository": "tseijp/react-speech",
+    "homepage": "https://github.com/tseijp/react-speech#readme",
+    "maintainers": ["tseijp (https://github.com/tseijp)"],
+    "workspaces": ["packages/*", "examples/*"],
     "scripts": {
-        "test": "react-app-rewired test",
-        "jest": "jest -c config-jest.js --watch --coverage --runInBand",
-        "eject": "react-app-rewired eject",
-        "start": "cross-env NODE_ENV=development BABEL_ENV=development react-app-rewired start",
-        "build": "cross-env NODE_ENV=production BABEL_ENV=production react-app-rewired build",
-        "compile": "cross-env NODE_ENV=production BABEL_ENV=production rollup -c config-rollup.js"
-    },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "dependencies": {
-        "jotai": "0.16.3"
-    },
-    "peerDependencies": {
-        "@react-three/fiber": ">=6.0",
-        "react": ">=17.0",
-        "react-dom": ">=17.0",
-        "three": "*"
+        "init": "npm i -g yarn lerna && lerna bootstrap",
+        "docs": "lerna exec --scope @react-mol/docs -- yarn start",
+        "site": "lerna exec --scope @react-mol/site -- yarn start",
+        "update": "lerna exec --scope react-mol -- yarn publish",
+        "build": "lerna exec --scope react-mol -- rollup -c",
+        "watch": "lerna exec --scope react-mol -- jest --watch --runInBand",
+        "cov": "lerna exec --scope react-mol -- jest --coverage",
+        "ls": "lerna exec --scope react-mol -- npm pack --dry-run"
     },
     "devDependencies": {
-        "@babel/plugin-transform-runtime": "^7.13.15",
-        "@babel/preset-typescript": "^7.13.0",
-        "@leva-ui/plugin-spring": "^0.9.9",
-        "@react-three/cannon": "^1.1.1",
-        "@react-three/drei": "4.3.3",
-        "@react-three/fiber": "6.0.19",
-        "@react-three/flex": "^0.6.0",
-        "@rollup/plugin-babel": "^5.2.1",
-        "@rollup/plugin-commonjs": "^15.1.0",
-        "@rollup/plugin-node-resolve": "^9.0.0",
-        "@testing-library/jest-dom": "^5.11.5",
-        "@testing-library/react": "^11.1.0",
-        "@testing-library/react-hooks": "^3.4.2",
-        "@testing-library/user-event": "^12.1.10",
-        "@tsei/core": "^0.8.4",
-        "@tsei/mdmd": "^2.1.2",
-        "@types/jest": "^26.0.14",
-        "@types/node": "^14.11.10",
-        "@types/react": "17.0.2",
-        "@types/react-dom": "17.0.2",
-        "@types/react-router-dom": "^5.1.6",
-        "@types/react-test-renderer": "^16.9.3",
-        "@types/three": "0.127.1",
-        "babel-jest": "26.6.0",
-        "cross-env": "^7.0.2",
-        "fs": "0.0.1-security",
-        "jest": "26.6.0",
-        "leva": "^0.9.9",
-        "mdbreact": "^5.0.1",
-        "nice-color-palettes": "^3.0.0",
-        "parsed-path": "^0.1.12",
-        "react": "^17.0.1",
-        "react-app-rewired": "^2.1.6",
-        "react-dom": "^17.0.1",
-        "react-helmet-async": "^1.0.7",
-        "react-router-dom": "^5.2.0",
-        "react-scripts": "4.0.3",
-        "react-spring": "9.1.2",
-        "react-test-renderer": "^17.0.1",
-        "rollup": "^2.29.0",
-        "three": "0.128.0",
-        "ts-jest": "^26.4.1",
-        "typescript": "4.2.3",
-        "use-grid": "0.9.2"
+        "lerna": "^4.0.0"
     }
 }

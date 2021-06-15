@@ -5,7 +5,7 @@ import {OrbitControls} from '@react-three/drei'
 import { useControls as _ } from 'leva'
 import { Physics, usePlane, useBox } from '@react-three/cannon'
 
-import {Tile, Atom as AtomTpl, Instanced} from '../../src'
+import {Tile, Atom as AtomTpl, Instanced} from 'react-mol'
 const {PI, random, cos, sin, } = Math
 const bookURL = "http://images-jp.amazon.com/images/P/4041315220.09.MZZZZZZZ"
 

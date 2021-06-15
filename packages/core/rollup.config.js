@@ -1,8 +1,11 @@
-import { promises as fs } from 'fs';
-import pkg from './package.json';
-import babel from '@rollup/plugin-babel';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
+import { promises as fs } from 'fs'
+import { resolve } from 'path'
+import pkg from './package.json'
+import babel from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import nodeResolve from '@rollup/plugin-node-resolve'
+import nodePolyfills from 'rollup-plugin-node-polyfills'
+import { terser } from 'rollup-plugin-terser'
 
 const input = 'src/index'
 const external = Object.keys({...pkg.dependencies, ...pkg.devDependencies})
@@ -26,11 +29,18 @@ const getBabelOptions = ({ useESModules }) => ({
     ],
 })
 
-const targetTypings = (out) => ({
+const targetTypings = () => ({
     writeBundle () {
+        const text = `export * from "./${input}";\nexport {default as default} from "./${input}"`
         return fs.lstat(pkg.types).catch(() => {
-            return fs.writeFile(pkg.types, `export * from "./${input}"`)
+            return fs.writeFile(pkg.types, text)
         })
+    }
+})
+
+const copyReadme = () => ({
+    writeBundle () {
+        fs.copyFile(resolve('../../README.md'), 'README.md', err => void console.log(err));
     }
 })
 
@@ -38,13 +48,17 @@ export default [
     { input, output: {file: pkg.main, format: 'cjs'}, external, plugins: [
         babel( getBabelOptions({useESModules: false}) ),
         commonjs({extensions}),
-        resolve ({extensions, modulesOnly: true}),
-        targetTypings(),
+        nodeResolve({extensions}),
+        nodePolyfills({crypto: true}),
+        terser(),
     ]},
     { input, output: {file: pkg.module, format: 'esm'}, external, plugins: [
         babel( getBabelOptions({useESModules: true}) ),
         commonjs({extensions}),
-        resolve ({extensions, modulesOnly: true}),
+        nodeResolve({extensions}),
+        nodePolyfills({crypto: true}),
         targetTypings(),
+        copyReadme(),
+        terser(),
     ] },
 ]

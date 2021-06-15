@@ -19,6 +19,10 @@
     "watch": true,
     "baseUrl": "./",
     "outDir": "./",
+    "types": [
+      "jest",
+      "node"
+    ],
     "lib": [
       "dom",
       "dom.iterable",
@@ -28,11 +32,9 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "./docs/**/*",
-    "./src/**/*",
-    "./test/**/*"
+    "src"
   ],
   "exclude": [
-    "./node_modules/**/*"
+    "**/node_modules/**/*"
   ]
 }

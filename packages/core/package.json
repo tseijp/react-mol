@@ -1,0 +1,83 @@
+{
+    "name": "react-mol",
+    "homepage": "/",
+    "version": "2.2.1",
+    "module": "index.js",
+    "types": "index.d.ts",
+    "main": "index.cjs.js",
+    "author": "tsei",
+    "license": "MIT",
+    "private": false,
+    "sideEffects": false,
+    "description": "🍡A molecular chemistry based simulation library",
+    "repository": "https://github.com/tseijp/react-mol",
+    "bugs": "https://github.com/tseijp/react-mol/issues",
+    "keywords": [
+        "react",
+        "three",
+        "fiber",
+        "threejs",
+        "typescript"
+    ],
+    "scripts": {
+        "test": "react-app-rewired test",
+        "jest": "jest -c config-jest.js --watch --coverage --runInBand",
+        "eject": "react-app-rewired eject",
+        "start": "cross-env NODE_ENV=development BABEL_ENV=development react-app-rewired start",
+        "build": "cross-env NODE_ENV=production BABEL_ENV=production react-app-rewired build",
+        "compile": "cross-env NODE_ENV=production BABEL_ENV=production rollup -c config-rollup.js"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "dependencies": {
+        "jotai": "^1.0.0"
+    },
+    "peerDependencies": {
+        "@react-three/fiber": ">=6",
+        "react": ">=17",
+        "react-dom": ">=17",
+        "three": ">=0.128"
+    },
+    "devDependencies": {
+        "@babel/plugin-transform-runtime": "^7.13.15",
+        "@babel/preset-typescript": "^7.13.0",
+        "@react-three/fiber": "6.0.19",
+        "@rollup/plugin-babel": "^5.2.1",
+        "@rollup/plugin-commonjs": "^15.1.0",
+        "@rollup/plugin-node-resolve": "^9.0.0",
+        "@testing-library/jest-dom": "^5.11.5",
+        "@testing-library/react": "^11.1.0",
+        "@testing-library/react-hooks": "^3.4.2",
+        "@testing-library/user-event": "^12.1.10",
+        "@types/jest": "^26.0.14",
+        "@types/node": "^14.11.10",
+        "@types/react": "^17.0.11",
+        "@types/react-dom": "17.0.1",
+        "@types/react-test-renderer": "^16.9.3",
+        "@types/three": "0.127.1",
+        "babel-jest": "26.6.0",
+        "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+        "cross-env": "^7.0.2",
+        "fs": "0.0.1-security",
+        "jest": "26.6.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-test-renderer": "^17.0.1",
+        "rollup": "^2.29.0",
+        "rollup-plugin-node-polyfills": "^0.2.1",
+        "rollup-plugin-terser": "^7.0.2",
+        "three": "0.128.0",
+        "ts-jest": "^26.4.1",
+        "typescript": "^4.3.2"
+    }
+}

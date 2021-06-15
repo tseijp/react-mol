@@ -1,5 +1,5 @@
 import React, {useRef, useMemo} from 'react'
-import {Instanced, Flow, Vec3} from '../../src'
+import {Instanced, Flow, Vec3} from 'react-mol'
 import niceColors from 'nice-color-palettes'
 import {useFrame} from '@react-three/fiber'
 import {OrbitControls} from '@react-three/drei'

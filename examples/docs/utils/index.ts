@@ -1,7 +1,6 @@
 import React, {createElement as el} from 'react'
 import {BufferGeometryUtils} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import * as THREE from 'three';
-export * from './serviceWorker'
 export * from './atom'
 
 export function molGeometry () {

@@ -2,7 +2,7 @@ import React from 'react'
 import {Text, OrbitControls} from '@react-three/drei'
 import {Map, Tools} from './containers'
 import {Robber, Road, Settle, Terrain, User} from './meshes'
-import {Instanced, Atom, Honey, Poly} from '../../../src'
+import {Instanced, Atom, Honey, Poly} from 'react-mol'
 
 const {cos, sin, sqrt, PI} = Math
 const items = ['hills', 'forest', 'mountains', 'fields', 'pasture', 'desert']

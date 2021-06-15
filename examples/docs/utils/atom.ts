@@ -1,6 +1,5 @@
 import {atom} from 'jotai'
 import DEMOS from '../demos'
-import CODES from '../codes'
 
 export const keys = Object.entries(DEMOS).map(([file, demos]: any) => [file, ...Object.keys(demos)])
 
@@ -22,7 +21,6 @@ export const pageAtom = atom(
         const [file='', name=''] = _(filenameAtom)
         return {
             keys, file, name,
-            code: ((CODES as any)[file] as any || {})[name] || "",
             Demo: ((DEMOS as any)[file] as any || {})[name] || "",
         }
     }

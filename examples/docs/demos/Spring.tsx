@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 import {useControls as _} from 'leva'
 import {animated, useSprings} from 'react-spring/three'
-import {Instanced, Atom as _Atom} from '../../src'
+import {Instanced, Atom as _Atom} from 'react-mol'
 import {Vector3, LineCurve3} from 'three'
 import {OrbitControls} from '@react-three/drei'
 

@@ -3,7 +3,7 @@ import {useFrame} from '@react-three/fiber'
 import * as THREE from 'three'
 import {useControls as _} from 'leva'
 import {OrbitControls} from '@react-three/drei'
-import {Atom, Instanced, Poly} from '../../src'
+import {Atom, Instanced, Poly} from 'react-mol'
 
 const {random} = Math
 
