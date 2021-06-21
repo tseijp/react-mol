@@ -38,11 +38,11 @@ const targetTypings = () => ({
     }
 })
 
-const copyReadme = () => ({
-    writeBundle () {
-        fs.copyFile(resolve('../../README.md'), 'README.md', err => void console.log(err));
-    }
-})
+// const copyReadme = () => ({
+//     writeBundle () {
+//         fs.copyFile(resolve('../../README.md'), 'README.md', err => void console.log(err));
+//     }
+// })
 
 export default [
     { input, output: {file: pkg.main, format: 'cjs'}, external, plugins: [
@@ -58,7 +58,7 @@ export default [
         nodeResolve({extensions}),
         nodePolyfills({crypto: true}),
         targetTypings(),
-        copyReadme(),
+        // copyReadme(),
         terser(),
     ] },
 ]

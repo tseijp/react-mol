@@ -6,14 +6,19 @@
     "description": "Cross-platform speech engine for React",
     "repository": "tseijp/react-speech",
     "homepage": "https://github.com/tseijp/react-speech#readme",
-    "maintainers": ["tseijp (https://github.com/tseijp)"],
-    "workspaces": ["packages/*", "examples/*"],
+    "maintainers": [
+        "tseijp (https://github.com/tseijp)"
+    ],
+    "workspaces": [
+        "packages/*",
+        "examples/*"
+    ],
     "scripts": {
-        "init": "npm i -g yarn lerna && lerna bootstrap",
-        "docs": "lerna exec --scope @react-mol/docs -- yarn start",
-        "site": "lerna exec --scope @react-mol/site -- yarn start",
+        "start": "lerna exec --scope @react-mol/docs -- yarn start",
+        "build": "lerna exec --scope @react-mol/docs -- yarn build",
+        "deploy": "lerna exec --scope @react-mol/docs -- yarn deploy",
         "update": "lerna exec --scope react-mol -- yarn publish",
-        "build": "lerna exec --scope react-mol -- rollup -c",
+        "rollup": "lerna exec --scope react-mol -- rollup -c",
         "watch": "lerna exec --scope react-mol -- jest --watch --runInBand",
         "cov": "lerna exec --scope react-mol -- jest --coverage",
         "ls": "lerna exec --scope react-mol -- npm pack --dry-run"

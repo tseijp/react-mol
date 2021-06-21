@@ -5,5 +5,6 @@ import * as Catan from './Catan'
 import * as Spring from './Spring'
 import * as Cannon from './Cannon'
 
-const target = {Basic, Spring, Catan, Cannon, Flow, Mol}
-export default target
+const demo = {Basic, Spring, Catan, Cannon, Flow, Mol}
+
+export default demo
