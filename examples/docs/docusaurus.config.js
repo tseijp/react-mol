@@ -17,15 +17,6 @@ module.exports = {
       title: '🍡react mol',
       items: [
         {type: 'doc', docId: 'intro', position: 'left', label: 'Docs'},
-        ...[
-            'Basic',
-            'Cannon',
-            'Catan',
-            'Flow',
-            'Mol',
-            'Spring',
-            'Trail'
-        ].map(label => ({to: '#'+label, label, position: 'left'})),
         {
           href: 'https://github.com/tseijp/react-mol',
           label: 'GitHub',
