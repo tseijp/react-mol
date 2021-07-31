@@ -1,0 +1,51 @@
+---
+sidebar_position: 1
+sidebar_label: Boxes
+---
+
+import {Demo} from '../../components/Demo'
+import {Instanced, Flow} from 'react-mol'
+import niceColors from 'nice-color-palettes'
+import {useFrame} from '@react-three/fiber'
+
+export const scope = {Instanced, Flow, niceColors, useFrame}
+
+<Demo noInline {...scope}
+    colors={[...Array(1000)].map(() =>
+      niceColors[17][~~(Math.random()*5)]
+    )}
+>
+{`function Boxes () {
+  const ref = React.useRef(null)
+  const now = React.useRef(0)
+  //
+  useFrame((_, dt) => {
+    if (!ref.current) return
+    ref.current.rotation.x = Math.sin(now.current / 4)
+    ref.current.rotation.y = Math.sin(now.current / 2)
+    now.current += dt
+  })
+  return (
+    <Instanced ref={ref} count={1000}>
+      <boxGeometry attach="geometry" />
+      <meshPhongMaterial attach="material" />
+      {Array(1000).fill(0).map((_,i) =>
+        <Flow key={i} color={colors[i]}
+          args={(t, x, y, z) => [
+              sin(x/4+t)
+             + sin(y/4+t)
+             + sin(z/4+t)
+          ]}
+          position={[i%10-5, i/10%10-5, i/100-5]}
+          rotation={r => [0, r*2, r*3]}
+          scale={r => [r/4, r/4, r/4]}/>
+      )}
+    </Instanced>
+  )
+}
+render (
+  <Canvas>
+    <Boxes/>
+  </Canvas>
+)`}
+</Demo>

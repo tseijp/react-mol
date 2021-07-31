@@ -1,0 +1,50 @@
+---
+sidebar_position: 3
+sidebar_label: Rhombic
+---
+
+import {Demo} from '../../components/Demo'
+import {Text} from '@react-three/drei'
+import {Instanced, Atom, Honey, Poly} from 'react-mol'
+
+export const sqrt_2 = 1 / Math.sqrt(2)
+export const scope = {Text, Instanced, Atom, Honey, Poly}
+
+<Demo noInline {...scope}
+    x={{i: sqrt_2, j:-sqrt_2, k: sqrt_2, l:-sqrt_2}}
+    y={{i: sqrt_2, j:-sqrt_2, k:-sqrt_2, l: sqrt_2}}
+    z={{i: sqrt_2, j: sqrt_2, k:-sqrt_2, l:-sqrt_2}}
+>
+{`render (
+  <Canvas>
+    <Instanced scale={[.5, .5, .5]}>
+      <meshPhysicalMaterial attach="material" color="darksalmon" roughness={.3} metalness={1}/>
+      <polyhedronGeometry args={[
+        [2, 0, 0,  -2, 0, 0,   0, 2, 0,   0,-2, 0,   0, 0, 2,   0, 0,-2,
+         1, 1, 1,   1, 1,-1,   1,-1, 1,   1,-1,-1,
+        -1, 1, 1,  -1, 1,-1,  -1,-1, 1,  -1,-1,-1],
+        [0, 6, 8,   1,10,11,   2, 6, 7,   3, 8,12,   4, 6,10,   5, 7, 9,
+         0, 7, 6,   1,11,13,   2, 7,11,   3, 9, 8,   4, 8, 6,   5, 9,13,
+         0, 8, 9,   1,12,10,   2,10, 6,   3,12,13,   4,10,12,   5,11, 7,
+         0, 9, 7,   1,13,12,   2,11,10,   3,13, 9,   4,12, 8,   5,13,11]
+      ]}/>
+      <Poly n={7} args={[[0, 0, 0, 0], 0]}>
+        {(next, _, floor, key) =>
+          <Honey {...{floor, key}}>
+            {([i, j, k, l], key) =>
+              <group key={key}>
+                {next([i, j, k, l], key) ||
+                <Atom key={key} position={[
+                  x.i*i+x.j*j+x.k*k+x.l*l,
+                  y.i*i+y.j*j+y.k*k+y.l*l,
+                  z.i*i+z.j*j+z.k*k+z.l*l]}/>
+                }
+              </group>
+            }
+          </Honey>
+        }
+      </Poly>
+    </Instanced>
+  </Canvas>
+)`}
+</Demo>

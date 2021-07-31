@@ -1,0 +1,56 @@
+---
+sidebar_position: 4
+sidebar_label: SevenField
+---
+
+import {Demo} from '../../components/Demo'
+import {Text} from '@react-three/drei'
+import {Instanced, Atom, Honey, Poly} from 'react-mol'
+import {Map, Tools, Robber, Road, Settle, Terrain, User} from '../../utils'
+
+export const items = ['hills', 'forest', 'mountains', 'fields', 'pasture', 'desert']
+export const utils = {Map, Tools, Robber, Road, Settle, Terrain, User}
+export const scope = {Text, Instanced, Atom, Honey, Poly}
+
+<Demo noInline {...scope} {...utils}>
+{`render (
+  <Canvas>
+    <Map>
+      <Tools left top items={[...Array(4)].map((_, i) => 'user' + i)}>
+        {(item, key) => <User user={item} key={key}/>}
+      </Tools>
+      <Tools left bottom items={[Road, Settle, Settle]}>
+        {(Item, key) => <Item rock key={key}/>}
+      </Tools>
+      <Tools right bottom>
+        <Honey>
+          {(floor, key, self) => key === self.length - 1? null:
+            <Terrain terrain={items[key]} {...{floor, key}}/>
+          }
+        </Honey>
+      </Tools>
+    </Map>
+    <Honey>
+      {(floor, key) =>
+        <group key={key}>
+          <Terrain floor={floor}>
+            <Robber/>
+          </Terrain>
+          <Honey floor={floor}>
+            {(floor, key) =>
+              <Honey {...{floor, key}}>
+                {(floor, key) =>
+                  <group key={key}>
+                    {floor.reduce((a, v) => a + v) % 3 && <Settle floor={floor}/>}
+                    {floor.filter(v =>!(v % 2)).length && <Road floor={floor}/>}
+                  </group>
+                }
+              </Honey>
+            }
+          </Honey>
+        </group>
+      }
+    </Honey>
+  </Canvas>
+)`}
+</Demo>

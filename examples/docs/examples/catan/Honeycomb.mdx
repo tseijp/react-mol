@@ -1,0 +1,47 @@
+---
+sidebar_position: 1
+sidebar_label: Honeycomb
+---
+
+import {Demo} from '../../components/Demo'
+import {Text} from '@react-three/drei'
+import {Instanced, Atom, Honey, Poly} from 'react-mol'
+
+export const scope = {Text, Instanced, Atom, Honey, Poly}
+
+<Demo noInline {...scope}
+    r={10*Math.sqrt(3)}
+    a={0}
+    x={{i: r*Math.cos(a), j: r*Math.cos(a-Math.PI*2/3), k: r*Math.cos(a+Math.PI*2/3)}}
+    z={{i: r*Math.sin(a), j: r*Math.sin(a-Math.PI*2/3), k: r*Math.sin(a+Math.PI*2/3)}}
+>
+{`render (
+  <Canvas>
+    <Instanced>
+      <cylinderGeometry attach="geometry" args={[9, 10, 1, 6, 1, false]}/>
+      <meshPhysicalMaterial attach="material" color="darksalmon" roughness={0.3} metalness={1}/>
+      <Poly n={10} args={[[0, 0, 0], 0]}>
+        {(next, _, floor, key) =>
+          <Honey {...{floor, key}}>
+            {([i, j, k], key) =>
+              <group key={key}>
+                {next([i, j, k], key) ||
+                  <Atom position={[
+                    x.i*i+x.j*j+x.k*k, 0,
+                    z.i*i+z.j*j+z.k*k]}>
+                    <Text fontSize={2}
+                      position-y={1}
+                      rotation-x={-Math.PI/2}>
+                      {floor + ''}
+                    </Text>
+                  </Atom>
+                }
+              </group>
+            }
+          </Honey>
+        }
+      </Poly>
+    </Instanced>
+  </Canvas>
+  )`}
+</Demo>

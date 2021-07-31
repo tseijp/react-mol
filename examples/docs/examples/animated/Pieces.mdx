@@ -1,0 +1,66 @@
+---
+sidebar_position: 2
+sidebar_label: Pieces
+---
+import {Demo} from '../../components/Demo'
+import * as THREE from 'three'
+import {useControls as _} from 'leva'
+import {animated, useSprings} from 'react-spring/three'
+import {Instanced, Atom as _Atom} from 'react-mol'
+import {OrbitControls} from '@react-three/drei'
+
+export const Atom = animated(_Atom);
+export const {PI, exp, cos, sin, sqrt} = Math;
+export const from = { x: 0 };
+export const to = async (next) => {
+    while (1) {
+        await next({ x: 1 })
+        await next({ x: 0 })
+    }
+};
+
+<Demo
+    {...{THREE, Instanced, useSprings, Atom, from, to}}
+    {...{PI, exp, cos, sin, sqrt}}
+    {...{
+        l: 24,
+        r: _({radius: {value: 2.5, min: 0, max: 5}}).radius,
+        config: {mass: 10, tension: 700, friction: 30}
+    }}
+>
+{`function Pieces () {
+    const line = React.useMemo(() => {
+        const v1 = new THREE.Vector3(0, 0, -r)
+        const v2 = new THREE.Vector3(0, 0,  r)
+        return new THREE.LineCurve3(v1, v2)
+    }, [r])
+    const counts = React.useMemo(() =>
+        [...Array(2 * l)]
+            .map((_, i) => i - l)
+            .map((i) => ~~sqrt(l**2 - i**2))
+    , [l])
+    return (
+      <Canvas>
+        <Instanced>
+            <tubeGeometry args={[line, 20, r / l / 2, 12, false]}/>
+            <meshPhysicalMaterial roughness={0.2} metalness={1.0} color="darksalmon"/>
+            <group rotation-z={PI}>
+                {useSprings(2 * l, (i) => ({from, to, config, delay: 250 * (i / l)}))[0]
+                .map(({x}, i) =>
+                    [...Array(counts[i])].map((_, j) =>
+                        <Atom
+                            key={j}
+                            scale-z={sqrt(1 - ((i - l)**2 + j**2) / l**2)}
+                            position-x={(i - l) * r / l}
+                            position-y={j * r / l}
+                            rotation-x={x.to(v => v * PI / 2 * (i - l) / l)}
+                        />
+                    )
+                )}
+            </group>
+        </Instanced>
+      </Canvas>
+    )
+}
+`}
+</Demo>

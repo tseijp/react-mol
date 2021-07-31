@@ -1,0 +1,44 @@
+---
+sidebar_position: 3
+sidebar_label: Using with React Spring
+---
+
+# Using with React Spring
+
+## Using `react-spring`
+
+Let's start by installing it:
+
+```bash
+npm install three @react-spring/three
+```
+
+We will need to import two things from `react-spring`
+
+```js
+import { useSpring, animated } from '@react-spring/three'
+```
+
+Let's go over them, shall we?
+
+- `useSpring` - A hook to transform values into animated-values
+- `animated` - A component that is used instead of your DOM or mesh, so instead of using mesh you will animated.mesh if you want it to be affected by react-spring
+
+
+You can make Atom with animated value:
+```js
+import { Atom as _ } from 'react-mol'
+const Atom = animated(_)
+```
+
+Let's create our first spring and attach it to our mesh when the user clicks.
+
+```js
+const { scale } = useSpring({ scale: active ? 1.5 : 1 })
+```
+
+Now that we have this animated value let's place it in our Instanced mesh:
+
+```jsx
+<Atom  scale={scale}/>
+```

@@ -1,0 +1,37 @@
+---
+sidebar_position: 2
+sidebar_label: Atom
+---
+
+# Atom
+
+```jsx
+{[...Array(1000)].map((_, i) =>
+  <mesh visible position={[i, 2, 3]} rotation={[Math.PI / 2, 0, 0]}>
+    <sphereGeometry args={[1, 16, 16]} />
+    <meshStandardMaterial color="hotpink" transparent />
+  </mesh>
+)}
+```
+
+- You cound make box like this:
+
+```jsx
+<Instanced>
+  <sphereGeometry args={[1, 16, 16]} />
+  <meshStandardMaterial color="hotpink" transparent />
+    {[...Array(1000)].map((_, i) =>
+      <Atom position={[i, 2, 3]} rotation={[Math.PI / 2, 0, 0]}/>
+    )}
+</mesh>
+```
+
+The props available for the `Atom` are:
+
+
+PROP | DESCRIPTION | DEFAULT
+:-|:-|:-
+children | three.js JSX Element |
+position | | [0, 0, 0]
+rotation | | [0, 0, 0]
+color    | | 

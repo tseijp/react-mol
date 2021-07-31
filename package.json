@@ -3,17 +3,18 @@
     "author": "tsei",
     "license": "MIT",
     "private": true,
-    "description": "Cross-platform speech engine for React",
-    "repository": "tseijp/react-speech",
-    "homepage": "https://github.com/tseijp/react-speech#readme",
-    "maintainers": [
-        "tseijp (https://github.com/tseijp)"
-    ],
+    "description": "🍡A molecular chemistry based simulation library",
+    "repository": "tseijp/react-mol",
+    "homepage": "https://tseijp.github.io/react-mol",
+    "maintainers": ["tseijp (https://github.com/tseijp)"],
     "workspaces": [
         "packages/*",
         "examples/*"
     ],
     "scripts": {
+        "core@latest": "lerna add @docusaurus/core@latest --dev --scope @react-mol/docs",
+        "preset@latest":"lerna add  @docusaurus/preset-classic@latest --dev --scope @react-mol/docs",
+        "latest": "yarn run core@latest & yarn run preset@latest",
         "start": "lerna exec --scope @react-mol/docs -- yarn start",
         "build": "lerna exec --scope @react-mol/docs -- yarn build",
         "deploy": "lerna exec --scope @react-mol/docs -- yarn deploy",

@@ -1,0 +1,50 @@
+---
+sidebar_position: 1
+sidebar_label: Books
+---
+
+import {Demo} from '../../components/Demo'
+
+import * as THREE from 'three'
+import {useLoader} from '@react-three/fiber'
+import {OrbitControls} from '@react-three/drei'
+import { useControls as _ } from 'leva'
+import { Physics, usePlane, useBox } from '@react-three/cannon'
+import {Tile, Atom as _Atom, Instanced} from 'react-mol'
+
+export const bookURL = "http://images-jp.amazon.com/images/P/4041315220.09.MZZZZZZZ"
+export const Atom = (props) => <_Atom {...props} ref={useBox(() => ({mass: 1, args: props.scale}))}/>
+export const Plane = (props) => (
+    <mesh {...props} ref={usePlane(() => ({ mass: 0, ...props }))[0]} receiveShadow>
+        <planeGeometry attach="geometry" args={[5, 5]} />
+        <shadowMaterial attach="material" color="#171717" opacity={0.5} />
+    </mesh>
+)
+export const scope = {Physics, Plane, Instanced, Tile, Atom}
+
+<Demo noInline {...scope}
+  c={10}
+  ws={[...Array(10)].map(() => 2 - Math.random())}
+  hs={[...Array(10)].map(() => Math.random() / 10 + 1 / 10)}
+  t={useLoader(THREE.TextureLoader, bookURL)}
+>
+{`render (
+  <Canvas>
+    <Physics>
+      <Plane rotation={[-Math.PI / 2, 0, 0]}/>
+      <Instanced>
+        <boxGeometry attach="geometry" args={[1, 1, 1]}/>
+        <meshPhongMaterial attachArray="material" color="white"/>
+        <meshPhongMaterial attachArray="material" map={t}/>
+        <meshPhongMaterial attachArray="material" map={t}/>
+        <meshPhongMaterial attachArray="material" map={t}/>
+        <meshPhongMaterial attachArray="material" color="white"/>
+        <meshPhongMaterial attachArray="material" color="white"/>
+        <Tile position-y={(i=0) => hs[i]} items={[...Array(c).keys()]}>
+          {(i=0) => <Atom scale={[1*ws[i], hs[i], t.image.height/t.image.width*ws[i]]}/>}
+        </Tile>
+      </Instanced>
+    </Physics>
+  </Canvas>
+)`}
+</Demo>

@@ -1,0 +1,30 @@
+---
+sidebar_position: 3
+sidebar_label: Instanced
+---
+
+# Instanced
+
+```jsx
+import React from 'react'
+import { Canvas } from '@react-three/fiber'
+import { Instanced } from 'react-mol'
+
+const App = () => (
+  <Canvas>
+    <Instanced>
+      <sphereBufferGeometry />
+      <meshStandardMaterial color="hotpink" />
+    </Instanced>
+  </Canvas>
+)
+```
+
+The props available for the `Instanced` are:
+
+PROP | DESCRIPTION | DEFAULT
+:-|:-|:-
+children  | three.js JSX Element |
+geometry | default geometry |
+material | defalut material |
+count | the number of instance object | 1000

@@ -18,7 +18,7 @@ export const addAtom = atom(null, (get, set, newAtom: AtomObject) => {
 })
 
 export const delAtom = atom(null, (get, set, id: number) => {
-    set(atomsAtom, get(atomsAtom).filter(value => value.id!== id))
+    set(atomsAtom, get(atomsAtom).filter(value => value.id !== id))
 })
 
 export type AtomProps<T extends object={}> = Spread<Spread<{

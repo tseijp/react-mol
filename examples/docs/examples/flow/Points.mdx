@@ -1,0 +1,33 @@
+---
+sidebar_position: 4
+sidebar_label: Points
+---
+
+import {Demo} from '../../components/Demo'
+import {Instanced, Flow} from 'react-mol'
+import niceColors from 'nice-color-palettes'
+import {useFrame} from '@react-three/fiber'
+
+export const scope = {Instanced, Flow, niceColors, useFrame}
+
+<Demo noInline {...scope}
+  c={50}
+  colors={new Array(50**2).fill(0).map(() =>
+    niceColors[17][Math.floor(Math.random()*5)]
+  )}
+>
+{`render (
+  <Canvas>
+    <Instanced position={[-c/4,-1,-c/4]} count={2500}>
+      <sphereGeometry attach="geometry" args={[1,32,32]}/>
+      <meshPhongMaterial  attach="material" />
+      {Array(c**2).fill(0).map((_,i) =>
+        <Flow key={i} color={colors[i]}
+          args={(t,x,_,z) => [sin((x+t)/3)+sin((z+t)/2)]}
+          position={r => [i%c,r,i/c%c]}
+          scale={r => [r/3,r/3,r/3]} />
+      )}
+    </Instanced>
+  </Canvas>
+)`}
+</Demo>

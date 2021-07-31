@@ -1,0 +1,63 @@
+---
+sidebar_position: 1
+sidebar_label: Bounds
+---
+import {Demo} from '../../components/Demo'
+
+import {useControls as _} from 'leva'
+import {animated, useSprings} from 'react-spring/three'
+import {Instanced, Atom as _Atom} from 'react-mol'
+
+export const from = { x: 0 };
+export const to = async (next) => {
+    while (1) {
+        await next({ x: 1 })
+        await next({ x: 0 })
+    }
+};
+
+<Demo
+    {...{Instanced, animated, _Atom, from, to, animated, useSprings}}
+    {...{
+        a: _({amp: {value: 1, min: 0, max: 5}}).amp,
+        s: _({space: {value: 1, min: 0, max: 5}}).space,
+        w: _({width: {value: 10, min: 0, max: 50}}).width,
+        h: _({height: {value: 10, min: 0, max: 50}}).height,
+        config: {mass: 10, tension: 750, friction: 25}
+    }}
+>
+{`function Bounds ({count: c=30, delay: d=75}) {
+  const Atom = animated(_Atom);
+  const {PI, exp, cos, sin, sqrt} = Math;
+  return (
+    <Canvas>
+    <Instanced count={c**2}>
+        <cylinderGeometry attach="geometry" args={[1, 1, 10, 6]}/>
+        <meshPhysicalMaterial
+            attach="material"
+            color="darksalmon"
+            roughness={0.2}
+            metalness={1.0}/>
+        <group scale={[w/c, h / 10, w/c]}
+            rotation-x={PI * 2 / 30}
+            position-x={ -w * s / 2 }
+            position-z={ -w * s / 4 / sqrt(3) * 3 }>
+            {useSprings(c**2, (i) => ({
+                from, to, config,
+                delay: sqrt((i / c * 2 - c)**2 + (i % c * 2 - c)**2) * d
+            }))[0].map(({ x }, i) => (
+                <Atom
+                    key={'0' + i}
+                    position-x={~~(i % c) * s + (~~(i/c)%2? 1: 0) * s / 2}
+                    position-z={~~(i / c) * s * 3 / 2 / sqrt(3)}
+                    scale-x={1/sqrt(3)}
+                    scale-z={1/sqrt(3)}
+                    scale-y={x.to(v => (v + .5) * a / 8)}/>
+            ))}
+        </group>
+    </Instanced>
+    </Canvas>
+  )
+}
+`}
+</Demo>

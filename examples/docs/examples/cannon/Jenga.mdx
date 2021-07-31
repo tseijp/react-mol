@@ -1,0 +1,48 @@
+---
+sidebar_position: 4
+sidebar_label: Jenga
+---
+import {Demo} from '../../components/Demo'
+
+import * as THREE from 'three'
+import {useLoader} from '@react-three/fiber'
+import {OrbitControls} from '@react-three/drei'
+import {useControls as _} from 'leva'
+import {Physics, usePlane, useBox} from '@react-three/cannon'
+import {Tile, Atom as _Atom, Instanced} from 'react-mol'
+
+export const Atom = (props) => <_Atom {...props} ref={useBox(() => ({mass: 1, args: props.scale}))}/>
+export const Plane = (props) => (
+    <mesh {...props} ref={usePlane(() => ({ mass: 0, ...props }))[0]} receiveShadow>
+        <planeGeometry attach="geometry" args={[5, 5]} />
+        <shadowMaterial attach="material" color="#171717" opacity={0.5} />
+    </mesh>
+)
+export const scope = {Physics, Plane, Instanced, Tile, Atom}
+
+<Demo noInline {...scope}
+  c={20} // count
+  e={3} // element
+  d={1} // depth
+  h={.6} // height
+  dist={.1}
+>
+{`render (
+  <Canvas>
+    <Physics>
+      <Plane rotation={[-Math.PI / 2, 0, 0]} />
+      <Instanced scale={Array(3).fill(10 / c / h)} position-y={-2}>
+        <boxGeometry attach="geometry" args={[1, 1, 1]}/>
+        <meshPhongMaterial attach="material" color="firebrick" shininess={0}/>
+        <Tile items={[...Array(c).keys()]} position-y={h} rotation-y={Math.PI / 2}>
+          <Tile items={[...Array(e).keys()]} position-z={d + dist}>
+            <Atom
+              position-z={- (d + dist) * (e - 1) / 2}
+              scale={[d * e + dist * (e - 1), h, d]}/>
+          </Tile>
+        </Tile>
+      </Instanced>
+    </Physics>
+  </Canvas>
+  )`}
+</Demo>

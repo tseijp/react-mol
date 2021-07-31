@@ -1,0 +1,32 @@
+---
+sidebar_position: 3
+sidebar_label: useAtom
+---
+
+## useAtom
+
+- You cannot expect something like this to work:
+
+```jsx
+import { useAtom } from 'react-mol'
+function App () {
+  const atom = useAtom()
+  return (
+    <Instanced>
+      <meshPhongMaterial/>
+      ...
+```
+
+- Do this instead:
+
+```jsx
+function Foo () {
+  const atom = useAtom()
+}
+
+function App () {
+  return (
+    <Instanced>
+      <Foo>
+      ...
+```

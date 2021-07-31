@@ -1,0 +1,60 @@
+---
+sidebar_position: 3
+sidebar_label: Hall
+---
+import {Demo} from '../../components/Demo'
+
+import * as THREE from 'three'
+import {useLoader} from '@react-three/fiber'
+import {OrbitControls} from '@react-three/drei'
+import {useControls as _} from 'leva'
+import {Physics, usePlane, useBox} from '@react-three/cannon'
+import {Tile, Atom as _Atom, Instanced} from 'react-mol'
+
+export const Atom = (props) => <_Atom {...props} ref={useBox(() => ({mass: 1, args: props.scale}))}/>
+export const Plane = (props) => (
+    <mesh {...props} ref={usePlane(() => ({ mass: 0, ...props }))[0]} receiveShadow>
+        <planeGeometry attach="geometry" args={[5, 5]} />
+        <shadowMaterial attach="material" color="#171717" opacity={0.5} />
+    </mesh>
+)
+export const scope = {Physics, Plane, Instanced, Tile, Atom}
+
+<Demo noInline {...scope}
+  c={30} // count
+  l={30} // layer
+  {..._({
+      w: {value: 2.1, min: 0, max: 4},
+      d: {value: 1, min: 0, max: 2},
+      h: {value: .6, min: 0, max: 1},
+    dist: {value: .1, min: 0, max: 1}
+  })}
+>
+{`render (
+  <Canvas>
+    <Physics>
+      <Plane rotation={[-Math.PI / 2, 0, 0]}/>
+      <Instanced scale={Array(3).fill(10 / c / h)} position-y={-2}>
+        <boxGeometry args={[1, 1, 1]}/>
+        <meshPhongMaterial color="firebrick" shininess={0}/>
+        <group position-x={-(w + dist)*c/2}>
+          <Tile items={[...Array(l).keys()]}
+            position-x={(j=0) => (j % 2 - .5) * w}
+            position-y={h}>
+            {(j=0) =>
+              <Tile items={[...Array(c).keys()]} position-x={w + dist}>
+                {(i=0) =>
+                  <Atom
+                    position-z={2 * Math.PI * Math.sin(2 * Math.PI * (w * i / c + h * j / l))}
+                    rotation-y={2 * Math.PI * Math.sin(2 * Math.PI * (w * i / c + h * j / l))}
+                    scale={[w, h, d]}/>
+                }
+              </Tile>
+            }
+        </Tile>
+        </group>
+      </Instanced>
+    </Physics>
+  </Canvas>
+)`}
+</Demo>

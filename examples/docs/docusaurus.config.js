@@ -1,7 +1,7 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'react-mol',
-  tagline: 'react-mol are cool',
+  tagline: '🍡A molecular chemistry based simulation library',
   url: 'https://tseijp.github.io',
   baseUrl: '/react-mol/',
   onBrokenLinks: 'throw',
@@ -10,13 +10,12 @@ module.exports = {
   organizationName: 'tseijp',
   projectName: 'react-mol',
   themeConfig: {
-    prism: {
-      theme: require('prism-react-renderer/themes/vsDark'),
-    },
+    prism: {theme: require('prism-react-renderer/themes/vsDark')},
     navbar: {
       title: '🍡react mol',
       items: [
-        {type: 'doc', docId: 'intro', position: 'left', label: 'Docs'},
+        {type: 'doc', docId: 'intro', position: 'left', label: 'Documents'},
+        {to: '/examples/intro', label: 'Examples', position: 'left'},
         {
           href: 'https://github.com/tseijp/react-mol',
           label: 'GitHub',
@@ -30,14 +29,7 @@ module.exports = {
         {
           title: 'Pages',
           items: [
-            {label: 'Docs', to: '/docs/intro'},
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {label: 'Stack Overflow', href: 'https://stackoverflow.com/questions/tagged/react-mol'},
-            {label: 'Twitter', href: 'https://twitter.com/tseijp'},
+            {label: 'Docs', to: '/documents/intro'},
           ],
         },
         {
@@ -55,9 +47,21 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
+          path: 'documents',
+          routeBasePath: 'documents',
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/tseijp/react-mol/edit/master/examples/',
         },
+      },
+    ],
+  ],
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'examples',
+        path: 'examples',
+        routeBasePath: 'examples',
       },
     ],
   ],

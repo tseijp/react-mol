@@ -1,0 +1,65 @@
+---
+sidebar_position: 2
+sidebar_label: Brick
+---
+import {Demo} from '../../components/Demo'
+
+import * as THREE from 'three'
+import {useLoader} from '@react-three/fiber'
+import {OrbitControls} from '@react-three/drei'
+import { useControls as _ } from 'leva'
+import { Physics, usePlane, useBox } from '@react-three/cannon'
+import {Tile, Atom as _Atom, Instanced} from 'react-mol'
+
+export const Atom = (props) => <_Atom {...props} ref={useBox(() => ({mass: 1, args: props.scale}))}/>
+export const Plane = (props) => (
+    <mesh {...props} ref={usePlane(() => ({ mass: 0, ...props }))[0]} receiveShadow>
+        <planeGeometry attach="geometry" args={[5, 5]} />
+        <shadowMaterial attach="material" color="#171717" opacity={0.5} />
+    </mesh>
+)
+export const scope = {Physics, Plane, Instanced, Tile, Atom}
+
+<Demo noInline {...scope}
+  l={50} // layer
+  c={4} // count
+  e={2} // element
+  {..._({w: {value: 2.1, min: 0, max: 4},
+       d: {value:   1, min: 0, max: 2},
+       h: {value: .6, min: 0, max: 1},
+     lap: {value: 1, min: 0, max: 2},
+     gap: {value: .5, min: 0, max: 2},
+    dist: {value: .1, min: 0, max: 2}
+  })}
+>
+{`render (
+  <Canvas>
+    <Physics>
+      <Plane scale={[10, 10, 10]} rotation={[-Math.PI / 2, 0, 0]}/>
+      <Instanced scale={Array(3).fill(10 / l / h)} position-y={-1}>
+        <boxGeometry attach="geometry" args={[1, 1, 1]}/>
+        <meshPhongMaterial attach="material" color="firebrick" shininess={0}/>
+        <axesHelper scale={[2, 2, 2]}/>
+        {[...Array(c).keys()].map(j => 2 * Math.PI * j / c).map((ry, j) =>
+        <group key={j+""} rotation-y={ry}
+          position-x={ ((w + dist) * e + d + gap) / 2 * Math.cos(ry)}
+          position-z={-((w + dist) * e + d + gap) / 2 * Math.sin(ry)}>
+          <Tile
+            items={[...Array(l).keys()]}
+            position-y={h}
+            rotation-y={(j % 2 * 2 - 1) * 2 * Math.PI * lap / l}>
+            {(i=0) =>
+            <Tile items={[...Array(e).keys()]} position-x={w + dist}>
+              <Atom scale={[w, h, d]}
+                position-x={((i - j) % 2 * 2 - 1) * gap
+                    - (w + dist) * (e - 1) / 2} />
+            </Tile>
+            }
+          </Tile>
+        </group>
+        )}
+      </Instanced>
+    </Physics>
+  </Canvas>
+)`}
+</Demo>

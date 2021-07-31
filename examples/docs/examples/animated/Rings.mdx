@@ -1,0 +1,70 @@
+---
+sidebar_position: 3
+sidebar_label: Rings
+---
+
+import {Demo} from '../../components/Demo'
+
+import {useControls as _} from 'leva'
+import {animated, useSprings} from 'react-spring/three'
+import {Instanced, Atom as _Atom} from 'react-mol'
+import {Vector3, LineCurve3} from 'three'
+import {OrbitControls} from '@react-three/drei'
+
+
+export const Atom = animated(_Atom);
+export const from = { x: 0 };
+export const to = async (next) => {
+    while (1) {
+        await next({ x: 1 })
+        await next({ x: 0 })
+    }
+};
+
+```js
+import {animated, useSprings} from 'react-spring/three'
+import {Instanced, Atom as _Atom} from 'react-mol'
+
+const Atom = animated(_Atom);
+```
+
+<Demo
+    {...{Atom, Instanced, useSprings, from, to}}
+    {...{
+        c: 100,
+        config: {mass: 2.2, tension: 138, friction: 79}
+    }}
+>
+{`function Rings () {
+  const {PI, exp, cos, sin, sqrt} = Math;
+  return (
+    <Canvas>
+      <Instanced>
+        <torusGeometry args={[10, .5, 5, 50]}/>
+        <meshPhysicalMaterial
+          roughness={0.2}
+          metalness={1.0}
+          color="darksalmon"
+        />
+        <group
+          scale={Array(3).fill(1 / exp(c / 12))}
+          rotation={[PI / 2, 0, 0]}>
+          {useSprings(c, i =>
+            ({from, to, config, delay: 50 * i})
+          )[0].map(({x}, i) => (
+            <Atom
+              key={'0' + i}
+              scale={[exp(i/12), exp(i/12), 1]}
+              rotation-x={x.to(
+                [0, 0.1, 0.9, 1],
+                [0, -PI * 0.1, PI * 1.1, PI]
+              )}
+            />
+          ))}
+        </group>
+      </Instanced>
+    </Canvas>
+  )
+}
+`}
+</Demo>
