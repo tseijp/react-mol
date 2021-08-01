@@ -4,10 +4,11 @@ sidebar_label: Rings
 ---
 
 import {Demo} from '../../components/Demo'
+import { spring } from "@leva-ui/plugin-spring"
 
 import {useControls as _} from 'leva'
 import {animated, useSprings} from 'react-spring/three'
-import {Instanced, Atom as _Atom} from 'react-mol'
+import {Instanced, Atom as _Atom} from 'react-mol/src'
 import {Vector3, LineCurve3} from 'three'
 import {OrbitControls} from '@react-three/drei'
 
@@ -23,17 +24,17 @@ export const to = async (next) => {
 
 ```js
 import {animated, useSprings} from 'react-spring/three'
-import {Instanced, Atom as _Atom} from 'react-mol'
+import {Instanced, Atom as _Atom} from 'react-mol/src'
 
 const Atom = animated(_Atom);
 ```
 
 <Demo
     {...{Atom, Instanced, useSprings, from, to}}
-    {...{
+    {..._({
         c: 100,
-        config: {mass: 2.2, tension: 138, friction: 79}
-    }}
+        config: spring({mass: 2.2, tension: 138, friction: 79})
+    })}
 >
 {`function Rings () {
   const {PI, exp, cos, sin, sqrt} = Math;

@@ -5,13 +5,13 @@ sidebar_label: Honeycomb
 
 import {Demo} from '../../components/Demo'
 import {Text} from '@react-three/drei'
-import {Instanced, Atom, Honey, Poly} from 'react-mol'
+import {Instanced, Atom, Honey, Poly} from 'react-mol/src'
 
 export const scope = {Text, Instanced, Atom, Honey, Poly}
+export const r = 10*Math.sqrt(3)
+export const a = 0
 
-<Demo noInline {...scope}
-    r={10*Math.sqrt(3)}
-    a={0}
+<Demo noInline {...scope} {...{r, a}}
     x={{i: r*Math.cos(a), j: r*Math.cos(a-Math.PI*2/3), k: r*Math.cos(a+Math.PI*2/3)}}
     z={{i: r*Math.sin(a), j: r*Math.sin(a-Math.PI*2/3), k: r*Math.sin(a+Math.PI*2/3)}}
 >

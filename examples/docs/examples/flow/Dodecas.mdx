@@ -4,32 +4,32 @@ sidebar_label: Dodecas
 ---
 
 import {Demo} from '../../components/Demo'
-import {Instanced, Flow} from 'react-mol'
+import {Instanced, Flow} from 'react-mol/src'
 import niceColors from 'nice-color-palettes'
 import {useFrame} from '@react-three/fiber'
+import {range} from '../../utils'
 
-export const scope = {Instanced, Flow, niceColors, useFrame}
-
-<Demo noInline {...scope}
-  colors={[...Array(1000)].map(() =>
-    niceColors[17][~~Math.random(5)]
+<Demo noInline {...{Instanced, Flow, niceColors, useFrame, range}}
+  size={5}
+  colors={range(1000).map(() =>
+    niceColors[17][Math.random()*5<<0]
   )}
 >
 {`render (
   <Canvas>
-    <Instanced count={1000}>
+    <Instanced>
       <dodecahedronGeometry args={[1,0]}/>
       <meshStandardMaterial />
-      {Array(1000).fill(0).map((_,i) =>
+      {range(1000).map(i =>
         <Flow key={i}
-          args={[...Array(4)].map(_ => Math.random())}
+          args={[0,0,0,0].map(() => Math.random())}
           position={(t,s,x,y,z) => [
-            ((x-.5) - cos(t*s+x) - sin(t*s/1))*(x*100+50),
-            ((y-.5) - sin(t*s+y) - cos(t*s/3))*(y*100+50),
-            ((z-.5) - cos(t*s+z) - sin(t*s/5))*(z*100+50),
+            ((x-.5) - Math.cos(t*s+x) - Math.sin(t*s/1))*(x*100+50),
+            ((y-.5) - Math.sin(t*s+y) - Math.cos(t*s/3))*(y*100+50),
+            ((z-.5) - Math.cos(t*s+z) - Math.sin(t*s/5))*(z*100+50),
           ]}
-          rotation={(t,s)=>Array(3).fill(cos(t*s)*size)}
-          scale={(t,s)=>Array(3).fill(cos(t*s/2)*size)}
+          rotation={(t,s)=>[0,0,0].fill(Math.cos(t*s)*size)}
+          scale={(t,s)=>[0,0,0].fill(Math.cos(t*s/2)*size)}
           color={colors[i]}/>
       )}
     </Instanced>

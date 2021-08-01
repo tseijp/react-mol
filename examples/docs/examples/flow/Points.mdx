@@ -4,16 +4,15 @@ sidebar_label: Points
 ---
 
 import {Demo} from '../../components/Demo'
-import {Instanced, Flow} from 'react-mol'
+import {Instanced, Flow} from 'react-mol/src'
 import niceColors from 'nice-color-palettes'
 import {useFrame} from '@react-three/fiber'
+import {range} from '../../utils'
 
-export const scope = {Instanced, Flow, niceColors, useFrame}
-
-<Demo noInline {...scope}
+<Demo noInline {...{Instanced, Flow, niceColors, useFrame, range}}
   c={50}
-  colors={new Array(50**2).fill(0).map(() =>
-    niceColors[17][Math.floor(Math.random()*5)]
+  colors={range(50**2).map(() =>
+    niceColors[17][Math.random()*5<<0]
   )}
 >
 {`render (
@@ -21,9 +20,14 @@ export const scope = {Instanced, Flow, niceColors, useFrame}
     <Instanced position={[-c/4,-1,-c/4]} count={2500}>
       <sphereGeometry attach="geometry" args={[1,32,32]}/>
       <meshPhongMaterial  attach="material" />
-      {Array(c**2).fill(0).map((_,i) =>
-        <Flow key={i} color={colors[i]}
-          args={(t,x,_,z) => [sin((x+t)/3)+sin((z+t)/2)]}
+      {range(c**2).map(i =>
+        <Flow
+          key={i}
+          color={colors[i]}
+          args={(t,x,_,z) => [
+            Math.sin((x+t)/3)
+           +Math.sin((z+t)/2)
+          ]}
           position={r => [i%c,r,i/c%c]}
           scale={r => [r/3,r/3,r/3]} />
       )}

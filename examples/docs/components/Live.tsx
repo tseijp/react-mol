@@ -10,12 +10,12 @@ const headerFont = `"Avenir Next", ${bodyFont}`;
 const sidebarWidth = 300;
 
 export function Live (props: any) {
-    const {children, scope, noInline, ...other} = props
+    const {children, noInline, ...scope} = props
     const code = React.useMemo(() => {
         return children.toString().trim()
     }, [children])
     return (
-      <Live.Provider {...{code, noInline, scope: {React, ...scope, ...other}}}>
+      <Live.Provider {...{code, noInline, scope}}>
         <Live.Container>
           <Live.Editor/>
           <Live.Error/>
@@ -26,18 +26,14 @@ export function Live (props: any) {
 }
 
 Live.Provider = styled(LiveProvider).attrs({theme})<any>`
-  width: ${rem(1024)};
   max-width: 100%;
   margin: 0 auto;
-  padding: ${rem(90)} ${rem(40)} 0 ${rem(40)};
   box-sizing: border-box;
   font-family: ${bodyFont};
   transition: transform 150ms ease-out;
   border-radius: ${rem(10)};
-  padding: ${rem(100)} ${rem(20)} ${rem(30)} ${rem(20)};
   transform: translateX(${p => (p.moveRight ? rem(sidebarWidth) : 0)});
   display: flex;
-  flex-wrap: wrap;
 `
 
 Live.Error = styled(LiveError)`
@@ -60,8 +56,6 @@ Live.Editor = styled(LiveEditor)<any>`
   white-space: pre-wrap;
   position: relative;
   border-radius: ${rem(10)};
-  ${_ => _.height && `height: ${rem(_.height)};`}
-  ${_ => _.minHeight && `min-height: ${rem(_.minHeight)};`}
   white-space: pre;
   cursor: text;
   width: 100%;
@@ -78,5 +72,5 @@ Live.Container = styled.div`
 Live.Preview = styled(LivePreview)`
   border-radius: ${rem(10)};
   width: 100%;
-  height: 100%;
+  height: 600px;
 `

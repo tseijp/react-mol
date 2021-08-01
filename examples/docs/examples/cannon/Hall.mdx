@@ -9,7 +9,8 @@ import {useLoader} from '@react-three/fiber'
 import {OrbitControls} from '@react-three/drei'
 import {useControls as _} from 'leva'
 import {Physics, usePlane, useBox} from '@react-three/cannon'
-import {Tile, Atom as _Atom, Instanced} from 'react-mol'
+import {Tile, Atom as _Atom, Instanced} from 'react-mol/src'
+import {range} from '../../utils'
 
 export const Atom = (props) => <_Atom {...props} ref={useBox(() => ({mass: 1, args: props.scale}))}/>
 export const Plane = (props) => (
@@ -18,9 +19,9 @@ export const Plane = (props) => (
         <shadowMaterial attach="material" color="#171717" opacity={0.5} />
     </mesh>
 )
-export const scope = {Physics, Plane, Instanced, Tile, Atom}
 
-<Demo noInline {...scope}
+<Demo noInline
+  {...{Physics, Plane, Instanced, Tile, Atom, range}}
   c={30} // count
   l={30} // layer
   {..._({
@@ -38,15 +39,18 @@ export const scope = {Physics, Plane, Instanced, Tile, Atom}
         <boxGeometry args={[1, 1, 1]}/>
         <meshPhongMaterial color="firebrick" shininess={0}/>
         <group position-x={-(w + dist)*c/2}>
-          <Tile items={[...Array(l).keys()]}
+          <Tile
+            items={range(l)}
             position-x={(j=0) => (j % 2 - .5) * w}
             position-y={h}>
             {(j=0) =>
-              <Tile items={[...Array(c).keys()]} position-x={w + dist}>
+              <Tile
+                items={range(c)}
+                position-x={w + dist}>
                 {(i=0) =>
                   <Atom
-                    position-z={2 * Math.PI * Math.sin(2 * Math.PI * (w * i / c + h * j / l))}
-                    rotation-y={2 * Math.PI * Math.sin(2 * Math.PI * (w * i / c + h * j / l))}
+                    position-z={2*Math.PI*Math.sin(2*Math.PI*(w*i/c + h*j/l))}
+                    rotation-y={2*Math.PI*Math.sin(2*Math.PI*(w*i/c + h*j/l))}
                     scale={[w, h, d]}/>
                 }
               </Tile>

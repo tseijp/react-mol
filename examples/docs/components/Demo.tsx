@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import rem from 'polished/lib/helpers/rem'
 import {Live} from './Live'
 import {colors} from '../utils'
 import {Canvas} from '@react-three/fiber'
 import {OrbitControls} from '@react-three/drei'
+import {Split} from './Split'
 
 export function Demo (props: any) {
     const {scope, ...other} = props
@@ -13,9 +15,9 @@ export function Demo (props: any) {
 }
 
 export const StyledCanvas = styled(BaseCanvas)`
-    position: absolue;
     width: 100%;
-    height: 600px;
+    height: 100%;
+    border-radius: ${rem(10)};
 `
 export function BaseCanvas (props) {
     const {children, ...other} = props

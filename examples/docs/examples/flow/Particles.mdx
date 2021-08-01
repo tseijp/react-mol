@@ -4,32 +4,32 @@ sidebar_label: Particles
 ---
 
 import {Demo} from '../../components/Demo'
-import {Instanced, Flow} from 'react-mol'
+import {Instanced, Flow} from 'react-mol/src'
 import niceColors from 'nice-color-palettes'
 import {useFrame} from '@react-three/fiber'
-
-export const scope = {Instanced, Flow, niceColors, useFrame}
-
+import {range} from '../../utils'
 
 <Demo noInline
-  {...scope}
-  colors={[...Array(1000)].map(() =>
-    niceColors[17][~~Math.random(5)]
+  {...{Instanced, Flow, niceColors, useFrame, range}}
+  colors={range(1000).map(() =>
+    niceColors[17][Math.random()*5 << 0]
   )}
 >
 {`render (
   <Canvas>
-    <Instanced count={1000}>
+    <Instanced>
       <dodecahedronGeometry args={[0.2, 0]} />
       <meshPhongMaterial />
-      {Array(1000).fill(0).map((_, i) =>
-        <Flow key={i} color={colors[i]}
-          args={[...Array(5)].map(() => Math.random(100,-50))}
+      {range(1000).map((_, i) =>
+        <Flow
+          key={i}
+          color={colors[i]}
+          args={[0,0,0,0,0].map(() => Math.random() * 100 - 50)}
           position={(t,s,f,x,y,z) => [
-            x + cos(t*s*f/50) + sin(t*s/50)*f/10,
-            y + sin(t*s*f/50) + cos(t*s/50)*f/10,
-            z + cos(t*s*f/50) + sin(t*s/50)*f/10,]}
-          scale={t => Array(3).fill(Math.cos(t))}/>
+            x + Math.cos(t*s*f/50) + Math.sin(t*s/50)*f/10,
+            y + Math.sin(t*s*f/50) + Math.cos(t*s/50)*f/10,
+            z + Math.cos(t*s*f/50) + Math.sin(t*s/50)*f/10]}
+          scale={t => [0,0,0].fill(Math.cos(t))}/>
       )}
     </Instanced>
   </Canvas>

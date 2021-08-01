@@ -4,33 +4,34 @@ sidebar_label: Spheres
 ---
 
 import {Demo} from '../../components/Demo'
-import {Instanced, Flow} from 'react-mol'
+import {Instanced, Flow} from 'react-mol/src'
 import niceColors from 'nice-color-palettes'
 import {useFrame} from '@react-three/fiber'
+import {range} from '../../utils'
 
-export const scope = {Instanced, Flow, niceColors, useFrame}
-
-<Demo noInline {...scope}
+<Demo noInline {...{Instanced, Flow, niceColors, useFrame, range}}
   r={20}
   c={1000}
-  colors={[...Array(1000)].map(() =>
-    niceColors[17][~~Math.random(5)]
+  colors={range(1000).map(() =>
+    niceColors[17][Math.random()*5<<0]
   )}
 >
 {`render (
   <Canvas>
     <Instanced count={1000}>
-      <sphereGeometry attach="geometry" args={[1, 32, 32]} />
-      <meshPhongMaterial  attach="material" color={0xffffff} />
-      {Array(c).fill(0).map((_, i) =>
-        <Flow key={i} color={colors[i]}
-          args={[...Array(4)].map(_ => Math.random())}
+      <sphereGeometry args={[1, 32, 32]} />
+      <meshPhongMaterial />
+      {range(c).map(i =>
+        <Flow
+          key={i}
+          color={colors[i]}
+          args={[0,0,0,0].map(_ => Math.random())}
           position={(t,s,x,y,z) => [
-            x*2*r - r + cos(t*s*6) + sin(t*s*2),
-            y*2*r - r + sin(t*s*4) + cos(t*s*4),
-            z*2*r - r + cos(t*s*2) + sin(t*s*6),
+            x*2*r - r + Math.cos(t*s*6) + Math.sin(t*s*2),
+            y*2*r - r + Math.sin(t*s*4) + Math.cos(t*s*4),
+            z*2*r - r + Math.cos(t*s*2) + Math.sin(t*s*6),
           ]}
-          scale={(t,s) => Array(3).fill(max(.5, 2*cos(t+s*50)))}
+          scale={(t,s) => [0,0,0].fill(Math.max(.5, 2*Math.cos(t+s*50)))}
         />
       )}
     </Instanced>

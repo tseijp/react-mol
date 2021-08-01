@@ -1,11 +1,11 @@
 ---
-sidebar_position: 2
+sidebar_position: 20
 sidebar_label: NineteenField
 ---
 
 import {Demo} from '../../components/Demo'
 import {Text} from '@react-three/drei'
-import {Instanced, Atom, Honey, Poly} from 'react-mol'
+import {Instanced, Atom, Honey, Poly} from 'react-mol/src'
 import { Map, Tools, Robber, Road, Settle, Terrain, User} from '../../utils'
 
 export const items = ['hills', 'forest', 'mountains', 'fields', 'pasture', 'desert']
@@ -24,7 +24,7 @@ export const utils = {Map, Tools, Robber, Road, Settle, Terrain, User}
       </Tools>
       <Tools right bottom>
         <Honey>
-          {(floor, key, self) => //key === self.length - 1? null:
+          {(floor, key, self) =>
             <Terrain terrain={items[key]} {...{floor, key}}/>
           }
         </Honey>

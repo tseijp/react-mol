@@ -4,15 +4,14 @@ sidebar_label: Boxes
 ---
 
 import {Demo} from '../../components/Demo'
-import {Instanced, Flow} from 'react-mol'
+import {Instanced, Flow} from 'react-mol/src'
 import niceColors from 'nice-color-palettes'
 import {useFrame} from '@react-three/fiber'
+import {range} from '../../utils'
 
-export const scope = {Instanced, Flow, niceColors, useFrame}
-
-<Demo noInline {...scope}
-    colors={[...Array(1000)].map(() =>
-      niceColors[17][~~(Math.random()*5)]
+<Demo noInline {...{Instanced, Flow, niceColors, useFrame, range}}
+    colors={range(1000).map(() =>
+      niceColors[17][Math.random()*5<<0]
     )}
 >
 {`function Boxes () {
@@ -26,15 +25,15 @@ export const scope = {Instanced, Flow, niceColors, useFrame}
     now.current += dt
   })
   return (
-    <Instanced ref={ref} count={1000}>
-      <boxGeometry attach="geometry" />
-      <meshPhongMaterial attach="material" />
-      {Array(1000).fill(0).map((_,i) =>
+    <Instanced ref={ref}>
+      <boxGeometry/>
+      <meshPhongMaterial/>
+      {range(1000).map(i =>
         <Flow key={i} color={colors[i]}
           args={(t, x, y, z) => [
-              sin(x/4+t)
-             + sin(y/4+t)
-             + sin(z/4+t)
+              Math.sin(x/4+t)
+             + Math.sin(y/4+t)
+             + Math.sin(z/4+t)
           ]}
           position={[i%10-5, i/10%10-5, i/100-5]}
           rotation={r => [0, r*2, r*3]}
