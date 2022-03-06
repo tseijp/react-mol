@@ -170,7 +170,7 @@ export const Flow = React.forwardRef((props, forwardRef) => {
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/Points.gif)](
     https://tsei.jp/rmol/Flow/Points)
 
-</td></td>
+</td></tr>
 </table>
 
 ___What does it look like?___
@@ -288,7 +288,7 @@ ReactDOM.render(
 
 ### Recipes of Mol
 
-<table><!--*************** Recipes of Mol ***************--><tr align="center"><td><br/>
+<table><tr align="center"><td><br/>
 
 [![Mol](
     https://img.shields.io/badge/Mol-black.svg)](
@@ -312,7 +312,7 @@ ReactDOM.render(
     https://img.shields.io/badge/Results-black.svg)](
     https://tsei.jp/rmol)
 
-</td></tr><!--*************** Methyl alchol ***************--><tr><td align="center">
+</td></tr><tr><td align="center">
 
 ###### Methyl alcohol
 [![CH3](
@@ -348,7 +348,7 @@ ReactDOM.render(
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/CH3OH.png)](
     https://tsei.jp/rmol/Mol/CH3OH)
 
-</td></tr><!--*************** Acetic acid ***************--><tr><td align="center">
+</td></tr><tr><td align="center">
 
 ###### Acetil acid
 [![CH3](
@@ -383,7 +383,7 @@ ReactDOM.render(
     https://raw.githubusercontent.com/tseijp/react-mol/master/public/CH3COOH.png)](
     https://tsei.jp/rmol/Mol/CH3COOH)
 
-</td></tr><!--*************** Polyethylene ***************--><tr><td align="center">
+</td></tr><tr><td align="center">
 
 ###### Poly ethylene
 [![Poly](
@@ -438,7 +438,7 @@ ReactDOM.render(
 
 ### Recipes of Flow
 
-<table><!--*************** Recipes of Flow ***************--><tr align="center"><td><br/>
+<table><tr align="center"><td><br/>
 
 [![Flow](
     https://img.shields.io/badge/Flow-black.svg)](
@@ -573,7 +573,7 @@ ReactDOM.render(
 
 ### Recipes of Spring
 
-<table><!--*************** Recipes of Spring ***************--><tr align="center"><td><br/>
+<table><tr align="center"><td><br/>
 
 [![Spring](
     https://img.shields.io/badge/Spring-black.svg)](
@@ -616,10 +616,7 @@ ReactDOM.render(
 
 </td></tr></table>
 
-
-<!--******************************      ******************************-->
 <!--****************************** TODO ******************************-->
-<!--******************************      ******************************-->
 
 <details>
 <summary>
@@ -629,7 +626,7 @@ ReactDOM.render(
 </summary>
 
 
-<table><!--*************** Recipes of Tile ***************--><tr><td><br/>
+<table><tr><td><br/>
 
 [![Tile](
     https://img.shields.io/badge/Tile-black.svg)](
@@ -701,6 +698,7 @@ __TODO__
 </F>
 ```
 
+</td></tr>
 </table>
 
 </details>
