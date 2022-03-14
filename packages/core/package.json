@@ -1,17 +1,8 @@
 {
-    "name": "react-mol",
-    "homepage": "/",
-    "version": "2.2.1",
-    "module": "index.js",
-    "types": "index.d.ts",
-    "main": "index.cjs.js",
-    "author": "tsei",
-    "license": "MIT",
-    "private": false,
-    "sideEffects": false,
+    "bugs": "https://github.com/tseijp/react-mol/issues/",
+    "homepage": "https://tseijp.github.io/react-mol/",
+    "repository": "https://github.com/tseijp/react-mol/",
     "description": "🍡A molecular chemistry based simulation library",
-    "repository": "https://github.com/tseijp/react-mol",
-    "bugs": "https://github.com/tseijp/react-mol/issues",
     "keywords": [
         "react",
         "three",
@@ -19,31 +10,29 @@
         "threejs",
         "typescript"
     ],
-    "scripts": {
-        "test": "react-app-rewired test",
-        "jest": "jest -c config-jest.js --watch --coverage --runInBand",
-        "eject": "react-app-rewired eject",
-        "start": "cross-env NODE_ENV=development BABEL_ENV=development react-app-rewired start",
-        "build": "cross-env NODE_ENV=production BABEL_ENV=production react-app-rewired build",
-        "compile": "cross-env NODE_ENV=production BABEL_ENV=production rollup -c config-rollup.js"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
+    "name": "react-mol",
+    "author": "tsei",
+    "license": "MIT",
+    "version": "2.2.1",
+    "module": "index.js",
+    "types": "index.d.ts",
+    "main": "index.cjs.js",
+    "files": [
+        "src",
+        "index.js",
+        "index.d.ts",
+        "index.cjs.js"
+    ],
+    "private": false,
+    "sideEffect": false,
+    "publishConfig": {
+        "access": "public"
     },
     "peerDependencies": {
         "@react-three/fiber": ">=6",
         "jotai": ">=0.16",
-        "react": ">=17",
-        "react-dom": ">=17",
+        "react": ">=16.8",
+        "react-dom": ">=16.8",
         "three": ">=0.128"
     },
     "devDependencies": {

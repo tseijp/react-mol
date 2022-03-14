@@ -1,11 +1,19 @@
 {
+    "bugs": "https://github.com/tseijp/react-mol/issues/",
+    "homepage": "https://tseijp.github.io/react-mol/",
+    "repository": "https://github.com/tseijp/react-mol/",
+    "description": "🍡A molecular chemistry based simulation library",
+    "keywords": [
+        "react",
+        "three",
+        "fiber",
+        "threejs",
+        "typescript"
+    ],
     "name": "@react-mol/root",
     "author": "tsei",
     "license": "MIT",
     "private": true,
-    "description": "🍡A molecular chemistry based simulation library",
-    "repository": "tseijp/react-mol",
-    "homepage": "https://tseijp.github.io/react-mol",
     "maintainers": ["tseijp (https://github.com/tseijp)"],
     "workspaces": [
         "packages/*",

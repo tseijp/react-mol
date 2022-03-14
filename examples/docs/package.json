@@ -1,4 +1,15 @@
 {
+    "bugs": "https://github.com/tseijp/react-mol/issues/",
+    "homepage": "https://tseijp.github.io/react-mol/",
+    "repository": "https://github.com/tseijp/react-mol/",
+    "description": "🍡A molecular chemistry based simulation library",
+    "keywords": [
+        "react",
+        "three",
+        "fiber",
+        "threejs",
+        "typescript"
+    ],
     "name": "@react-mol/docs",
     "version": "0.0.0",
     "license": "MIT",
