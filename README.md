@@ -1,3 +1,5 @@
+# 🍡react-mol
+
 <p align="center">
 
 [ ![https://tsei.jp/rmol](
@@ -27,10 +29,12 @@
     https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Ftseijp)](
     https://twitter.com/intent/tweet?url=https://tsei.jp/rmol/&text=🍡A+molecular+chemistry+based+simulation+library)
 
-__Installation__
+## Installation
+
 - `npm i three @react-three/fiber react-mol`
 
-__Quick started__
+## Quick started
+
 - `git clone https://github.com/tseijp/react-mol`
 - `cd react-mol`
 - `npm i`
@@ -40,7 +44,7 @@ __Quick started__
 
 <br/><br/><hr/><br/><br/>
 
-# Recipes
+## Recipes
 
 <table>
   <tr valign="top">
