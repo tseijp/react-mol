@@ -100,7 +100,8 @@
 that covers most cases of organic molecule simulation.
 ([More Recipes](#recipes-of-mol))
 
-<details><summary>View Code</summary>
+<details>
+<summary>View Code</summary>
 
 ```tsx
 import React from 'react'
@@ -139,7 +140,8 @@ export const Mol = React.forwardRef((props, ref) => {
 🍭<strong>`<Flow/>`</strong>
 ([More Recipes](#recipes-of-flow))
 
-<details><summary>View Code</summary>
+<details>
+<summary>View Code</summary>
 
 ```tsx
 import React from 'react'
